@@ -28,9 +28,9 @@ namespace GameLab.UnitSystem.ActionSystem
 
         public bool CanExecuteOnTarget(object target)
         {
-            if (target is not Vector3) return false;
-            if (target is not Unit) return false;
-            return true;
+            if (target is Vector3) return true;
+            if (target is Unit) return true;
+            return false;
         }
 
         public bool Equals(IAction other)

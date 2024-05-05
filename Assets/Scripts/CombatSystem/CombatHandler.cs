@@ -29,13 +29,14 @@ namespace GameLab.CombatSystem
         {
             if(combatTarget != null)
             {
-                if(Vector3.Distance(this.transform.position, combatTarget.transform.position) < range)
+                if(Vector3.Distance(this.transform.position, combatTarget.transform.position) > range)
                 {
                     unit.GetComponent<MoveAction>().ExecuteOnTarget(combatTarget);
                 }
                 else
                 {
                     Debug.Log("Attack!!");
+                    combatTarget = null;
                 }
             }
         }

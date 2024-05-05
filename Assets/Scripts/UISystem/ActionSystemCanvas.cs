@@ -17,7 +17,7 @@ namespace GameLab.UISystem
 
         private void DisplayUI()
         {
-            UnitSelectionSystem.Instance.GetPlayerUnit().GetActionHandler().ExecutableActions(UnitSelectionSystem.Instance.GetSelectedUnit());
+            UnitSelectionSystem.Instance.GetPlayerUnit().GetActionHandler().GetExecutableActions(UnitSelectionSystem.Instance.GetSelectedUnit());
         }
     }
 

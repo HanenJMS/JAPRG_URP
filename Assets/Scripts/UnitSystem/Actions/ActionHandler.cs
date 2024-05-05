@@ -7,13 +7,16 @@ namespace GameLab.UnitSystem.ActionSystem
         IAction currentAction;
         IAction nextAction;
         IAction selectedAction;
-        List<IAction> equippedActions = new();
         IAction[] actions;
 
 
         private void Awake()
         {
             actions = GetComponents<IAction>();
+            foreach(IAction action in actions)
+            {
+                Debug.Log(action.ToString());
+            }
         }
 
         public void SetCurrentAction(IAction action)
@@ -28,7 +31,7 @@ namespace GameLab.UnitSystem.ActionSystem
         {
             return actions;
         }
-        public List<IAction> ExecutableActions(object target)
+        public List<IAction> GetExecutableActions(object target)
         {
             List<IAction> actionable = new();
             foreach (IAction action in actions)
