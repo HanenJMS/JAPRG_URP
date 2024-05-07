@@ -1,7 +1,6 @@
+using GameLab.Animation;
 using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 namespace GameLab.CombatSystem
 {
@@ -11,34 +10,68 @@ namespace GameLab.CombatSystem
         //takes in damage information and processes them into their correct delegates; DamageCalculator(damageInfo)
         Unit unit;
         Unit combatTarget;
-        float range = 1f;
 
+        UnitAnimationHandler animationHandler;
+        float range = 1f;
+        bool isRunning = false;
+
+        float currentAttackCD = float.MaxValue;
+        float AttackCD = 2f;
         private void Awake()
         {
             unit = GetComponent<Unit>();
+            animationHandler = GetComponent<UnitAnimationHandler>();
         }
         public void SetCombatTarget(Unit combatTarget)
         {
             this.combatTarget = combatTarget;
+            isRunning = true;
         }
         public float GetActionRange()
         {
             return range;
         }
+        public void Cancel()
+        {
+            isRunning = false;
+            combatTarget = null;
+        }
+
+
         private void LateUpdate()
         {
-            if(combatTarget != null)
+            currentAttackCD += Time.deltaTime;
+            if (!isRunning) return;
+            if (combatTarget != null)
             {
-                if(Vector3.Distance(this.transform.position, combatTarget.transform.position) > range)
+                if (Vector3.Distance(this.transform.position, combatTarget.transform.position) > range)
                 {
-                    unit.GetComponent<MoveAction>().ExecuteOnTarget(combatTarget);
+                    unit.GetActionHandler().GetActionType<MoveAction>().MoveToDestination(combatTarget);
                 }
                 else
                 {
-                    Debug.Log("Attack!!");
-                    combatTarget = null;
+                    unit.GetActionHandler().GetActionType<MoveAction>().Cancel();
+                    transform.LookAt(combatTarget.transform);
+                    if(currentAttackCD > AttackCD) 
+                    { 
+                        animationHandler.SetTrigger("attack");
+                        currentAttackCD = 0f;
+                    }
                 }
             }
+        }
+        
+        //animation trigger
+        void Hit()
+        {
+            if (combatTarget == null)
+            {
+                Debug.Log("Miss");
+                return;
+            }
+            
+            combatTarget.GetHealthHandler().RemoveFromCurrent(15);
+            Debug.Log("HIT!");
         }
     }
 }

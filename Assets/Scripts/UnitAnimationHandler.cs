@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 namespace GameLab.Animation
@@ -15,10 +16,25 @@ namespace GameLab.Animation
 
         private void Update()
         {
+            HandleMovementAnimation();
+        }
+
+        private void HandleMovementAnimation()
+        {
             Vector3 velocity = agent.velocity;
             Vector3 localVelocity = transform.InverseTransformDirection(velocity);
             speed = localVelocity.z;
             animator.SetFloat("forwardSpeed", speed);
+        }
+
+        public void SetTrigger(string trigger)
+        {
+            animator.SetTrigger(trigger);
+        }
+
+        public void ResetTrigger(string trigger)
+        {
+            animator.ResetTrigger(trigger);
         }
     }
 }

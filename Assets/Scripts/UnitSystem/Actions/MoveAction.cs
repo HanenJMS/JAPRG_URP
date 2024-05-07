@@ -6,24 +6,18 @@ namespace GameLab.UnitSystem.ActionSystem
     public class MoveAction : MonoBehaviour, IAction
     {
         NavMeshAgent agent;
+        ActionHandler actionHander;
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
+            actionHander = GetComponent<ActionHandler>();
         }
 
         Vector3 targetPosition;
         public void ExecuteOnTarget(object target)
         {
-            if (target is Vector3)
-            {
-                targetPosition = (Vector3)target;
-                
-            }
-            if(target is Unit)
-            {
-                targetPosition = (target as Unit).gameObject.transform.position;
-            }
-            agent.SetDestination(targetPosition);
+            MoveToDestination(target);
+            actionHander.SetCurrentAction(this);
         }
 
         public bool CanExecuteOnTarget(object target)
@@ -33,14 +27,22 @@ namespace GameLab.UnitSystem.ActionSystem
             return false;
         }
 
-        public bool Equals(IAction other)
+        public void MoveToDestination(object target)
         {
-            return false;
+            SetTargetPosition(target);
+            agent.SetDestination(targetPosition);
         }
-
-        public bool IsInRange()
+        void SetTargetPosition(object target)
         {
-            return Vector3.Distance(targetPosition, this.transform.position) < 1f;
+            if (target is Vector3)
+            {
+                targetPosition = (Vector3)target;
+
+            }
+            if (target is Unit)
+            {
+                targetPosition = (target as Unit).gameObject.transform.position;
+            }
         }
 
         public string ActionName()
@@ -50,6 +52,11 @@ namespace GameLab.UnitSystem.ActionSystem
         public override string ToString()
         {
             return "Move";
+        }
+
+        public void Cancel()
+        {
+            agent.SetDestination(this.transform.position);
         }
     }
 }

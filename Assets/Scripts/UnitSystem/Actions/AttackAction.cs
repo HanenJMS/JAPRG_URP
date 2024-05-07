@@ -5,12 +5,12 @@ namespace GameLab.UnitSystem.ActionSystem
 {
     public class AttackAction : MonoBehaviour, IAction
     {
-
-        Unit targetUnit;
         CombatHandler combatHandler;
+        ActionHandler actionHandler;
         private void Awake()
         {
             combatHandler = GetComponent<CombatHandler>();
+            actionHandler = GetComponent<ActionHandler>();
         }
         int damage = 5;
         public void ExecuteOnTarget(object target)
@@ -18,6 +18,7 @@ namespace GameLab.UnitSystem.ActionSystem
             if (target is Unit)
             {
                 combatHandler.SetCombatTarget(target as Unit);
+                actionHandler.SetCurrentAction(this);
             }
 
         }
@@ -27,14 +28,9 @@ namespace GameLab.UnitSystem.ActionSystem
             if (target is Unit) return true;
             return false;
         }
-
-        public bool IsInRange()
-        {
-            return Vector3.Distance(targetUnit.transform.position, this.transform.position) < 1f;
-        }
         public void Cancel()
         {
-
+            combatHandler.Cancel();
         }
 
         public string ActionName()

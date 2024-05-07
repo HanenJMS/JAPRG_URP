@@ -1,8 +1,6 @@
 using GameLab.InteractableSystem;
-using GameLab.ResourceSystem;
 using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +17,7 @@ namespace GameLab.Controller
         [SerializeField] Unit currentSelectedUnit;
 
         List<IAction> executableActions = new();
+        IAction selectedAction;
         [SerializeField] int selectedIndex = 0;
         private void Awake()
         {
@@ -39,24 +38,24 @@ namespace GameLab.Controller
 
         private void LateUpdate()
         {
-            if(Input.mouseScrollDelta.y != 0)
+            if (Input.mouseScrollDelta.y != 0)
             {
-                if(executableActions.Count > 0)
+                if (executableActions.Count > 0)
                 {
                     selectedIndex += (int)Input.mouseScrollDelta.y;
                     if (selectedIndex >= executableActions.Count)
                     {
-                        selectedIndex = executableActions.Count  - 1;
+                        selectedIndex = executableActions.Count - 1;
                     }
-                    if(selectedIndex < 0)
+                    if (selectedIndex < 0)
                     {
                         selectedIndex = 0;
-                    }    
+                    }
                     Debug.Log(executableActions[selectedIndex].ToString());
                 }
-                  
+
             }
-            if(Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 Interactable interactable = MouseWorldController.GetMouseRayCastInteractable();
                 if (interactable != null)
@@ -70,16 +69,17 @@ namespace GameLab.Controller
                     }
                 }
             }
-            if(Input.GetMouseButtonUp(1)) 
+            if (Input.GetMouseButtonUp(1))
             {
                 Interactable interactable = MouseWorldController.GetMouseRayCastInteractable();
                 if (interactable != null)
                 {
+                    executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
                     executableActions[selectedIndex].ExecuteOnTarget(interactable);
                 }
                 else
                 {
-                    
+                    executableActions.Clear();
                     moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
                 }
             }

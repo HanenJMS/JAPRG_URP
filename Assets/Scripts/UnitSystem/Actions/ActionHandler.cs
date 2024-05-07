@@ -18,9 +18,18 @@ namespace GameLab.UnitSystem.ActionSystem
                 Debug.Log(action.ToString());
             }
         }
-
+        public T GetActionType<T>() where T : IAction
+        {
+            return GetComponent<T>();
+        }
         public void SetCurrentAction(IAction action)
         {
+            if (currentAction == action) return;
+            if (currentAction != action && currentAction != null) 
+            {
+                currentAction.Cancel();
+            }
+            
             currentAction = action;
         }
         public IAction GetselectedAction(IAction action)
