@@ -1,3 +1,5 @@
+using GameLab.Animation;
+using GameLab.FactionSystem;
 using GameLab.InteractableSystem;
 using GameLab.ResourceSystem;
 using GameLab.UnitSystem.ActionSystem;
@@ -9,6 +11,8 @@ namespace GameLab.UnitSystem
     {
         ActionHandler actionHandler;
         HealthHandler healthHandler;
+        FactionHandler factionHandler;
+        UnitAnimationHandler unitAnimationHandler;
         object target;
         IAction moveAction;
         IAction attackAction;
@@ -18,10 +22,15 @@ namespace GameLab.UnitSystem
             attackAction = GetComponent<AttackAction>();
             actionHandler = GetComponent<ActionHandler>();
             healthHandler = GetComponent<HealthHandler>();
+            factionHandler = GetComponent<FactionHandler>();
+            unitAnimationHandler = GetComponent<UnitAnimationHandler>();
+            healthHandler.onDead += OnDeath;
         }
-        public void SetTarget(object target)
+
+        void OnDeath()
         {
-            this.target = target;
+            actionHandler.SetCurrentAction(null);
+            unitAnimationHandler.SetTrigger("death");
         }
         public ActionHandler GetActionHandler()
         {
@@ -30,6 +39,10 @@ namespace GameLab.UnitSystem
         public HealthHandler GetHealthHandler()
         {
             return healthHandler;
+        }
+        public FactionHandler GetFactionHandler()
+        {
+            return factionHandler;
         }
     }
 }

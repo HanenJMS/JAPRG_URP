@@ -12,11 +12,12 @@ namespace GameLab.CombatSystem
         Unit combatTarget;
 
         UnitAnimationHandler animationHandler;
-        float range = 1f;
+        [SerializeField] float range = 1f;
+        [SerializeField] int damage = 1;
         bool isRunning = false;
 
         float currentAttackCD = float.MaxValue;
-        float AttackCD = 2f;
+        [SerializeField] float AttackCD = 2f;
         private void Awake()
         {
             unit = GetComponent<Unit>();
@@ -53,7 +54,13 @@ namespace GameLab.CombatSystem
                     unit.GetActionHandler().GetActionType<MoveAction>().Cancel();
                     transform.LookAt(combatTarget.transform);
                     if(currentAttackCD > AttackCD) 
-                    { 
+                    {
+                        if (combatTarget.GetHealthHandler().IsDead())
+                        { 
+                            combatTarget = null;
+                            isRunning = false;
+                            return;
+                        } 
                         animationHandler.SetTrigger("attack");
                         currentAttackCD = 0f;
                     }
@@ -70,7 +77,7 @@ namespace GameLab.CombatSystem
                 return;
             }
             
-            combatTarget.GetHealthHandler().RemoveFromCurrent(15);
+            combatTarget.GetHealthHandler().RemoveFromCurrent(damage);
             Debug.Log("HIT!");
         }
     }

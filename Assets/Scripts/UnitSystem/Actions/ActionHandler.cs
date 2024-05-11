@@ -36,9 +36,14 @@ namespace GameLab.UnitSystem.ActionSystem
         {
             return currentAction;
         }
-        public IAction[] GetActions()
+        public List<IAction> GetActions()
         {
-            return actions;
+            List<IAction> actionable = new();
+            foreach (IAction action in actions)
+            {
+                actionable.Add(action);
+            }
+            return actionable;
         }
         public List<IAction> GetExecutableActions(object target)
         {

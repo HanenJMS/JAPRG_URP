@@ -11,6 +11,8 @@ public class AiTestingScript : MonoBehaviour
     IAction attackAction;
     ActionHandler actionHandler;
 
+
+    [SerializeField] bool isActive = false;
     Unit unit;
     Unit targetUnit;
 
@@ -27,13 +29,25 @@ public class AiTestingScript : MonoBehaviour
     private void LateUpdate()
     {
         //if no target
-        if(targetUnit == null)
+        if (unit.GetHealthHandler().IsDead())
+        {
+            isActive = false;
+            return;
+        }
+            if (targetUnit == null)
         {
             targetUnit = GameObject.FindGameObjectWithTag("Player").GetComponent<Unit>();
         }
+        
         if (targetUnit != null)
         {
-            //attackAction.ExecuteOnTarget(targetUnit);
+            if (targetUnit.GetHealthHandler().IsDead()) isActive = false;
+            if (!isActive)
+            {
+                attackAction.Cancel();
+                return;
+            }
+            attackAction.ExecuteOnTarget(targetUnit);
         }
     }
 }

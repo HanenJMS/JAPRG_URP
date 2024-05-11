@@ -3,6 +3,7 @@ using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 
 namespace GameLab.Controller
@@ -38,6 +39,10 @@ namespace GameLab.Controller
 
         private void LateUpdate()
         {
+            if (playerUnit.GetHealthHandler().IsDead())
+            {
+                return;
+            }
             if (Input.mouseScrollDelta.y != 0)
             {
                 if (executableActions.Count > 0)
@@ -62,26 +67,52 @@ namespace GameLab.Controller
                 {
                     if (interactable is Unit)
                     {
-                        Debug.Log("interaction Type: " + interactable.ToString());
-                        currentSelectedUnit = interactable as Unit;
-                        executableActions = playerUnit.GetActionHandler().GetExecutableActions(currentSelectedUnit);
-                        Debug.Log(executableActions[selectedIndex].ToString());
+                        if((interactable as Unit).GetFactionHandler().GetFaction() != playerUnit.GetFactionHandler().GetFaction())
+                        {
+                            Debug.Log("interaction Type: " + interactable.ToString());
+                            currentSelectedUnit = interactable as Unit;
+                            executableActions = playerUnit.GetActionHandler().GetExecutableActions(currentSelectedUnit);
+                            Debug.Log(executableActions[selectedIndex].ToString());
+                        }
                     }
                 }
             }
             if (Input.GetMouseButtonUp(1))
             {
-                Interactable interactable = MouseWorldController.GetMouseRayCastInteractable();
-                if (interactable != null)
+                List<Interactable> interactables = MouseWorldController.GetMouseRayCastInteractables();
+                if (interactables.Count > 0)
                 {
-                    executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
-                    executableActions[selectedIndex].ExecuteOnTarget(interactable);
+                    foreach (Interactable interactable in interactables)
+                    {
+                        if (interactable is Unit)
+                        {
+                            if ((interactable as Unit).GetHealthHandler().IsDead()) continue;
+                            if ((interactable as Unit).GetFactionHandler().GetFaction() == playerUnit.GetFactionHandler().GetFaction()) continue;
+                            executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
+                            executableActions[selectedIndex].ExecuteOnTarget(interactable);
+                            return;
+                        }
+                    }
                 }
-                else
-                {
-                    executableActions.Clear();
-                    moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
-                }
+                executableActions.Clear();
+                moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
+                //Interactable interactable = MouseWorldController.GetMouseRayCastInteractable();
+                //if (interactable != null)
+                //{
+                //    if (interactable is Unit)
+                //    {
+                //        if ((interactable as Unit).GetFactionHandler().GetFaction() != playerUnit.GetFactionHandler().GetFaction())
+                //        {
+                //            executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
+                //            executableActions[selectedIndex].ExecuteOnTarget(interactable);
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    executableActions.Clear();
+                //    moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
+                //}
             }
         }
     }

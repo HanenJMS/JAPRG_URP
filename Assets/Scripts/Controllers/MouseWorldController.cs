@@ -1,5 +1,7 @@
 using GameLab.InteractableSystem;
 using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MouseWorldController : MonoBehaviour
@@ -45,9 +47,26 @@ public class MouseWorldController : MonoBehaviour
         Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue);
         return raycastHit;
     }
+    public static RaycastHit[] GetRaycastHits()
+    {
+        Ray ray = GetMouseRay();
+        return Physics.RaycastAll(ray, float.MaxValue);
+    }
     public static Interactable GetMouseRayCastInteractable()
     {
         return GetRaycastHit().collider.GetComponent<Interactable>();
+    }
+    public static List<Interactable> GetMouseRayCastInteractables()
+    {
+        List<Interactable> interactables = new();
+        foreach(RaycastHit hits in GetRaycastHits())
+        {
+            if(hits.collider.TryGetComponent<Interactable>(out Interactable interactable))
+            {
+                interactables.Add(interactable);
+            }
+        }
+        return interactables;
     }
     public static T GetMouseRayInteractionType<T>() where T : MonoBehaviour
     {

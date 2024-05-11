@@ -23,7 +23,6 @@ namespace GameLab.UnitSystem.ActionSystem
         public bool CanExecuteOnTarget(object target)
         {
             if (target is Vector3) return true;
-            if (target is Unit) return true;
             return false;
         }
 
@@ -43,6 +42,7 @@ namespace GameLab.UnitSystem.ActionSystem
             {
                 targetPosition = (target as Unit).gameObject.transform.position;
             }
+            agent.stoppingDistance = 0.75f;
         }
 
         public string ActionName()
