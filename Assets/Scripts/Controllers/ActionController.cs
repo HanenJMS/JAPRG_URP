@@ -90,6 +90,7 @@ namespace GameLab.Controller
                             if ((interactable as Unit).GetFactionHandler().GetFaction() == playerUnit.GetFactionHandler().GetFaction()) continue;
                             executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
                             executableActions[selectedIndex].ExecuteOnTarget(interactable);
+                            selectedIndex = 0;
                             return;
                         }
                     }
