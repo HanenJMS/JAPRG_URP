@@ -1,5 +1,4 @@
 using GameLab.Animation;
-using GameLab.PartySystem;
 using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
 using System;
@@ -12,65 +11,90 @@ namespace GameLab.CombatSystem
         //resides in unit world objects.
         //takes in damage information and processes them into their correct delegates; DamageCalculator(damageInfo)
         Unit unit;
-        Unit combatTarget;
-        [SerializeField] List<Unit> combatTargets = new();
-        PartyHandler partyHandler;
+        [SerializeField] Unit enemy;
+        [SerializeField] List<Unit> enemies = new();
         UnitAnimationHandler animationHandler;
         [SerializeField] float range = 1f;
         [SerializeField] int damage = 1;
         bool isRunning = false;
         public Action onDamageTaken;
-        public Action onCombatInitiated;
+        public Action<Unit> onEnemyAdded;
+        public Action<Unit> onEnemyRemoved;
         float currentAttackCD = float.MaxValue;
         [SerializeField] float AttackCD = 2f;
         private void Awake()
         {
             unit = GetComponent<Unit>();
             animationHandler = GetComponent<UnitAnimationHandler>();
-            partyHandler = GetComponent<PartyHandler>();
         }
-        public void SetCombatTarget(Unit combatTarget)
+        public void AddEnemy(Unit enemy)
         {
-            this.combatTarget = combatTarget;
-            if (!combatTargets.Contains(combatTarget))
+            if (!enemies.Contains(enemy) && !enemy.GetHealthHandler().IsDead())
             {
-                combatTargets.Add(combatTarget);
-                partyHandler.AddEnemy(combatTarget);
+                enemies.Add(enemy);
+                onEnemyAdded?.Invoke(enemy);
             }
-            isRunning = true;
-            onCombatInitiated?.Invoke();
         }
-        public void TakeDamage(Unit attacker, int dmg)
+        public void RemoveEnemy(Unit enemy)
+        {
+            if (enemies.Contains(enemy))
+            {
+                enemies.Remove(enemy);
+                onEnemyRemoved?.Invoke(enemy);
+            }
+        }
+        public void SetEnemy(Unit enemy)
+        {
+            this.enemy = enemy;
+            AddEnemy(enemy);
+        }
+        void TakeDamage(Unit enemy, int dmg)
         {
             unit.GetHealthHandler().RemoveFromCurrent(dmg);
-            if (!combatTargets.Contains(attacker) && !attacker.GetHealthHandler().IsDead())
-            {
-                combatTargets.Add(attacker);
-                partyHandler.AddEnemy(attacker);
-            }
+            AddEnemy(enemy);
             onDamageTaken?.Invoke();
         }
-        public List<Unit> GetCombatTargets()
+        public List<Unit> GetEnemies()
         {
-            return combatTargets;
+            return enemies;
         }
-        public void RemoveTarget(Unit target)
+        public void SetEnemies(List<Unit> enemies)
         {
-            if (combatTargets.Contains(target))
-            {
-                combatTargets.Remove(target);
-                partyHandler.RemoveEnemy(target);
-            }
+            this.enemies = enemies;
+            if(this.enemy == null)
+                SetEnemy(this.enemies[0]);
+            RunCombat();
+        }
+        public void RunCombat()
+        {
+            isRunning = true;
+            
         }
         public float GetActionRange()
         {
             return range;
         }
+        public Unit GetNearestEnemy()
+        {
+            Unit enemy = enemies[0];
+            Vector3 closestEnemyPosition = enemy.transform.position;
+            foreach (Unit potentialEnemy in enemies)
+            {
+                Vector3 potentialEnemyPosition = potentialEnemy.transform.position;
+                float currentEnemyPositionDistance = Vector3.Distance(closestEnemyPosition, this.transform.position);
+                float potentialEnemyDistance = Vector3.Distance(potentialEnemyPosition, this.transform.position);
+                if (currentEnemyPositionDistance > potentialEnemyDistance)
+                {
+                    enemy = potentialEnemy;
+                }
+            }
+            return enemy;
+        }
         public void Cancel()
         {
             isRunning = false;
-            combatTarget = null;
-            combatTargets.Clear();
+            enemy = null;
+            enemies.Clear();
         }
 
 
@@ -78,27 +102,31 @@ namespace GameLab.CombatSystem
         {
             currentAttackCD += Time.deltaTime;
             if (!isRunning) return;
-            if(unit.GetHealthHandler().IsDead())
+            if (unit.GetHealthHandler().IsDead())
             {
-                isRunning = false;
+                Cancel();
                 return;
             }
-            if (combatTarget != null)
+            if (enemy == unit)
             {
-                if (Vector3.Distance(this.transform.position, combatTarget.transform.position) > range)
+                RemoveEnemy(enemy);
+            }
+            if (enemy != null)
+            {
+                if (Vector3.Distance(this.transform.position, enemy.transform.position) > range)
                 {
-                    unit.GetActionHandler().GetActionType<MoveAction>().MoveToDestination(combatTarget);
+                    unit.GetActionHandler().GetActionType<MoveAction>().MoveToDestination(enemy);
                 }
                 else
                 {
                     unit.GetActionHandler().GetActionType<MoveAction>().Cancel();
-                    transform.LookAt(combatTarget.transform);
+                    transform.LookAt(enemy.transform);
                     if (currentAttackCD > AttackCD)
                     {
-                        if (combatTarget.GetHealthHandler().IsDead())
+                        if (enemy.GetHealthHandler().IsDead())
                         {
-                            combatTarget = null;
-                            isRunning = false;
+                            RemoveEnemy(enemy);
+                            enemy = null;
                             return;
                         }
                         animationHandler.SetTrigger("attack");
@@ -106,19 +134,23 @@ namespace GameLab.CombatSystem
                     }
                 }
             }
-
+            if (enemies.Count == 0)
+            {
+                Cancel();
+                return;
+            }
         }
 
         //animation trigger
         void Hit()
         {
-            if (combatTarget == null)
+            if (enemy == null)
             {
                 Debug.Log("Miss");
                 return;
             }
 
-            combatTarget.GetCombatHandler().TakeDamage(unit, damage);
+            enemy.GetCombatHandler().TakeDamage(unit, damage);
 
             Debug.Log("HIT!");
         }

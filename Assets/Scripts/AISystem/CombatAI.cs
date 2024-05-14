@@ -21,7 +21,17 @@ namespace GameLab.AI
         private void Start()
         {
             unit.GetCombatHandler().onDamageTaken += OnDamageTaken;
-            unit.GetCombatHandler().onCombatInitiated += ActivateState;
+            unit.GetCombatHandler().onEnemyAdded += OnEnemyAdded;
+            unit.GetCombatHandler().onEnemyRemoved += OnEnemyRemoved;
+        }
+        void OnEnemyAdded(Unit enemy)
+        {
+            unit.GetPartyHandler().AddFoe(enemy);
+            ActivateState();
+        }
+        void OnEnemyRemoved(Unit enemy)
+        {
+            unit.GetPartyHandler().RemoveFoe(enemy);
         }
         void OnDamageTaken()
         {
@@ -29,13 +39,13 @@ namespace GameLab.AI
         }
         private void LateUpdate()
         {
-            if (unit.GetCombatHandler().GetCombatTargets().Count <= 0)
+            if (unit.GetCombatHandler().GetEnemies().Count <= 0)
             {
-                isActive = false;
+                CancelState();
             }
             if (unit.GetHealthHandler().IsDead())
             {
-                isActive = false;
+                CancelState();
                 return;
             }
             if (!isActive) return;
@@ -43,7 +53,7 @@ namespace GameLab.AI
             {
                 if (targetUnit.GetHealthHandler().IsDead())
                 {
-                    unit.GetCombatHandler().RemoveTarget(targetUnit);
+                    unit.GetCombatHandler().RemoveEnemy(targetUnit);
                     targetUnit = null;
                 }
                 if (!isActive)
@@ -52,31 +62,21 @@ namespace GameLab.AI
                     return;
                 }
                 attackAction.ExecuteOnTarget(targetUnit);
-                return;
             }
 
-            if (unit.GetCombatHandler().GetCombatTargets().Count > 0 && targetUnit == null)
+            if (unit.GetCombatHandler().GetEnemies().Count > 0)
             {
-                Unit closestTarget = unit.GetCombatHandler().GetCombatTargets()[0];
-                Vector3 closestTargetPosition = closestTarget.transform.position;
-                foreach (Unit unitTarget in unit.GetCombatHandler().GetCombatTargets())
-                {
-                    Vector3 unitTargetPosition = closestTarget.transform.position;
-                    float currentTargetDistance = Vector3.Distance(closestTargetPosition, this.transform.position);
-                    float potentialTargetDistance = Vector3.Distance(unitTargetPosition, this.transform.position);
-                    if (currentTargetDistance > potentialTargetDistance)
-                    {
-                        closestTarget = unitTarget;
-                    }
-                }
-                targetUnit = closestTarget;
+                targetUnit = unit.GetCombatHandler().GetNearestEnemy();
+                unit.GetCombatHandler().SetEnemy(targetUnit);
                 SetAIState();
             }
-
+            
+            
         }
         void SetAIState()
         {
-            aiHandler.SetCurrentAIState(this);
+            if (aiHandler != null)
+                aiHandler.SetCurrentAIState(this);
         }
         public void ActivateState()
         {

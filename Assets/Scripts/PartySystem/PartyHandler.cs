@@ -6,97 +6,88 @@ namespace GameLab.PartySystem
 {
     public class PartyHandler : MonoBehaviour
     {
-        [SerializeField]Unit partyLeader;
-        [SerializeField]List<Unit> partyMembers = new();
-        [SerializeField] List<Unit> partyEnemies = new();
-        public Action onPartyLeaderChanged;
-        public Action onEnemiesFighting;
-        public void AddAlly(Unit partyMember)
+        [SerializeField] Unit leader;
+        [SerializeField] List<Unit> allies = new();
+        [SerializeField] List<Unit> foes = new();
+        public Action onLeaderChanged;
+        public void AddAlly(Unit ally)
         {
-            if (!partyMembers.Contains(partyMember))
+            if (leader == null) return;
+            if (!leader.GetPartyHandler().GetAllies().Contains(ally))
             {
-                partyMembers.Add(partyMember);
-                UpdateMemberList();
-            }
-            
-        }
-        public void RemoveAlly(Unit partyMember)
-        {
-            if (partyMembers.Contains(partyMember))
-            {
-                partyMembers.Remove(partyMember);
-                UpdateMemberList();
-            }
-            
-        }
-        public void AddEnemy(Unit Enemy)
-        {
-            if (!partyEnemies.Contains(Enemy))
-            {
-                partyEnemies.Add(Enemy);
-                UpdateEnemyList();
+                leader.GetPartyHandler().GetAllies().Add(ally);
+                UpdateAllies();
             }
         }
-        public void RemoveEnemy(Unit Enemy)
+        public void RemoveAlly(Unit ally)
         {
-            if (partyEnemies.Contains(Enemy))
+            if (leader == null) return;
+            if (leader.GetPartyHandler().GetAllies().Contains(ally))
             {
-                partyEnemies.Remove(Enemy);
-                RemoveEnemyFromCombat(Enemy);
+                leader.GetPartyHandler().GetAllies().Remove(ally);
+                UpdateAllies();
             }
         }
-        public List<Unit> GetPartyMemberList()  
+        public void AddFoe(Unit foe)
         {
-            return partyMembers;
-        }
-        public void SetPartyMemberList(List<Unit> partyMembers)
-        {
-            this.partyMembers = partyMembers;
-        }
-        public void SetEnemyList(List<Unit> leaderEnemyList)
-        {
-            partyEnemies = leaderEnemyList;
-        }
-        public void UpdateMemberList()
-        {
-            foreach(Unit member in partyMembers)
+            if (leader == null) return;
+            if (!leader.GetPartyHandler().GetFoes().Contains(foe))
             {
-                member.GetPartyHandler().SetPartyMemberList(partyMembers);
-                member.GetFactionHandler().SetFaction(GetLeader().GetFactionHandler().GetFaction());
-                member.GetPartyHandler().SetLeader(GetLeader());
-            }
-            UpdateEnemyList();
-        }
-        public void UpdateEnemyList()
-        {
-            foreach (Unit member in partyMembers)
-            {
-                member.GetPartyHandler().SetEnemyList(partyEnemies);
-                if (partyEnemies.Count <= 0) continue;
-                foreach (Unit enemy in partyEnemies)
-                {
-                    member.GetCombatHandler().SetCombatTarget(enemy);
-                    
-                }
+                leader.GetPartyHandler().GetFoes().Add(foe);
+                UpdateAllies();
             }
         }
-        public void RemoveEnemyFromCombat(Unit target)
+        public void RemoveFoe(Unit foe)
         {
-            foreach (Unit member in partyMembers)
+            if (leader == null) return;
+            if (leader.GetPartyHandler().GetFoes().Contains(foe))
             {
-                member.GetCombatHandler().RemoveTarget(target);
+                leader.GetPartyHandler().GetFoes().Remove(foe);
+                UpdateAllies();
             }
         }
+        public List<Unit> GetAllies()
+        {
+            return allies;
+        }
+        public void SetAllies(List<Unit> allies)
+        {
+            this.allies = allies;
+        }
+
+        public List<Unit> GetFoes()
+        {
+            return foes;
+        }
+        public void SetFoes(List<Unit> foes)
+        {
+            this.foes = foes;
+        }
+
+
+
+
+        public void UpdateAllies()
+        {
+            foreach (Unit member in leader.GetPartyHandler().GetAllies())
+            {
+                member.GetPartyHandler().SetLeader(leader);
+                member.GetPartyHandler().SetAllies(leader.GetPartyHandler().GetAllies());
+                member.GetPartyHandler().SetFoes(leader.GetPartyHandler().GetFoes());
+                member.GetCombatHandler().SetEnemies(leader.GetPartyHandler().GetFoes());
+            }
+        }
+
         public Unit GetLeader()
         {
-            return partyLeader;
+            return leader;
         }
         public void SetLeader(Unit leader)
         {
-            if(partyLeader != leader)
+            if(this.leader != leader)
             {
-                partyLeader = leader;
-                onPartyLeaderChanged?.Invoke();
+                this.leader = leader;
+                onLeaderChanged?.Invoke();
             }
         }
     }

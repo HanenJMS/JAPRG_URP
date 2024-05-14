@@ -27,7 +27,7 @@ namespace GameLab.AI
             actionHandler = unit.GetActionHandler();
             partyHandler = unit.GetPartyHandler();
             moveAction = unit.GetActionHandler().GetActionType<MoveAction>();
-            partyHandler.onPartyLeaderChanged += OnPartyLeaderChanged;
+            partyHandler.onLeaderChanged += OnPartyLeaderChanged;
 
 
         }
