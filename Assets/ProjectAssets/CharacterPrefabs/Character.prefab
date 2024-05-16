@@ -290,8 +290,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c91d0d5afcda74e9cd23087b351c06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partyLeader: {fileID: 0}
-  partyMembers: []
+  leader: {fileID: 0}
+  allies: []
+  foes: []
 --- !u!114 &4897841143651027169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,10 +348,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a69e350b84360bb40ad7af41a7c25503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combatTargets: []
+  enemy: {fileID: 0}
+  enemies: []
   range: 1
   damage: 1
   AttackCD: 2
+  weaponPrefab: {fileID: 0}
+  handTransform: {fileID: 4143505932114853608}
+  swordOverrider: {fileID: 0}
 --- !u!114 &7668816378199736869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1094,6 +1099,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f3e27eecb190e44a9af50723c394274, type: 3}
+--- !u!4 &4143505932114853608 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4170833147357194, guid: 2f3e27eecb190e44a9af50723c394274,
+    type: 3}
+  m_PrefabInstance: {fileID: 4147359959879227106}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4151799637926025634 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4580766925885248, guid: 2f3e27eecb190e44a9af50723c394274,

@@ -1,5 +1,6 @@
 using Cinemachine;
 using GameLab.UnitSystem;
+using System;
 using UnityEngine;
 
 namespace GameLab.Controller
@@ -10,8 +11,9 @@ namespace GameLab.Controller
         float moveSpeed = 10f;
         float rotationSpeed = 100f;
         float zoomAmount = 1f;
-        const float MIN_FOLLOW_Y = 1f;
+        const float MIN_FOLLOW_Y = 5f;
         const float MAX_FOLLOW_Y = 13f;
+
         Vector3 targetFollowOffset;
         CinemachineTransposer cineMachineTransposer;
         [SerializeField] GameObject target;
@@ -85,6 +87,7 @@ namespace GameLab.Controller
             float zoomSpeed = 5f;
             targetFollowOffset.y = Mathf.Clamp(targetFollowOffset.y, MIN_FOLLOW_Y, MAX_FOLLOW_Y);
             cineMachineTransposer.m_FollowOffset = Vector3.Lerp(cineMachineTransposer.m_FollowOffset, targetFollowOffset, Time.unscaledDeltaTime * zoomSpeed);
+            cinemachineCamera.m_Lens.FieldOfView = Mathf.Clamp(cinemachineCamera.m_Lens.FieldOfView += -Input.mouseScrollDelta.y, 25f, 50f);
         }
     }
 

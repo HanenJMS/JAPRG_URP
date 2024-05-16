@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace GameLab.AI
 {
+
+    //TODO put combat ai on a higher dependency level, so that players can interact with it. Combathandler should only handle single targetting issues. Such as Setting a single target to chase, and attack.
+    //Combat AI should handle points of multiple threats and other things.
     public class CombatAI : MonoBehaviour, IAIState
     {
         IAction attackAction;
@@ -21,17 +24,6 @@ namespace GameLab.AI
         private void Start()
         {
             unit.GetCombatHandler().onDamageTaken += OnDamageTaken;
-            unit.GetCombatHandler().onEnemyAdded += OnEnemyAdded;
-            unit.GetCombatHandler().onEnemyRemoved += OnEnemyRemoved;
-        }
-        void OnEnemyAdded(Unit enemy)
-        {
-            unit.GetPartyHandler().AddFoe(enemy);
-            ActivateState();
-        }
-        void OnEnemyRemoved(Unit enemy)
-        {
-            unit.GetPartyHandler().RemoveFoe(enemy);
         }
         void OnDamageTaken()
         {
@@ -51,9 +43,17 @@ namespace GameLab.AI
             if (!isActive) return;
             if (targetUnit != null)
             {
+
                 if (targetUnit.GetHealthHandler().IsDead())
                 {
                     unit.GetCombatHandler().RemoveEnemy(targetUnit);
+                    unit.GetCombatHandler().Cancel();
+                    targetUnit = null;
+                }
+                if (unit.GetPartyHandler().GetAllies().Contains(targetUnit))
+                {
+                    unit.GetCombatHandler().RemoveEnemy(targetUnit);
+                    unit.GetCombatHandler().Cancel();
                     targetUnit = null;
                 }
                 if (!isActive)
@@ -67,8 +67,15 @@ namespace GameLab.AI
             if (unit.GetCombatHandler().GetEnemies().Count > 0)
             {
                 targetUnit = unit.GetCombatHandler().GetNearestEnemy();
-                unit.GetCombatHandler().SetEnemy(targetUnit);
-                SetAIState();
+                if (!unit.GetPartyHandler().GetAllies().Contains(targetUnit))
+                {
+                    unit.GetCombatHandler().SetEnemy(targetUnit);
+                    SetAIState();
+                    return;
+                }
+                unit.GetCombatHandler().RemoveEnemy(targetUnit);
+                targetUnit = null;
+                
             }
             
             

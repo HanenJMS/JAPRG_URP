@@ -2,6 +2,7 @@ using GameLab.UnitSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 namespace GameLab.PartySystem
 {
     public class PartyHandler : MonoBehaviour
@@ -73,8 +74,15 @@ namespace GameLab.PartySystem
             {
                 member.GetPartyHandler().SetLeader(leader);
                 member.GetPartyHandler().SetAllies(leader.GetPartyHandler().GetAllies());
-                member.GetPartyHandler().SetFoes(leader.GetPartyHandler().GetFoes());
-                member.GetCombatHandler().SetEnemies(leader.GetPartyHandler().GetFoes());
+                if(leader.GetPartyHandler().GetFoes().Count > 0)
+                {
+                    foreach(Unit foe in foes)
+                    {
+                        if (member == foe) continue;
+                        if (GetAllies().Contains(foe)) continue;
+                        member.GetCombatHandler().SetEnemy(foe);
+                    }
+                }
             }
         }
 

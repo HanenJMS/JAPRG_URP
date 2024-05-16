@@ -26,7 +26,11 @@ namespace GameLab.Animation
             speed = localVelocity.z;
             animator.SetFloat("forwardSpeed", speed);
         }
-
+        public void SetAnimationOverrideController(AnimatorOverrideController newOverride)
+        {
+            if (newOverride == null) return;
+            animator.runtimeAnimatorController = newOverride;
+        }
         public void SetTrigger(string trigger)
         {
             animator.SetTrigger(trigger);

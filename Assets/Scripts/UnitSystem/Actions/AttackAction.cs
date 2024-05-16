@@ -20,7 +20,6 @@ namespace GameLab.UnitSystem.ActionSystem
             if (target is Unit)
             {
                 combatHandler.SetEnemy(target as Unit);
-                combatHandler.RunCombat();
                 actionHandler.SetCurrentAction(this);
             }
 

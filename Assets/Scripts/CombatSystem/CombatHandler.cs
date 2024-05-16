@@ -22,17 +22,30 @@ namespace GameLab.CombatSystem
         public Action<Unit> onEnemyRemoved;
         float currentAttackCD = float.MaxValue;
         [SerializeField] float AttackCD = 2f;
+        [SerializeField] GameObject weaponPrefab = null;
+        [SerializeField] Transform handTransform = null;
+        [SerializeField] AnimatorOverrideController swordOverrider;
+        public void SetWeapon(GameObject weaponPrefab, AnimatorOverrideController animationOverrider)
+        {
+            this.weaponPrefab = weaponPrefab;
+            animationHandler.SetAnimationOverrideController(animationOverrider);
+            Instantiate(weaponPrefab, handTransform);
+        }
         private void Awake()
         {
             unit = GetComponent<Unit>();
             animationHandler = GetComponent<UnitAnimationHandler>();
+        }
+        private void Start()
+        {
+            SetWeapon(weaponPrefab, swordOverrider);
         }
         public void AddEnemy(Unit enemy)
         {
             if (!enemies.Contains(enemy) && !enemy.GetHealthHandler().IsDead())
             {
                 enemies.Add(enemy);
-                onEnemyAdded?.Invoke(enemy);
+                unit.GetPartyHandler().AddFoe(enemy);
             }
         }
         public void RemoveEnemy(Unit enemy)
@@ -40,13 +53,14 @@ namespace GameLab.CombatSystem
             if (enemies.Contains(enemy))
             {
                 enemies.Remove(enemy);
-                onEnemyRemoved?.Invoke(enemy);
+                unit.GetPartyHandler().RemoveFoe(enemy);
             }
         }
         public void SetEnemy(Unit enemy)
         {
             this.enemy = enemy;
             AddEnemy(enemy);
+            RunCombat();
         }
         void TakeDamage(Unit enemy, int dmg)
         {
@@ -61,14 +75,11 @@ namespace GameLab.CombatSystem
         public void SetEnemies(List<Unit> enemies)
         {
             this.enemies = enemies;
-            if(this.enemy == null)
-                SetEnemy(this.enemies[0]);
-            RunCombat();
         }
         public void RunCombat()
         {
             isRunning = true;
-            
+
         }
         public float GetActionRange()
         {
