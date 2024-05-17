@@ -8,19 +8,11 @@ namespace GameLab.ResourceSystem
         [SerializeField] int currentResource = 0;
         public void Add(int resource)
         {
-            Mathf.Clamp(currentResource += resource, 0, maxResource);
-            if (currentResource <= 0)
-            {
-                currentResource = 0;
-            }
+            currentResource = Mathf.Clamp(currentResource += resource, 0, maxResource);
         }
         public void Remove(int resource)
         {
-            Mathf.Clamp(currentResource -= resource, 0, maxResource);
-            if (currentResource <= 0)  
-            {
-                currentResource = 0;
-            }
+            currentResource = Mathf.Clamp(currentResource -= resource, 0, maxResource);
         }
 
         public float GetCurrentRatio()

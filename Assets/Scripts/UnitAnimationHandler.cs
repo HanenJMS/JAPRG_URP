@@ -6,12 +6,14 @@ namespace GameLab.Animation
     public class UnitAnimationHandler : MonoBehaviour
     {
         Animator animator;
+        RuntimeAnimatorController defaultAnimationController;
         NavMeshAgent agent;
         float speed = 0f;
         private void Awake()
         {
             animator = GetComponent<Animator>();
             agent = GetComponentInParent<NavMeshAgent>();
+            defaultAnimationController = animator.runtimeAnimatorController;
         }
 
         private void Update()
@@ -30,6 +32,10 @@ namespace GameLab.Animation
         {
             if (newOverride == null) return;
             animator.runtimeAnimatorController = newOverride;
+        }
+        public void SetDefaultAnimationController()
+        {
+            animator.runtimeAnimatorController = defaultAnimationController;
         }
         public void SetTrigger(string trigger)
         {

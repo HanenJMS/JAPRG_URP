@@ -1,4 +1,5 @@
 using GameLab.InteractableSystem;
+using GameLab.InventorySystem;
 using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
 using System.Collections.Generic;
@@ -59,6 +60,18 @@ namespace GameLab.Controller
                     Debug.Log(executableActions[selectedIndex].ToString());
                 }
 
+            }
+            if(Input.GetKeyDown(KeyCode.X))
+            {
+                playerUnit.gameObject.GetComponent<EquipmentHandler>().ShowRightWeapon();
+            }
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                playerUnit.gameObject.GetComponent<EquipmentHandler>().HideWeapon();
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                playerUnit.gameObject.GetComponent<EquipmentHandler>().UnSetRightWeapon();
             }
             if (Input.GetMouseButtonUp(0))
             {

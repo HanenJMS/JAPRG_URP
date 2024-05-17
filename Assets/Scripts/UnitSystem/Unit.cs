@@ -17,13 +17,8 @@ namespace GameLab.UnitSystem
         CombatHandler combatHander;
         PartyHandler partyHandler;
         UnitAnimationHandler unitAnimationHandler;
-        object target;
-        IAction moveAction;
-        IAction attackAction;
         private void Awake()
         {
-            moveAction = GetComponent<MoveAction>();
-            attackAction = GetComponent<AttackAction>();
             actionHandler = GetComponent<ActionHandler>();
             healthHandler = GetComponent<HealthHandler>();
             factionHandler = GetComponent<FactionHandler>();

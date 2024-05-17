@@ -22,23 +22,11 @@ namespace GameLab.CombatSystem
         public Action<Unit> onEnemyRemoved;
         float currentAttackCD = float.MaxValue;
         [SerializeField] float AttackCD = 2f;
-        [SerializeField] GameObject weaponPrefab = null;
-        [SerializeField] Transform handTransform = null;
-        [SerializeField] AnimatorOverrideController swordOverrider;
-        public void SetWeapon(GameObject weaponPrefab, AnimatorOverrideController animationOverrider)
-        {
-            this.weaponPrefab = weaponPrefab;
-            animationHandler.SetAnimationOverrideController(animationOverrider);
-            Instantiate(weaponPrefab, handTransform);
-        }
+
         private void Awake()
         {
             unit = GetComponent<Unit>();
             animationHandler = GetComponent<UnitAnimationHandler>();
-        }
-        private void Start()
-        {
-            SetWeapon(weaponPrefab, swordOverrider);
         }
         public void AddEnemy(Unit enemy)
         {
