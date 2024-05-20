@@ -22,7 +22,7 @@ namespace GameLab.CombatSystem
         public Action<Unit> onEnemyRemoved;
         float currentAttackCD = float.MaxValue;
         [SerializeField] float AttackCD = 2f;
-
+        [SerializeField] AbilityData abilityCurrent;
         private void Awake()
         {
             unit = GetComponent<Unit>();
@@ -128,6 +128,7 @@ namespace GameLab.CombatSystem
                             enemy = null;
                             return;
                         }
+                        unit.GetAbilityHandler().UpdateAbility();
                         animationHandler.SetTrigger("attack");
                         currentAttackCD = 0f;
                     }
@@ -143,12 +144,17 @@ namespace GameLab.CombatSystem
         //animation trigger
         void Hit()
         {
+            if(unit.GetAbilityHandler().GetAbility().GetAbilityVFX() != null)
+            {
+                Instantiate(unit.GetAbilityHandler().GetAbility().GetAbilityVFX(), this.transform.position, this.transform.rotation);
+            }
+            animationHandler.ReturnToOverrider();
             if (enemy == null)
             {
                 Debug.Log("Miss");
                 return;
             }
-
+            
             enemy.GetCombatHandler().TakeDamage(unit, damage);
 
             Debug.Log("HIT!");

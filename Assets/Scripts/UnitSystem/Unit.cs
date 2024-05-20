@@ -2,9 +2,11 @@ using GameLab.Animation;
 using GameLab.CombatSystem;
 using GameLab.FactionSystem;
 using GameLab.InteractableSystem;
+using GameLab.InventorySystem;
 using GameLab.PartySystem;
 using GameLab.ResourceSystem;
 using GameLab.UnitSystem.ActionSystem;
+using UnityEngine;
 
 namespace GameLab.UnitSystem
 {
@@ -16,6 +18,8 @@ namespace GameLab.UnitSystem
         FactionHandler factionHandler;
         CombatHandler combatHander;
         PartyHandler partyHandler;
+        EquipmentHandler equipmentHandler;
+        AbilityHandler abilityHandler;
         UnitAnimationHandler unitAnimationHandler;
         private void Awake()
         {
@@ -24,7 +28,9 @@ namespace GameLab.UnitSystem
             factionHandler = GetComponent<FactionHandler>();
             combatHander = GetComponent<CombatHandler>();
             partyHandler = GetComponent <PartyHandler>();
+            equipmentHandler = GetComponent<EquipmentHandler>();
             unitAnimationHandler = GetComponent<UnitAnimationHandler>();
+            abilityHandler = GetComponent<AbilityHandler>();
             healthHandler.onDead += OnDeath;
         }
 
@@ -53,6 +59,8 @@ namespace GameLab.UnitSystem
         {
             return partyHandler;
         }
+        public AbilityHandler GetAbilityHandler() => abilityHandler;
+        public EquipmentHandler GetEquipmentHandler() => equipmentHandler;
     }
 }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
-    public class PickupAction : IAction
+    public class PickupAction : MonoBehaviour, IAction
     {
         public string ActionName()
         {

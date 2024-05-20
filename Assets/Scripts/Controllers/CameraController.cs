@@ -27,6 +27,7 @@ namespace GameLab.Controller
 
         private void LateUpdate()
         {
+
             if (target != null)
             {
                 HandleCameraFollowTarget();
@@ -36,6 +37,7 @@ namespace GameLab.Controller
                 HandleCameraMovement();
             }
             HandleCameraRotation();
+            if (Input.GetMouseButton(1)) return;
             HandleCameraZoom();
         }
         void OnPlayerSelected()

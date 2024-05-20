@@ -17,7 +17,7 @@ namespace GameLab.Controller
 
         Unit playerUnit;
         [SerializeField] Unit currentSelectedUnit;
-
+        List<Interactable> interactables = new();
         List<IAction> executableActions = new();
         IAction selectedAction;
         [SerializeField] int selectedIndex = 0;
@@ -59,19 +59,26 @@ namespace GameLab.Controller
                     }
                     Debug.Log(executableActions[selectedIndex].ToString());
                 }
-
             }
-            if(Input.GetKeyDown(KeyCode.X))
+            if(Input.GetKeyDown(KeyCode.Alpha1))
             {
-                playerUnit.gameObject.GetComponent<EquipmentHandler>().ShowRightWeapon();
+                playerUnit.GetAbilityHandler().SetCurrentAbility(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                playerUnit.GetAbilityHandler().SetCurrentAbility(1);
+            }
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                playerUnit.gameObject.GetComponent<EquipmentHandler>().DrawWeapon();
             }
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                playerUnit.gameObject.GetComponent<EquipmentHandler>().HideWeapon();
+                playerUnit.gameObject.GetComponent<EquipmentHandler>().UndrawWeapon();
             }
-            if (Input.GetKeyDown(KeyCode.C))
+            if(Input.GetKeyDown(KeyCode.C))
             {
-                playerUnit.gameObject.GetComponent<EquipmentHandler>().UnSetRightWeapon();
+                playerUnit.gameObject.GetComponent<EquipmentHandler>().WithdrawCombat();
             }
             if (Input.GetMouseButtonUp(0))
             {
@@ -90,43 +97,30 @@ namespace GameLab.Controller
                     }
                 }
             }
-            if (Input.GetMouseButtonUp(1))
+            
+            if (Input.GetMouseButtonDown(1))
             {
-                List<Interactable> interactables = MouseWorldController.GetMouseRayCastInteractables();
+                interactables = MouseWorldController.GetMouseRayCastInteractables();
                 if (interactables.Count > 0)
+                {
+                    selectedIndex = 0;
+                    executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactables[0]);
+                }
+            }
+            if(Input.GetMouseButtonUp(1))
+            {
+                if(executableActions.Count > 0) 
                 {
                     foreach (Interactable interactable in interactables)
                     {
-                        if (interactable is Unit)
+                        if (executableActions[selectedIndex].CanExecuteOnTarget(interactable))
                         {
-                            if ((interactable as Unit).GetHealthHandler().IsDead()) continue;
-                            if ((interactable as Unit).GetFactionHandler().GetFaction() == playerUnit.GetFactionHandler().GetFaction()) continue;
-                            executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
                             executableActions[selectedIndex].ExecuteOnTarget(interactable);
-                            selectedIndex = 0;
                             return;
                         }
                     }
                 }
-                executableActions.Clear();
                 moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
-                //Interactable interactable = MouseWorldController.GetMouseRayCastInteractable();
-                //if (interactable != null)
-                //{
-                //    if (interactable is Unit)
-                //    {
-                //        if ((interactable as Unit).GetFactionHandler().GetFaction() != playerUnit.GetFactionHandler().GetFaction())
-                //        {
-                //            executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
-                //            executableActions[selectedIndex].ExecuteOnTarget(interactable);
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    executableActions.Clear();
-                //    moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
-                //}
             }
         }
     }

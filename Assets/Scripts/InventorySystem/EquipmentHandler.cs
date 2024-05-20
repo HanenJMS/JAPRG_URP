@@ -1,4 +1,5 @@
 using GameLab.Animation;
+using GameLab.UnitSystem;
 using UnityEngine;
 
 
@@ -8,55 +9,61 @@ namespace GameLab.InventorySystem
     {
         [SerializeField] Transform RightHandWeaponHolder;
         [SerializeField] Transform LeftHandWeaponHolder;
+        [SerializeField] WeaponData unarmedData;
 
         [SerializeField] WeaponData rightWeapon;
-        GameObject rightWeaponEquipped;
-        WeaponData leftWeapon;
-        GameObject leftWeaponShown;
+        [SerializeField] GameObject rightWeaponDrawn;
+        [SerializeField] WeaponData currentWeapon;
 
-        WeaponData GetRightWeapon()
+        [SerializeField] Unit unit;
+        private void Awake()
+        {
+            unit = GetComponent<Unit>();
+        }
+        void CombatDraw()
+        {
+            EquipAnimation();
+            EquipWeaponAbility();
+        }
+        public void DrawWeapon()
+        {
+            if(rightWeapon != null)
+            {
+                UndrawWeapon();
+                rightWeaponDrawn = Instantiate(rightWeapon.GetItemPrefab(), RightHandWeaponHolder);
+                currentWeapon = rightWeapon;
+            }
+            else
+            {
+                currentWeapon = unarmedData;
+            }
+            CombatDraw();
+        }
+        public void EquipWeaponAbility()
+        {
+            unit.GetAbilityHandler().SetDefaultAbility(currentWeapon.GetDefaultAbility());
+        }
+        public void UndrawWeapon()
+        {
+            if (rightWeaponDrawn == null) return;
+            Destroy(rightWeaponDrawn.gameObject);
+            rightWeaponDrawn = null;
+            currentWeapon = unarmedData;
+            CombatDraw();
+        }
+        public void EquipAnimation()
+        {
+            GetComponent<UnitAnimationHandler>().SetAnimationOverrideController(currentWeapon.AnimatorOverrideController());
+        }
+        public void WithdrawCombat()
+        {
+            UndrawWeapon();
+            GetComponent<UnitAnimationHandler>().SetDefaultAnimationController();
+            EquipWeaponAbility();
+        }
+        public WeaponData GetRightWeapon()
         {
             return rightWeapon;
-        }
-
-        WeaponData GetLeftWeapon()
-        {
-            return leftWeapon;
-        }
-        void SetRightWeapon(WeaponData weapon)
-        {
-            rightWeapon = weapon;
-            GetComponent<UnitAnimationHandler>().SetAnimationOverrideController(weapon.AnimatorOverrideController());
-        }
-        public void UnSetRightWeapon()
-        {
-            HideWeapon();
-            rightWeapon = null;
-            GetComponent<UnitAnimationHandler>().SetDefaultAnimationController();
-        }
-        void SetLeftWeapon(WeaponData weapon)
-        {
-            leftWeapon = weapon;
-        }
-
-        public void ShowRightWeapon()
-        {
-            if (rightWeapon == null) return;
-            if (rightWeaponEquipped != null)
-            {
-                HideWeapon();
-            }
-            SetRightWeapon(rightWeapon);
-            rightWeaponEquipped = Instantiate(rightWeapon.GetItemPrefab(), RightHandWeaponHolder);
-        }
-        public void HideWeapon()
-        {
-            if (rightWeaponEquipped != null)
-            {
-                Destroy(rightWeaponEquipped.gameObject);
-                rightWeaponEquipped = null;
-                GetComponent<UnitAnimationHandler>().SetDefaultAnimationController();
-            }
         }
 
     }

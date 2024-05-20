@@ -42,7 +42,6 @@ namespace GameLab.UnitSystem.ActionSystem
             {
                 targetPosition = (target as Unit).gameObject.transform.position;
             }
-            agent.stoppingDistance = 0.75f;
         }
 
         public string ActionName()

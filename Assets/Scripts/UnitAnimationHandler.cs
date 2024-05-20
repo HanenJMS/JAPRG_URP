@@ -7,6 +7,7 @@ namespace GameLab.Animation
     {
         Animator animator;
         RuntimeAnimatorController defaultAnimationController;
+        AnimatorOverrideController currentOverrider;
         NavMeshAgent agent;
         float speed = 0f;
         private void Awake()
@@ -28,13 +29,30 @@ namespace GameLab.Animation
             speed = localVelocity.z;
             animator.SetFloat("forwardSpeed", speed);
         }
+        public void SetAbilityAnimationOverrider(AnimatorOverrideController newOverride)
+        {
+            animator.runtimeAnimatorController = newOverride;
+        }
         public void SetAnimationOverrideController(AnimatorOverrideController newOverride)
         {
             if (newOverride == null) return;
-            animator.runtimeAnimatorController = newOverride;
+            currentOverrider = newOverride;
+            animator.runtimeAnimatorController = currentOverrider;
+        }
+        public void ReturnToOverrider()
+        {
+            if(currentOverrider != null)
+            {
+                animator.runtimeAnimatorController = currentOverrider;
+            }
+            else
+            {
+                SetDefaultAnimationController();
+            }
         }
         public void SetDefaultAnimationController()
         {
+            currentOverrider = null;
             animator.runtimeAnimatorController = defaultAnimationController;
         }
         public void SetTrigger(string trigger)

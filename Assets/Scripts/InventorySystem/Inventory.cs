@@ -6,7 +6,7 @@ namespace GameLab.InventorySystem
 {
     public class Inventory : MonoBehaviour
     {
-        [SerializeField] List<InventorySlot> inventorySlots = new List<InventorySlot>();
+        [SerializeField] List<InventorySlot> inventorySlots = new List<InventorySlot>(5);
 
     }
 }

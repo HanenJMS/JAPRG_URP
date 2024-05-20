@@ -5,8 +5,11 @@ namespace GameLab.InventorySystem
 {
     public class Item : Interactable
     {
-        [SerializeField] ItemData itemData;
-
+        [SerializeField] InventorySlot itemSlot;
+        public InventorySlot GetItemData()
+        {
+            return itemSlot;
+        }
     }
 
 }
