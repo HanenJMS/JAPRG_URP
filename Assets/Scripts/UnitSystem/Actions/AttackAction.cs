@@ -1,5 +1,5 @@
 using GameLab.CombatSystem;
-using GameLab.InteractableSystem;
+using GameLab.UnitSystem.AbilitySystem;
 using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
@@ -31,7 +31,7 @@ namespace GameLab.UnitSystem.ActionSystem
 
         public bool CanExecuteOnTarget(object target)
         {
-            if (target is Unit && !(target as Unit).GetHealthHandler().IsDead() ) return true;
+            if (target is Unit && !(target as Unit).GetHealthHandler().IsDead()) return true;
             if ((target as Unit).GetFactionHandler().GetFaction() != selfUnit.GetFactionHandler().GetFaction()) return true;
             return false;
         }

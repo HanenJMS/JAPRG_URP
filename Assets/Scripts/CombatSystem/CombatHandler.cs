@@ -21,8 +21,7 @@ namespace GameLab.CombatSystem
         public Action<Unit> onEnemyAdded;
         public Action<Unit> onEnemyRemoved;
         float currentAttackCD = float.MaxValue;
-        [SerializeField] float AttackCD = 2f;
-        [SerializeField] AbilityData abilityCurrent;
+        [SerializeField] float AttackCD = 1.5f;
         private void Awake()
         {
             unit = GetComponent<Unit>();
@@ -50,7 +49,7 @@ namespace GameLab.CombatSystem
             AddEnemy(enemy);
             RunCombat();
         }
-        void TakeDamage(Unit enemy, int dmg)
+        public void TakeDamage(Unit enemy, int dmg)
         {
             unit.GetHealthHandler().RemoveFromCurrent(dmg);
             AddEnemy(enemy);
@@ -110,9 +109,16 @@ namespace GameLab.CombatSystem
             {
                 RemoveEnemy(enemy);
             }
+            
             if (enemy != null)
             {
-                if (Vector3.Distance(this.transform.position, enemy.transform.position) > range)
+                if (enemy.GetHealthHandler().IsDead())
+                {
+                    RemoveEnemy(enemy);
+                    enemy = null;
+                    return;
+                }
+                if (Vector3.Distance(this.transform.position, enemy.transform.position) > unit.GetAbilityHandler().GetAbility().GetRange())
                 {
                     unit.GetActionHandler().GetActionType<MoveAction>().MoveToDestination(enemy);
                 }
@@ -122,12 +128,7 @@ namespace GameLab.CombatSystem
                     transform.LookAt(enemy.transform);
                     if (currentAttackCD > AttackCD)
                     {
-                        if (enemy.GetHealthHandler().IsDead())
-                        {
-                            RemoveEnemy(enemy);
-                            enemy = null;
-                            return;
-                        }
+                        
                         unit.GetAbilityHandler().UpdateAbility();
                         animationHandler.SetTrigger("attack");
                         currentAttackCD = 0f;
@@ -144,20 +145,21 @@ namespace GameLab.CombatSystem
         //animation trigger
         void Hit()
         {
-            if(unit.GetAbilityHandler().GetAbility().GetAbilityVFX() != null)
-            {
-                Instantiate(unit.GetAbilityHandler().GetAbility().GetAbilityVFX(), this.transform.position, this.transform.rotation);
-            }
-            animationHandler.ReturnToOverrider();
+            
+            
             if (enemy == null)
             {
                 Debug.Log("Miss");
                 return;
             }
+            unit.GetAbilityHandler().CastAbility(enemy);
             
-            enemy.GetCombatHandler().TakeDamage(unit, damage);
 
             Debug.Log("HIT!");
+        }
+        void AnimationEnd()
+        {
+            animationHandler.ReturnToOverrider();
         }
     }
 }

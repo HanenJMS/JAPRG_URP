@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnimatorOverrideController: {fileID: 22100000, guid: dd81495646c8fe14ba3ba68adda9b60b,
     type: 2}
-  abilityVFX: {fileID: 0}
-  pow: 0
+  abilityVFX_self: {fileID: 0}
+  abilityVFX_target: {fileID: 0}
+  range: 1
+  cooldown: 0
   animationClip: {fileID: 0}

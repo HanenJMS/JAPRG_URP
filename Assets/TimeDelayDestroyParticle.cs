@@ -6,13 +6,17 @@ public class TimeDelayDestroyParticle : MonoBehaviour
 {
     [SerializeField] ParticleSystem ps;
     float time = 0f;
+    [SerializeField] float duration = 5f;
 
-    private void LateUpdate()
+    private void OnEnable()
     {
-        time += Time.deltaTime;
-        if(time > ps.main.duration)
+        if(ps == null)
         {
-            Destroy(this.gameObject);
+            Destroy(this.gameObject, duration);
+        }
+        if(ps != null)
+        {
+            Destroy(this.gameObject, ps.main.duration);
         }
     }
 }

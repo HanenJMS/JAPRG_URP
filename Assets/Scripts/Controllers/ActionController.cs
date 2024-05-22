@@ -68,6 +68,10 @@ namespace GameLab.Controller
             {
                 playerUnit.GetAbilityHandler().SetCurrentAbility(1);
             }
+            if(Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                playerUnit.GetAbilityHandler().SetCurrentAbility(2);
+            }
             if (Input.GetKeyDown(KeyCode.X))
             {
                 playerUnit.gameObject.GetComponent<EquipmentHandler>().DrawWeapon();

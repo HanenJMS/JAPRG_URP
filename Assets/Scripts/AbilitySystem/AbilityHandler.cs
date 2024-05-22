@@ -1,8 +1,7 @@
 using GameLab.Animation;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-namespace GameLab.UnitSystem.ActionSystem
+namespace GameLab.UnitSystem.AbilitySystem
 {
     public class AbilityHandler : MonoBehaviour
     {
@@ -18,6 +17,10 @@ namespace GameLab.UnitSystem.ActionSystem
         {
             return abilities[selectedAbility];
         }
+        public AbilityData GetAbility(int index)
+        {
+            return abilities[index];
+        }
         public void SetCurrentAbility(int ability)
         {
             if (abilities.Count < ability) return;
@@ -27,7 +30,7 @@ namespace GameLab.UnitSystem.ActionSystem
         {
             List<AbilityData> newAbilityList = new();
             newAbilityList.Add(ability);
-            for(int i = 1;  i < abilities.Count; i++)
+            for (int i = 1; i < abilities.Count; i++)
             {
                 newAbilityList.Add(abilities[i]);
             }
@@ -36,6 +39,23 @@ namespace GameLab.UnitSystem.ActionSystem
         internal void UpdateAbility()
         {
             GetComponent<UnitAnimationHandler>().SetAbilityAnimationOverrider(abilities[selectedAbility].GetAnimation());
+        }
+
+
+        public void CastAbility(Unit target)
+        {
+            GameObject selfCastVFX = GetAbility().GetSelfCastVFX();
+            CastVFX(selfCastVFX, this.transform.position);
+
+            GameObject targetCastVFX = GetAbility().GetTargetCastVFX();
+            CastVFX(targetCastVFX, target.gameObject.transform.position);
+
+            target.GetCombatHandler().TakeDamage(unit, GetAbility().GetAbilityPower());
+        }
+        public void CastVFX(GameObject vfx, Vector3 target)
+        {
+            if (vfx == null) return;
+            Instantiate(vfx, target, this.transform.rotation);
         }
     }
 }

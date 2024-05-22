@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnimatorOverrideController: {fileID: 22100000, guid: 1e0d184c7cef96c4794037565c1399b5,
     type: 2}
-  abilityVFX: {fileID: 2451467320939324776, guid: 6f3ddb6f2d71b1a4b9a6986d4ac38380,
+  abilityVFX_self: {fileID: 2451467320939324776, guid: 6f3ddb6f2d71b1a4b9a6986d4ac38380,
     type: 3}
-  pow: 0
-  animationClip: {fileID: 7400000, guid: 04cb27dc01c081446ba2c02f2761f01d, type: 3}
+  abilityVFX_target: {fileID: 0}
+  range: 1
+  cooldown: 0
+  pow: 15
+  animationClip: {fileID: 7400000, guid: 562d82d919036ba42975d658707fb1b1, type: 2}

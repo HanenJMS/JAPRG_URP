@@ -1,12 +1,14 @@
-﻿using System;
+﻿using GameLab.UnitSystem.ActionSystem;
+using System;
 using UnityEngine;
 
-namespace GameLab.UnitSystem.ActionSystem
+namespace GameLab.UnitSystem.AbilitySystem
 {
     public class AbilityAction : MonoBehaviour, IAction
     {
         AbilityHandler abilityHandler;
         Unit unit;
+        GameObject target;
         private void Awake()
         {
             unit = GetComponent<Unit>();

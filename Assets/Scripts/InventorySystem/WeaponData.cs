@@ -1,4 +1,4 @@
-using GameLab.UnitSystem.ActionSystem;
+using GameLab.UnitSystem.AbilitySystem;
 using UnityEngine;
 namespace GameLab.InventorySystem
 {
@@ -9,9 +9,20 @@ namespace GameLab.InventorySystem
         [SerializeField] AnimatorOverrideController animationOverrider;
         [SerializeField] AbilityData defaultAbility;
         [SerializeField] GameObject weaponEffect;
-        public AnimatorOverrideController AnimatorOverrideController() => animationOverrider;
-        public GameObject GetWeaponEffect() => weaponEffect;
-        public AbilityData GetDefaultAbility() => defaultAbility;
+        public AnimatorOverrideController AnimatorOverrideController()
+        {
+            return animationOverrider;
+        }
+
+        public GameObject GetWeaponEffect()
+        {
+            return weaponEffect;
+        }
+
+        public AbilityData GetDefaultAbility()
+        {
+            return defaultAbility;
+        }
     }
 }
 

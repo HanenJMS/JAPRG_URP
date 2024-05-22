@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-namespace GameLab.UnitSystem.ActionSystem
+namespace GameLab.UnitSystem.AbilitySystem
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "Ability", menuName = "Ability/new Ability")]
@@ -10,15 +9,38 @@ namespace GameLab.UnitSystem.ActionSystem
     {
         [SerializeField] AnimatorOverrideController AnimatorOverrideController;
 
-        [SerializeField] GameObject abilityVFX;
+        [SerializeField] GameObject abilityVFX_self;
 
+        [SerializeField] GameObject abilityVFX_target;
+
+        [SerializeField] float range;
+        [SerializeField] float cooldown;
         [SerializeField] int pow;
-
         [SerializeField] AnimationClip animationClip;
-        public AnimatorOverrideController GetAnimation() => AnimatorOverrideController;
-        public GameObject GetAbilityVFX() => abilityVFX;
-        public AnimationClip GetAnimationClip() => animationClip;
+        public AnimatorOverrideController GetAnimation()
+        {
+            return AnimatorOverrideController;
+        }
 
+        public GameObject GetSelfCastVFX()
+        {
+            return abilityVFX_self;
+        }
+
+        public GameObject GetTargetCastVFX()
+        {
+            return abilityVFX_target;
+        }
+
+        public AnimationClip GetAnimationClip()
+        {
+            return animationClip;
+        }
+        public int GetAbilityPower() => pow;
+        public float GetRange()
+        {
+            return range;
+        }
     }
 }
 
