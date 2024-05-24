@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d3c8647870d9543b9913a4cf77250c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ps: {fileID: 0}
+  ps: {fileID: 4290002483669977142}
   duration: 5
 --- !u!114 &3633310470730433698
 MonoBehaviour:
@@ -96,7 +96,7 @@ MonoBehaviour:
     type: 3}
   castHolder: {fileID: 3767296544268699448}
   castMultiple: 3
-  duration: 0.5
+  duration: 0.8
   time: 0
   ps: {fileID: 4290002483669977142}
   abilityData: {fileID: 0}
@@ -109,6 +109,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596361369382248564}
     m_Modifications:
+    - target: {fileID: 6492321217587484192, guid: c64a17ccfe0b53b428ab71c9c314b42f,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6492321217587484194, guid: c64a17ccfe0b53b428ab71c9c314b42f,
         type: 3}
       propertyPath: m_LocalPosition.x

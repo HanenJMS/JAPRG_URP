@@ -157,9 +157,6 @@ namespace GameLab.CombatSystem
 
             Debug.Log("HIT!");
         }
-        void AnimationEnd()
-        {
-            animationHandler.ReturnToOverrider();
-        }
+
     }
 }

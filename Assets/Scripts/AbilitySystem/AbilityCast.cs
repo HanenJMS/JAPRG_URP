@@ -8,7 +8,7 @@ namespace GameLab.UnitSystem.AbilitySystem
     {
         [SerializeField] GameObject abilityProjectile;
         [SerializeField] Transform castHolder;
-        [SerializeField] int castMultiple = 2;
+        [SerializeField] int castMultiple = 1;
         [SerializeField] float duration = 3f;
         [SerializeField] float time = 0f;
         [SerializeField] ParticleSystem ps;

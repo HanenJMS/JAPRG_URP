@@ -64,6 +64,10 @@ namespace GameLab.Animation
         {
             animator.ResetTrigger(trigger);
         }
+        void AnimationEnd()
+        {
+           ReturnToOverrider();
+        }
     }
 }
 

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2611198968816314792}
   - component: {fileID: 8988308942852110669}
   - component: {fileID: 536407688206068172}
+  - component: {fileID: 3523205230305333424}
   m_Layer: 0
   m_Name: Slash_Projectile
   m_TagString: Untagged
@@ -46,7 +47,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3485926205510665812}
   serializedVersion: 8
-  lengthInSec: 2
+  lengthInSec: 0.5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 1
@@ -4978,7 +4979,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyOnImpact: 0
   projectileSpeed: 0
-  isMelee: 1
 --- !u!114 &8988308942852110669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5089,3 +5089,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3523205230305333424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485926205510665812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d3c8647870d9543b9913a4cf77250c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ps: {fileID: 3649030098470410052}
+  duration: 5

@@ -32,17 +32,13 @@ namespace GameLab.UnitSystem.AbilitySystem
         {
             if (other.GetComponent<Unit>() == castor) return;
             if (other.GetComponent<AbilityProjectile>() != null) return;
-            if (other.GetComponent<Unit>() == target)
+            if (other.GetComponent<Unit>() == target || other.GetComponent<Unit>() != castor)
             {
-                target.GetCombatHandler().TakeDamage(castor, castedAbility.GetAbilityPower());
-                GetComponent<AbilityProjectileVFX>().SpawnImpactVFX(other);
-            }
-            if (other.GetComponent<Unit>() != target)
-            {
-                if (!castedAbility.GetIsMelee() && other.GetComponent<Unit>() != castor)
+                if (other.GetComponent<Unit>() == target)
                 {
-                    GetComponent<AbilityProjectileVFX>().SpawnImpactVFX(other);
+                    target.GetCombatHandler().TakeDamage(castor, castedAbility.GetAbilityPower());
                 }
+                GetComponent<AbilityProjectileVFX>().SpawnImpactVFX(other);
             }
             if (destroyOnImpact)
                 Destroy(gameObject);

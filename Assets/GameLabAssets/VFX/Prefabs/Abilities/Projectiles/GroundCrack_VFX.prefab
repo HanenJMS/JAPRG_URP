@@ -83495,7 +83495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ps: {fileID: 2161100087953737152}
-  duration: 5
+  duration: 2
 --- !u!1 &2251366755404710996
 GameObject:
   m_ObjectHideFlags: 0
