@@ -20,4 +20,6 @@ MonoBehaviour:
   range: 25
   cooldown: 0
   pow: 15
+  projectileSpeed: 15
+  isMelee: 0
   animationClip: {fileID: 0}

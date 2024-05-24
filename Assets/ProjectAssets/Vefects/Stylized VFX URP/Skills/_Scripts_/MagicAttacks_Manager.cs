@@ -119,10 +119,10 @@ public class MagicAttacks_Manager : MonoBehaviour
             projectileInstTransform = Instantiate(FXList_Projectile[currentFX_Element], spawnOffSet.position, Quaternion.identity);
 
             Vector3 projectileDir = (target.position - spawnOffSet.position).normalized;
-            projectileInstTransform.GetComponent<MagicAttacks_Projectile>().Setup(projectileDir);
+            //projectileInstTransform.GetComponent<AbilityProjectileVFX>().Setup(projectileDir);
             delayShootProjectile = 0;
 
-            projectileInstTransform.GetComponent<MagicAttacks_Projectile>().FX_Hit = FXList_Hit[currentFX_Element];
+            //projectileInstTransform.GetComponent<AbilityProjectileVFX>().FX_Hit = FXList_Hit[currentFX_Element];
 
 
             isCasting = false;

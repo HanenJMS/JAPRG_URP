@@ -39,6 +39,7 @@ namespace GameLab.UnitSystem
         {
             actionHandler.SetCurrentAction(null);
             unitAnimationHandler.SetTrigger("death");
+            GetComponent<CapsuleCollider>().enabled = false;
         }
         public ActionHandler GetActionHandler()
         {

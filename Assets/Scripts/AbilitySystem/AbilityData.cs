@@ -16,6 +16,8 @@ namespace GameLab.UnitSystem.AbilitySystem
         [SerializeField] float range;
         [SerializeField] float cooldown;
         [SerializeField] int pow;
+        [SerializeField] float projectileSpeed;
+        [SerializeField] bool isMelee;
         [SerializeField] AnimationClip animationClip;
         public AnimatorOverrideController GetAnimation()
         {
@@ -37,6 +39,8 @@ namespace GameLab.UnitSystem.AbilitySystem
             return animationClip;
         }
         public int GetAbilityPower() => pow;
+        public float GetProjectileSpeed() => projectileSpeed;
+        public bool GetIsMelee() => isMelee;
         public float GetRange()
         {
             return range;

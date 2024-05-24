@@ -45,17 +45,17 @@ namespace GameLab.UnitSystem.AbilitySystem
         public void CastAbility(Unit target)
         {
             GameObject selfCastVFX = GetAbility().GetSelfCastVFX();
-            CastVFX(selfCastVFX, this.transform.position);
+            CastVFX(selfCastVFX, this.transform.position, target);
 
             GameObject targetCastVFX = GetAbility().GetTargetCastVFX();
-            CastVFX(targetCastVFX, target.gameObject.transform.position);
+            CastVFX(targetCastVFX, target.gameObject.transform.position, target);
 
-            target.GetCombatHandler().TakeDamage(unit, GetAbility().GetAbilityPower());
         }
-        public void CastVFX(GameObject vfx, Vector3 target)
+        public void CastVFX(GameObject vfx, Vector3 target, Unit unitTarget = null)
         {
             if (vfx == null) return;
-            Instantiate(vfx, target, this.transform.rotation);
+            GameObject impact = Instantiate(vfx, target, this.transform.rotation);
+            impact.GetComponent<AbilityCast>().SetCastInformation(unit, unitTarget, GetAbility());
         }
     }
 }

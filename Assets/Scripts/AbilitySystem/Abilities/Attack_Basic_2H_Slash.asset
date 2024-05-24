@@ -14,5 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnimatorOverrideController: {fileID: 22100000, guid: 76e20ac1e454b2a499290f925a04607c,
     type: 2}
-  abilityVFX: {fileID: 0}
-  pow: 0
+  abilityVFX_self: {fileID: 0}
+  abilityVFX_target: {fileID: 0}
+  range: 1
+  cooldown: 0
+  pow: 5
+  isMelee: 1
+  animationClip: {fileID: 0}

@@ -18,4 +18,6 @@ MonoBehaviour:
   abilityVFX_target: {fileID: 0}
   range: 1
   cooldown: 0
+  pow: 1
+  isMelee: 1
   animationClip: {fileID: 0}
