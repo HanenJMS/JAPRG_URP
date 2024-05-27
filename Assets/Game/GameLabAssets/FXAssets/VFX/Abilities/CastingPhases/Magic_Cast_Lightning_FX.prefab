@@ -1,0 +1,184 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6151825907828834820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8239500324551229263}
+  m_Layer: 0
+  m_Name: CastOffSet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8239500324551229263
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6151825907828834820}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5644706182492674051}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7899177763821375101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5644706182492674051}
+  - component: {fileID: 8001366118190548019}
+  - component: {fileID: 8393769913721715925}
+  m_Layer: 0
+  m_Name: Magic_Cast_Lightning_FX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5644706182492674051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7899177763821375101}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6303829425669571206}
+  - {fileID: 8239500324551229263}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8001366118190548019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7899177763821375101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d3c8647870d9543b9913a4cf77250c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ps: {fileID: 6303829425669571204}
+  duration: 0.7
+--- !u!114 &8393769913721715925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7899177763821375101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a38c57e159c9c7c4dad7177d08399ca9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityProjectile: {fileID: 1847845427279939658, guid: a5ebd80a842ac034d839ab84ba78a115,
+    type: 3}
+  castHolder: {fileID: 8239500324551229263}
+  castMultipleProjectiles: 1
+  multiCast: 3
+  duration: 0.5
+  time: 0
+  ps: {fileID: 0}
+  abilityData: {fileID: 0}
+  im: {fileID: 0}
+--- !u!1001 &4647603740312924838
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5644706182492674051}
+    m_Modifications:
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 270
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1658496247936348207, guid: 4dece82567e51894fa561d6d94a27ba4,
+        type: 3}
+      propertyPath: m_Name
+      value: PS_ElectricMagic_Cast
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4dece82567e51894fa561d6d94a27ba4, type: 3}
+--- !u!198 &6303829425669571204 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1658496247936348194, guid: 4dece82567e51894fa561d6d94a27ba4,
+    type: 3}
+  m_PrefabInstance: {fileID: 4647603740312924838}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6303829425669571206 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1658496247936348192, guid: 4dece82567e51894fa561d6d94a27ba4,
+    type: 3}
+  m_PrefabInstance: {fileID: 4647603740312924838}
+  m_PrefabAsset: {fileID: 0}

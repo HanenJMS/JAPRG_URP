@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 36121c42b945b624fb938cb9637f28d0
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279952
+  packageName: Epic Toon VFX 4 - Fire and Water effects
+  packageVersion: 1.0
+  assetPath: Assets/ProjectAssets/ExternalAssets/Hovl Studio/HSFiles/Shaders/Distortion.shader
+  uploadId: 655627

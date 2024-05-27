@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec8545a194878804ba7ff3f35958d744, type: 3}
+  m_Name: CastFire
+  m_EditorClassIdentifier: 
+  AnimatorOverrideController: {fileID: 22100000, guid: dd81495646c8fe14ba3ba68adda9b60b,
+    type: 2}
+  abilityVFX_self: {fileID: 3138781959193032202, guid: d019f5210a9ed6e44b59ea34160a494e,
+    type: 3}
+  abilityVFX_target: {fileID: 0}
+  abilityType: 1
+  range: 15
+  cooldown: 0
+  pow: 50
+  projectileSpeed: 15
+  isMelee: 0
+  animationClip: {fileID: 0}
