@@ -31,8 +31,13 @@ namespace GameLab.UnitSystem.ActionSystem
 
         public bool CanExecuteOnTarget(object target)
         {
-            if (target is Unit && !(target as Unit).GetHealthHandler().IsDead()) return true;
-            if ((target as Unit).GetFactionHandler().GetFaction() != selfUnit.GetFactionHandler().GetFaction()) return true;
+            if(target is Unit)
+            {
+                var unit = target as Unit;
+                if (unit.GetHealthHandler().IsDead()) return false;
+                if (unit.GetFactionHandler().GetFaction() == selfUnit.GetFactionHandler().GetFaction()) return false;
+                return true;
+            }
             return false;
         }
         public void Cancel()

@@ -20,6 +20,7 @@ namespace GameLab.UnitSystem
         CombatHandler combatHander;
         PartyHandler partyHandler;
         EquipmentHandler equipmentHandler;
+        InventoryHandler inventoryHandler;
         AbilityHandler abilityHandler;
         UnitAnimationHandler unitAnimationHandler;
         private void Awake()
@@ -32,6 +33,7 @@ namespace GameLab.UnitSystem
             equipmentHandler = GetComponent<EquipmentHandler>();
             unitAnimationHandler = GetComponent<UnitAnimationHandler>();
             abilityHandler = GetComponent<AbilityHandler>();
+            inventoryHandler = GetComponent<InventoryHandler>();
             healthHandler.onDead += OnDeath;
         }
 
@@ -63,6 +65,7 @@ namespace GameLab.UnitSystem
         }
         public AbilityHandler GetAbilityHandler() => abilityHandler;
         public EquipmentHandler GetEquipmentHandler() => equipmentHandler;
+        public InventoryHandler GetInventoryHandler() => inventoryHandler;
     }
 }
 

@@ -1,7 +1,9 @@
 using GameLab.InventorySystem;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UI;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
@@ -25,7 +27,9 @@ namespace GameLab.UnitSystem.ActionSystem
 
         public void ExecuteOnTarget(object target)
         {
-            throw new System.NotImplementedException();
+            var unit = GetComponent<Unit>();
+            unit.GetInventoryHandler().PickupItem(target as ItemWorld);
+            (target as ItemWorld).PickUp();
         }
         public override string ToString()
         {

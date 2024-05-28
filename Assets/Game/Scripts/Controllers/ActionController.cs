@@ -63,6 +63,8 @@ namespace GameLab.Controller
             if(Input.GetKeyDown(KeyCode.Alpha1))
             {
                 playerUnit.GetAbilityHandler().SetCurrentAbility(0);
+                if(playerUnit.GetInventoryHandler().GetInventorySlot(0) != null)
+                    playerUnit.GetInventoryHandler().DropItem(playerUnit.GetInventoryHandler().GetInventorySlot(0).GetItemData(), 1);
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
@@ -89,16 +91,18 @@ namespace GameLab.Controller
                 Interactable interactable = MouseWorldController.GetMouseRayCastInteractable();
                 if (interactable != null)
                 {
+                    executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
+                    if (selectedIndex >= executableActions.Count) selectedIndex = executableActions.Count - 1;
                     if (interactable is Unit)
                     {
                         if((interactable as Unit).GetFactionHandler().GetFaction() != playerUnit.GetFactionHandler().GetFaction())
                         {
                             Debug.Log("interaction Type: " + interactable.ToString());
                             currentSelectedUnit = interactable as Unit;
-                            executableActions = playerUnit.GetActionHandler().GetExecutableActions(currentSelectedUnit);
                             Debug.Log(executableActions[selectedIndex].ToString());
                         }
                     }
+                    
                 }
             }
             

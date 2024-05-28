@@ -1,3 +1,4 @@
+using GameLab.InventorySystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -34,6 +35,7 @@ namespace GameLab.UnitSystem.AbilitySystem
             if (other.GetComponent<Unit>() == castor) return;
             if (other.GetComponent<AbilityProjectile>() != null) return;
             if (other.GetComponent<AbilityCast>() != null) return;
+            if (other.GetComponent<ItemWorld>() != null) return;
             if (other.GetComponent<Unit>() == target)
             {
                 target.GetCombatHandler().TakeDamage(castor, castedAbility.GetAbilityPower());

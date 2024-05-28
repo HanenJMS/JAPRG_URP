@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameLab.InventorySystem
@@ -7,7 +8,13 @@ namespace GameLab.InventorySystem
     public class InventorySlot : IEquatable<InventorySlot>
     {
         [SerializeField] ItemData inventoryItem;
-        [SerializeField] int currentQuantity = 1;
+        [SerializeField] int currentQuantity = 0;
+        [SerializeField] int slotCapacity = 50;
+        public InventorySlot(ItemData item, int Quantity = 0)
+        {
+            SetItemData(item);
+            SetQuantity(Quantity);
+        }
         public void SetItemData(ItemData itemData)
         {
             inventoryItem = itemData;
@@ -16,15 +23,28 @@ namespace GameLab.InventorySystem
         {
             return inventoryItem;
         }
-
-        public void AddQuantity(int quantity)
+        public int GetSlotCapacity() => slotCapacity;
+        public int GetAvailableCapacity() => slotCapacity - currentQuantity;
+        public void SetQuantity(int quantity)
         {
-            currentQuantity = Mathf.Clamp(currentQuantity += quantity, 0, 100);
+            currentQuantity = quantity;
+            Debug.Log("ChangedQuantity: " + currentQuantity);
         }
-
+        public int GetQuantity()
+        {
+            return currentQuantity;
+        }
         public bool Equals(InventorySlot other)
         {
             return other.inventoryItem = inventoryItem;
+        }
+        public static InventorySlot operator +(InventorySlot a, int b)
+        {
+             return new(a.GetItemData(), a.GetQuantity() + b);
+        }
+        public static InventorySlot operator -(InventorySlot a, int b)
+        {
+            return new(a.GetItemData(), a.GetQuantity() - b);
         }
     }
 }
