@@ -1,4 +1,5 @@
 using GameLab.InteractableSystem;
+using GameLab.UISystem;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -79,5 +80,11 @@ public class MouseWorldController : MonoBehaviour
     public static T GetInteractionType<T>(RaycastHit hit) where T : MonoBehaviour
     {
         return hit.transform.GetComponent<T>();
+    }
+
+    public  static void SetMouseCursor(MouseCursorData cursor)
+    {
+        
+        Cursor.SetCursor(cursor.texture, cursor.hotspot, CursorMode.Auto);
     }
 }

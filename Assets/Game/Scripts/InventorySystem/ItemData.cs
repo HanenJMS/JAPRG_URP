@@ -19,7 +19,10 @@ namespace GameLab.InventorySystem
         {
             return itemModelPrefab;
         }
-
+        public GameObject GetItemPickupPrefab()
+        {
+            return itemPickupPrefab;
+        }
         public Sprite GetItemSprite()
         {
             return itemSprite;

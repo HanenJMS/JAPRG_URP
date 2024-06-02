@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 33886099615868286}
   - component: {fileID: 23478790972212710}
   - component: {fileID: 64074127105119820}
-  - component: {fileID: 2504766351302711259}
+  - component: {fileID: 9023521029749055606}
   m_Layer: 0
-  m_Name: SM_Wep_Sword_16 1
+  m_Name: Sword_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2286750687424949729}
@@ -112,7 +112,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43304269780088852, guid: 1e99e49fe5732864ead194bf3c9119f6, type: 2}
---- !u!114 &2504766351302711259
+--- !u!114 &9023521029749055606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,9 +126,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemdata: {fileID: 11400000, guid: 465e17d7e3ec57444b78d6c6c5f15055, type: 2}
   itemSlot:
-    inventoryItem: {fileID: 0}
+    inventoryItem: {fileID: 11400000, guid: 465e17d7e3ec57444b78d6c6c5f15055, type: 2}
     currentQuantity: 0
     slotCapacity: 1
+  itemWorldContainer: {fileID: 0}
 --- !u!1001 &1567062238170821119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -141,6 +142,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Aura2_VFX_prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537848978585477309, guid: 1db077b81fc5b3f4f98f35b79aa746d0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3312797089222861916, guid: 1db077b81fc5b3f4f98f35b79aa746d0,
         type: 3}
@@ -286,6 +292,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Aura3_VFX_prefab
       objectReference: {fileID: 0}
+    - target: {fileID: 5922670784151535302, guid: dff309fbd275ec04aacaf7522a84076b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8179449610957875390, guid: dff309fbd275ec04aacaf7522a84076b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -394,6 +405,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Aura1_VFX_prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 1383325503575707466, guid: 975e05b1aa2679445b1d44f55bb66a8c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5041986938242350338, guid: 975e05b1aa2679445b1d44f55bb66a8c,
         type: 3}

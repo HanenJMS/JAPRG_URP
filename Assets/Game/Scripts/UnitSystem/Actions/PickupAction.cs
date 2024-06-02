@@ -1,4 +1,5 @@
 using GameLab.InventorySystem;
+using GameLab.UISystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UI;
@@ -9,6 +10,11 @@ namespace GameLab.UnitSystem.ActionSystem
 {
     public class PickupAction : MonoBehaviour, IAction
     {
+        [SerializeField] MouseCursorData cursorData;
+        public MouseCursorData GetMouseCursorInfo()
+        {
+            return cursorData;
+        }
         public string ActionName()
         {
             return "Pick up";

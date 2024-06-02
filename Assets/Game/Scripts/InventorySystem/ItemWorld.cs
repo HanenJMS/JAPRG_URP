@@ -8,8 +8,16 @@ namespace GameLab.InventorySystem
     {
         [SerializeField] ItemData itemdata; 
         [SerializeField] InventorySlot itemSlot;
+        [SerializeField] GameObject itemWorldContainer;
+
+        private void Awake()
+        {
+            itemWorldContainer = this.transform.parent.gameObject;
+
+        }
         private void Start()
         {
+            if(itemdata == null) { return; }
             itemSlot.SetItemData(itemdata);
         }
         public InventorySlot GetItemSlot()
@@ -20,7 +28,7 @@ namespace GameLab.InventorySystem
         {
             if(itemSlot.GetQuantity() <= 0)
             {
-                Destroy(this.gameObject);
+                Destroy(itemWorldContainer);
             }
         }
     }

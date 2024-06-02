@@ -1,12 +1,10 @@
 using GameLab.InventorySystem;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameLab.TradingSystem
 {
     public static class TradeBank
     {
+        
         public static bool VerifyTrade(InventorySlot receiver, InventorySlot giver, int quantity)
         {
             if (receiver.GetAvailableCapacity() < quantity)

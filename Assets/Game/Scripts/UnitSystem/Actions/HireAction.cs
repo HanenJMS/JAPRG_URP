@@ -1,4 +1,5 @@
 using GameLab.PartySystem;
+using GameLab.UISystem;
 using UnityEngine;
 namespace GameLab.UnitSystem.ActionSystem
 {
@@ -6,6 +7,11 @@ namespace GameLab.UnitSystem.ActionSystem
     {
         ActionHandler actionHandler;
         PartyHandler partyHandler;
+        [SerializeField] MouseCursorData cursorData;
+        public MouseCursorData GetMouseCursorInfo()
+        {
+            return cursorData;
+        }
         private void Awake()
         {
             actionHandler = GetComponent<ActionHandler>();
@@ -47,6 +53,8 @@ namespace GameLab.UnitSystem.ActionSystem
         {
             return "Hire";
         }
+
+
     }
 }
 

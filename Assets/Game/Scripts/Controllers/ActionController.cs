@@ -18,6 +18,7 @@ namespace GameLab.Controller
         Unit playerUnit;
         [SerializeField] Unit currentSelectedUnit;
         List<Interactable> interactables = new();
+        Interactable interactable = null;
         List<IAction> executableActions = new();
         IAction selectedAction;
         [SerializeField] int selectedIndex = 0;
@@ -44,23 +45,42 @@ namespace GameLab.Controller
             {
                 return;
             }
-            if (Input.mouseScrollDelta.y != 0)
+            if(MouseWorldController.GetMouseRayCastInteractable() != null)
             {
-                if (executableActions.Count > 0)
+                if(interactable != MouseWorldController.GetMouseRayCastInteractable())
                 {
-                    selectedIndex += (int)Input.mouseScrollDelta.y;
-                    if (selectedIndex >= executableActions.Count)
+                    interactable = MouseWorldController.GetMouseRayCastInteractable();
+                    selectedIndex = 0;
+                    executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
+                    MouseWorldController.SetMouseCursor(executableActions[selectedIndex].GetMouseCursorInfo());
+                }
+                if (Input.GetMouseButtonUp(1))
+                {
+                    if (executableActions[selectedIndex].CanExecuteOnTarget(interactable))
                     {
-                        selectedIndex = executableActions.Count - 1;
+                        executableActions[selectedIndex].ExecuteOnTarget(interactable);
+                        return;
                     }
-                    if (selectedIndex < 0)
-                    {
-                        selectedIndex = 0;
-                    }
-                    Debug.Log(executableActions[selectedIndex].ToString());
+                    moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
                 }
             }
-            if(Input.GetKeyDown(KeyCode.Alpha1))
+            else
+            {
+                MouseWorldController.SetMouseCursor(moveAction.GetMouseCursorInfo());
+            }
+
+            if (Input.mouseScrollDelta.y != 0)
+            {
+                if (interactable != null)
+                {
+                    selectedIndex = Mathf.Clamp(selectedIndex += (int)Input.mouseScrollDelta.y, 0, executableActions.Count - 1);
+                    MouseWorldController.SetMouseCursor(executableActions[selectedIndex].GetMouseCursorInfo());
+                }
+            }
+
+
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 playerUnit.GetAbilityHandler().SetCurrentAbility(0);
                 if(playerUnit.GetInventoryHandler().GetInventorySlot(0) != null)
@@ -86,49 +106,25 @@ namespace GameLab.Controller
             {
                 playerUnit.gameObject.GetComponent<EquipmentHandler>().WithdrawCombat();
             }
-            if (Input.GetMouseButtonUp(0))
+
+           
+
+        }
+
+        private void HandleValidActionSelection()
+        {
+            if (selectedIndex <= 0)
             {
-                Interactable interactable = MouseWorldController.GetMouseRayCastInteractable();
-                if (interactable != null)
-                {
-                    executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
-                    if (selectedIndex >= executableActions.Count) selectedIndex = executableActions.Count - 1;
-                    if (interactable is Unit)
-                    {
-                        if((interactable as Unit).GetFactionHandler().GetFaction() != playerUnit.GetFactionHandler().GetFaction())
-                        {
-                            Debug.Log("interaction Type: " + interactable.ToString());
-                            currentSelectedUnit = interactable as Unit;
-                            Debug.Log(executableActions[selectedIndex].ToString());
-                        }
-                    }
-                    
-                }
+                selectedIndex = 0;
             }
-            
-            if (Input.GetMouseButtonDown(1))
+            if(executableActions.Count == 0)
             {
-                interactables = MouseWorldController.GetMouseRayCastInteractables();
-                if (interactables.Count > 0)
-                {
-                    selectedIndex = 0;
-                    executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactables[0]);
-                }
+                selectedIndex = 0;
             }
-            if(Input.GetMouseButtonUp(1))
+            if(executableActions.Count > selectedIndex)
             {
-                if(executableActions.Count > 0) 
-                {
-                    foreach (Interactable interactable in interactables)
-                    {
-                        if (executableActions[selectedIndex].CanExecuteOnTarget(interactable))
-                        {
-                            executableActions[selectedIndex].ExecuteOnTarget(interactable);
-                            return;
-                        }
-                    }
-                }
-                moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
+                selectedIndex = executableActions.Count - 1;
+                
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using GameLab.UnitSystem.ActionSystem;
+﻿using GameLab.UISystem;
+using GameLab.UnitSystem.ActionSystem;
 using System;
 using UnityEngine;
 
@@ -35,6 +36,11 @@ namespace GameLab.UnitSystem.AbilitySystem
         public override string ToString()
         {
             return ActionName();
+        }
+
+        public MouseCursorData GetMouseCursorInfo()
+        {
+            throw new NotImplementedException();
         }
     }
 }

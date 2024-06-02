@@ -1,5 +1,6 @@
 using GameLab.Animation;
 using GameLab.UnitSystem;
+using GameLab.UnitSystem.AbilitySystem;
 using GameLab.UnitSystem.ActionSystem;
 using System;
 using System.Collections.Generic;
@@ -49,11 +50,12 @@ namespace GameLab.CombatSystem
             AddEnemy(enemy);
             RunCombat();
         }
-        public void TakeDamage(Unit enemy, int dmg)
+        public void TakeDamage(Unit enemy, AbilityData ability)
         {
-            unit.GetHealthHandler().RemoveFromCurrent(dmg);
+            unit.GetHealthHandler().RemoveFromCurrent(ability.GetAbilityPower());
             AddEnemy(enemy);
             onDamageTaken?.Invoke();
+            unit.GetWorldSpaceUIHandler().SpawnText(ability.GetAbilityPower().ToString(), ability.GetDamageWorldText());
         }
         public List<Unit> GetEnemies()
         {
@@ -132,6 +134,7 @@ namespace GameLab.CombatSystem
                         unit.GetAbilityHandler().UpdateAbility();
                         animationHandler.SetTrigger("attack");
                         currentAttackCD = 0f;
+                        isRunning = unit.GetAbilityHandler().GetAbility().GetIsContinuous();
                     }
                 }
             }

@@ -1,4 +1,5 @@
 using GameLab.CombatSystem;
+using GameLab.UISystem;
 using GameLab.UnitSystem.AbilitySystem;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace GameLab.UnitSystem.ActionSystem
         ActionHandler actionHandler;
         AbilityHandler abilityHandler;
         Unit selfUnit;
+
+        [SerializeField] MouseCursorData cursorData;
         private void Awake()
         {
             combatHandler = GetComponent<CombatHandler>();
@@ -52,6 +55,12 @@ namespace GameLab.UnitSystem.ActionSystem
         public override string ToString()
         {
             return "Attack";
+        }
+
+        public MouseCursorData GetMouseCursorInfo()
+        {
+
+            return cursorData;
         }
     }
 }

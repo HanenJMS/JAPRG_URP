@@ -38,6 +38,7 @@ namespace GameLab.Controller
             }
             HandleCameraRotation();
             if (Input.GetMouseButton(1)) return;
+            if (MouseWorldController.GetMouseRayCastInteractable() != null) return;
             HandleCameraZoom();
         }
         void OnPlayerSelected()

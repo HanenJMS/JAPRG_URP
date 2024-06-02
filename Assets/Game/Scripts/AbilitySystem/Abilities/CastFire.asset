@@ -20,7 +20,9 @@ MonoBehaviour:
   abilityType: 1
   range: 15
   cooldown: 0
-  pow: 50
+  pow: 1
   projectileSpeed: 15
   isMelee: 0
   animationClip: {fileID: 0}
+  damageWorldText: {fileID: 9006820566315042475, guid: d1b6abb5df7804a4d8559702c4c152fb,
+    type: 3}

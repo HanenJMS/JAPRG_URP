@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -42,6 +43,12 @@ namespace GameLab.UnitSystem.AbilitySystem
                 multiCast--;
                 GameObject cast = Instantiate(gameObject, this.transform.position + (transform.forward * 0.1f), this.transform.rotation);
                 cast.GetComponent<AbilityCast>().SetCastInformation(castor, target, abilityData);
+
+                //encircling cast
+                //GameObject cast = Instantiate(gameObject, target.transform.position + UnityEngine.Random.insideUnitSphere * Mathf.Sqrt(abilityData.GetRange()) + Vector3.up * Mathf.Sqrt(abilityData.GetRange()), this.transform.rotation);
+                //cast.transform.LookAt(target.transform.position);
+                //cast.GetComponent<AbilityCast>().SetCastInformation(castor, target, abilityData);
+
             }
             
         }

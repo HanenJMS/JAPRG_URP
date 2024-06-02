@@ -1,3 +1,4 @@
+using GameLab.UISystem;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,11 @@ namespace GameLab.UnitSystem.ActionSystem
     {
         NavMeshAgent agent;
         ActionHandler actionHander;
+        [SerializeField] MouseCursorData cursorData;
+        public MouseCursorData GetMouseCursorInfo()
+        {
+            return cursorData;
+        }
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();

@@ -24,3 +24,5 @@ MonoBehaviour:
   projectileSpeed: 100
   isMelee: 0
   animationClip: {fileID: 0}
+  damageWorldText: {fileID: 9006820566315042475, guid: 9a75d25d95069c644a067f953ede583f,
+    type: 3}

@@ -5,6 +5,7 @@ using GameLab.InteractableSystem;
 using GameLab.InventorySystem;
 using GameLab.PartySystem;
 using GameLab.ResourceSystem;
+using GameLab.UISystem;
 using GameLab.UnitSystem.AbilitySystem;
 using GameLab.UnitSystem.ActionSystem;
 using UnityEngine;
@@ -22,6 +23,7 @@ namespace GameLab.UnitSystem
         EquipmentHandler equipmentHandler;
         InventoryHandler inventoryHandler;
         AbilityHandler abilityHandler;
+        WorldSpaceUIHandler worldSpaceUIHandler;
         UnitAnimationHandler unitAnimationHandler;
         private void Awake()
         {
@@ -34,6 +36,7 @@ namespace GameLab.UnitSystem
             unitAnimationHandler = GetComponent<UnitAnimationHandler>();
             abilityHandler = GetComponent<AbilityHandler>();
             inventoryHandler = GetComponent<InventoryHandler>();
+            worldSpaceUIHandler = GetComponent<WorldSpaceUIHandler>();
             healthHandler.onDead += OnDeath;
         }
 
@@ -66,6 +69,7 @@ namespace GameLab.UnitSystem
         public AbilityHandler GetAbilityHandler() => abilityHandler;
         public EquipmentHandler GetEquipmentHandler() => equipmentHandler;
         public InventoryHandler GetInventoryHandler() => inventoryHandler;
+        public WorldSpaceUIHandler GetWorldSpaceUIHandler() => worldSpaceUIHandler;
     }
 }
 

@@ -38,7 +38,7 @@ namespace GameLab.UnitSystem.AbilitySystem
             if (other.GetComponent<ItemWorld>() != null) return;
             if (other.GetComponent<Unit>() == target)
             {
-                target.GetCombatHandler().TakeDamage(castor, castedAbility.GetAbilityPower());
+                target.GetCombatHandler().TakeDamage(castor, castedAbility);
             }
             if(freeHitImpact || other.GetComponent<Unit>() == target)
             {

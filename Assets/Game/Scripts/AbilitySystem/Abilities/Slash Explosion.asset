@@ -17,9 +17,12 @@ MonoBehaviour:
   abilityVFX_self: {fileID: 0}
   abilityVFX_target: {fileID: 2451467320939324776, guid: cd0eabf3c0c90c84d9eeb21b0d592b77,
     type: 3}
+  abilityType: 0
   range: 5
   cooldown: 0
   pow: 5
   projectileSpeed: 0
   isMelee: 1
   animationClip: {fileID: 0}
+  damageWorldText: {fileID: 9006820566315042475, guid: 9a75d25d95069c644a067f953ede583f,
+    type: 3}
