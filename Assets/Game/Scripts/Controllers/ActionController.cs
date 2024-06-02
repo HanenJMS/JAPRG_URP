@@ -45,7 +45,7 @@ namespace GameLab.Controller
             {
                 return;
             }
-            if(MouseWorldController.GetMouseRayCastInteractable() != null)
+            if(MouseWorldController.GetMouseRayCastInteractable() != null && playerUnit != MouseWorldController.GetMouseRayCastInteractable())
             {
                 if(interactable != MouseWorldController.GetMouseRayCastInteractable())
                 {
@@ -54,6 +54,14 @@ namespace GameLab.Controller
                     executableActions = playerUnit.GetActionHandler().GetExecutableActions(interactable);
                     MouseWorldController.SetMouseCursor(executableActions[selectedIndex].GetMouseCursorInfo());
                 }
+                if (Input.mouseScrollDelta.y != 0)
+                {
+                    if (interactable != null)
+                    {
+                        selectedIndex = Mathf.Clamp(selectedIndex += (int)Input.mouseScrollDelta.y, 0, executableActions.Count - 1);
+                        MouseWorldController.SetMouseCursor(executableActions[selectedIndex].GetMouseCursorInfo());
+                    }
+                }
                 if (Input.GetMouseButtonUp(1))
                 {
                     if (executableActions[selectedIndex].CanExecuteOnTarget(interactable))
@@ -61,22 +69,20 @@ namespace GameLab.Controller
                         executableActions[selectedIndex].ExecuteOnTarget(interactable);
                         return;
                     }
-                    moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
                 }
             }
             else
             {
+                interactable = null;
                 MouseWorldController.SetMouseCursor(moveAction.GetMouseCursorInfo());
-            }
-
-            if (Input.mouseScrollDelta.y != 0)
-            {
-                if (interactable != null)
+                if (Input.GetMouseButtonUp(1))
                 {
-                    selectedIndex = Mathf.Clamp(selectedIndex += (int)Input.mouseScrollDelta.y, 0, executableActions.Count - 1);
-                    MouseWorldController.SetMouseCursor(executableActions[selectedIndex].GetMouseCursorInfo());
+                    moveAction.ExecuteOnTarget(MouseWorldController.GetMousePosition());
+                    return;
                 }
             }
+
+            
 
 
 

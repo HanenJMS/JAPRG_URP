@@ -54,6 +54,10 @@ namespace GameLab.AI
                 {
                     moveAction.ExecuteOnTarget(Leader);
                 }
+                else
+                {
+                    moveAction.Cancel();
+                }
             }
         }
 
