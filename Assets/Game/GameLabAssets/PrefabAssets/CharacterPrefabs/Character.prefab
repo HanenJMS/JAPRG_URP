@@ -9813,12 +9813,12 @@ GameObject:
   - component: {fileID: 3134935596300219750}
   - component: {fileID: 307864446189196601}
   - component: {fileID: 4106727272373688972}
+  - component: {fileID: 3513839453013437591}
+  - component: {fileID: 689906595376009866}
   - component: {fileID: 7668816378199736869}
   - component: {fileID: 3309027800912623766}
   - component: {fileID: 8447237814104563052}
   - component: {fileID: 7306744453567013748}
-  - component: {fileID: 3513839453013437591}
-  - component: {fileID: 689906595376009866}
   - component: {fileID: 6013764921578310138}
   m_Layer: 0
   m_Name: Character
@@ -10060,6 +10060,31 @@ MonoBehaviour:
   range: 1
   damage: 1
   AttackCD: 2
+--- !u!114 &3513839453013437591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2409774882518399275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776d62c73ef39f34eb8bf98e770af392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventorySlots: []
+--- !u!114 &689906595376009866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2409774882518399275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b4a2b1c0440ac489554b8f1d00883b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7668816378199736869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10120,31 +10145,6 @@ MonoBehaviour:
   cursorData:
     texture: {fileID: 2800000, guid: 486d9c27e3b5dd047967d6c94bbd7fae, type: 3}
     hotspot: {x: 0, y: 0}
---- !u!114 &3513839453013437591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2409774882518399275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 776d62c73ef39f34eb8bf98e770af392, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventorySlots: []
---- !u!114 &689906595376009866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2409774882518399275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2b4a2b1c0440ac489554b8f1d00883b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6013764921578310138
 MonoBehaviour:
   m_ObjectHideFlags: 0

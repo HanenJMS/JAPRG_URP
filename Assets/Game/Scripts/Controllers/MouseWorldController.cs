@@ -2,7 +2,6 @@ using GameLab.InteractableSystem;
 using GameLab.UISystem;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MouseWorldController : MonoBehaviour
@@ -60,9 +59,9 @@ public class MouseWorldController : MonoBehaviour
     public static List<Interactable> GetMouseRayCastInteractables()
     {
         List<Interactable> interactables = new();
-        foreach(RaycastHit hits in GetRaycastHits())
+        foreach (RaycastHit hits in GetRaycastHits())
         {
-            if(hits.collider.TryGetComponent<Interactable>(out Interactable interactable))
+            if (hits.collider.TryGetComponent<Interactable>(out Interactable interactable))
             {
                 interactables.Add(interactable);
             }
@@ -82,9 +81,9 @@ public class MouseWorldController : MonoBehaviour
         return hit.transform.GetComponent<T>();
     }
 
-    public  static void SetMouseCursor(MouseCursorData cursor)
+    public static void SetMouseCursor(MouseCursorData cursor)
     {
-        
+
         Cursor.SetCursor(cursor.texture, cursor.hotspot, CursorMode.Auto);
     }
 }

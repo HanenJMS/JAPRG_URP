@@ -4,7 +4,6 @@ using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 
 namespace GameLab.Controller
@@ -45,9 +44,9 @@ namespace GameLab.Controller
             {
                 return;
             }
-            if(MouseWorldController.GetMouseRayCastInteractable() != null && playerUnit != MouseWorldController.GetMouseRayCastInteractable())
+            if (MouseWorldController.GetMouseRayCastInteractable() != null && playerUnit != MouseWorldController.GetMouseRayCastInteractable())
             {
-                if(interactable != MouseWorldController.GetMouseRayCastInteractable())
+                if (interactable != MouseWorldController.GetMouseRayCastInteractable())
                 {
                     interactable = MouseWorldController.GetMouseRayCastInteractable();
                     selectedIndex = 0;
@@ -82,21 +81,19 @@ namespace GameLab.Controller
                 }
             }
 
-            
+
 
 
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 playerUnit.GetAbilityHandler().SetCurrentAbility(0);
-                if(playerUnit.GetInventoryHandler().GetInventorySlot(0) != null)
-                    playerUnit.GetInventoryHandler().DropItem(playerUnit.GetInventoryHandler().GetInventorySlot(0).GetItemData(), 1);
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 playerUnit.GetAbilityHandler().SetCurrentAbility(1);
             }
-            if(Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 playerUnit.GetAbilityHandler().SetCurrentAbility(2);
             }
@@ -108,29 +105,9 @@ namespace GameLab.Controller
             {
                 playerUnit.gameObject.GetComponent<EquipmentHandler>().UndrawWeapon();
             }
-            if(Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.C))
             {
                 playerUnit.gameObject.GetComponent<EquipmentHandler>().WithdrawCombat();
-            }
-
-           
-
-        }
-
-        private void HandleValidActionSelection()
-        {
-            if (selectedIndex <= 0)
-            {
-                selectedIndex = 0;
-            }
-            if(executableActions.Count == 0)
-            {
-                selectedIndex = 0;
-            }
-            if(executableActions.Count > selectedIndex)
-            {
-                selectedIndex = executableActions.Count - 1;
-                
             }
         }
     }

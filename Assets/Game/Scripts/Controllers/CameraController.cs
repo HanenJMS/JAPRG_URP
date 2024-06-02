@@ -2,6 +2,9 @@ using Cinemachine;
 using GameLab.UnitSystem;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 namespace GameLab.Controller
 {
@@ -39,6 +42,7 @@ namespace GameLab.Controller
             HandleCameraRotation();
             if (Input.GetMouseButton(1)) return;
             if (MouseWorldController.GetMouseRayCastInteractable() != null) return;
+            if (EventSystem.current.IsPointerOverGameObject()) return;
             HandleCameraZoom();
         }
         void OnPlayerSelected()

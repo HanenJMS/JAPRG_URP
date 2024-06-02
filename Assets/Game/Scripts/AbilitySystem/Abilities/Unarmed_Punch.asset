@@ -18,7 +18,7 @@ MonoBehaviour:
     type: 3}
   abilityVFX_target: {fileID: 0}
   abilityType: 0
-  range: 1
+  range: 2
   cooldown: 0
   pow: 1
   projectileSpeed: 0
