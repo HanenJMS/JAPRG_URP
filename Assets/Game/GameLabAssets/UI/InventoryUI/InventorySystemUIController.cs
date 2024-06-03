@@ -31,9 +31,11 @@ namespace GameLab.Controller
         }
         private void LateUpdate()
         {
+            
             if(Input.GetKeyDown(KeyCode.I))
             {
                 ClearUI();
+                if (selectedInventory == null) selectedInventory = UnitSelectionSystem.Instance.GetPlayerUnit().GetInventoryHandler();
                 UpdateUI(selectedInventory.GetInventory());
             }
         }

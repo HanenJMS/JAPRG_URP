@@ -2819,7 +2819,7 @@ PrefabInstance:
     - target: {fileID: 5287890731644966214, guid: 91ac882e78a2e41499cd69a45ea82751,
         type: 3}
       propertyPath: inventorySlots.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5536963272139761411, guid: 91ac882e78a2e41499cd69a45ea82751,
         type: 3}
@@ -3197,7 +3197,12 @@ PrefabInstance:
     - target: {fileID: 6503763260601747038, guid: 2d3c181d92df69a4090b982e8a9d5bd3,
         type: 3}
       propertyPath: key
-      value: 0
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 7502127409788496069, guid: 2d3c181d92df69a4090b982e8a9d5bd3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7862185567534736041, guid: 2d3c181d92df69a4090b982e8a9d5bd3,
         type: 3}
@@ -3209,6 +3214,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7862185567534736041, guid: 2d3c181d92df69a4090b982e8a9d5bd3,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8366102900685876229, guid: 2d3c181d92df69a4090b982e8a9d5bd3,
         type: 3}
       propertyPath: m_IsActive
@@ -3217,7 +3227,7 @@ PrefabInstance:
     - target: {fileID: 8899892551273673542, guid: 2d3c181d92df69a4090b982e8a9d5bd3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000030239558
+      value: -0.000026472047
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
