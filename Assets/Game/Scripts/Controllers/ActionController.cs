@@ -40,12 +40,16 @@ namespace GameLab.Controller
 
         private void LateUpdate()
         {
+
+            //handling action controller.
             if (playerUnit.GetHealthHandler().IsDead())
             {
                 return;
             }
+            //when mouse is over an interactable object that is not the player.
             if (MouseWorldController.GetMouseRayCastInteractable() != null && playerUnit != MouseWorldController.GetMouseRayCastInteractable())
             {
+                //if a new interactable has been found, set to the new interactable and set mouse cursor based on the action chosen
                 if (interactable != MouseWorldController.GetMouseRayCastInteractable())
                 {
                     interactable = MouseWorldController.GetMouseRayCastInteractable();
@@ -83,7 +87,7 @@ namespace GameLab.Controller
 
 
 
-
+            //testing ability system
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -97,6 +101,8 @@ namespace GameLab.Controller
             {
                 playerUnit.GetAbilityHandler().SetCurrentAbility(2);
             }
+
+            //testing equipment handling system
             if (Input.GetKeyDown(KeyCode.X))
             {
                 playerUnit.gameObject.GetComponent<EquipmentHandler>().DrawWeapon();

@@ -95,13 +95,12 @@ MonoBehaviour:
   abilityProjectile: {fileID: 1847845427279939658, guid: 5a9dbc1cf3e9f724f90803bd4080faa7,
     type: 3}
   castHolder: {fileID: 3767296544268699448}
-  castMultipleProjectiles: 20
-  multiCast: 4
+  castMultipleProjectiles: 1
+  multiCast: 1
   duration: 0.4
   time: 0
   ps: {fileID: 4290002483669977142}
   abilityData: {fileID: 0}
-  im: {fileID: 0}
 --- !u!1001 &7030256699587550742
 PrefabInstance:
   m_ObjectHideFlags: 0

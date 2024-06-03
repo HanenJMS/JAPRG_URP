@@ -1,4 +1,5 @@
 using GameLab.TradingSystem;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,11 @@ namespace GameLab.InventorySystem
 
         [SerializeField] List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
+        public Action onInventoryChange;
+        public List<InventorySlot> GetInventory()
+        {
+            return inventorySlots;
+        }
         public InventorySlot GetInventorySlot(int index)
         {
             UpdateList();
@@ -43,6 +49,7 @@ namespace GameLab.InventorySystem
             Debug.Log("inventorySlot : " + inventory[receiver.GetItemData()]);
             GetComponent<TradeHandler>().TradeItem(receiver, inventory[receiver.GetItemData()], qty);
             RemoveItem(receiver.GetItemData());
+            UpdateList();
         }
         public void PickupItem(ItemWorld item, int Quantity = 0)
         {
@@ -69,7 +76,6 @@ namespace GameLab.InventorySystem
         {
             if (inventory.ContainsKey(item)) return;
             inventory.Add(item, new(item));
-            UpdateList();
         }
         void RemoveItem(ItemData item)
         {
@@ -80,7 +86,6 @@ namespace GameLab.InventorySystem
                     inventory.Remove(item);
                 }
             }
-            UpdateList();
         }
         void UpdateList()
         {
@@ -89,6 +94,7 @@ namespace GameLab.InventorySystem
             {
                 inventorySlots.Add(inv.Value);
             }
+            onInventoryChange?.Invoke();
         }
     }
 }

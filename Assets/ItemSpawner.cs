@@ -8,7 +8,7 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
     [SerializeField] int qtyToSpawn = 0;
-    [SerializeField] GameObject prefab;
+    [SerializeField] GameObject[] prefab;
 
 
     private void Start()
@@ -18,12 +18,16 @@ public class ItemSpawner : MonoBehaviour
     }
     IEnumerator SpawnItem()
     {
-        for(int i = 0; i < qtyToSpawn; i++)
+        foreach (var item in prefab)
         {
-            GameObject ob = Instantiate(prefab, this.transform.position, Quaternion.identity);
-            ob.GetComponentInChildren<ItemWorld>().GetItemSlot().SetQuantity(1);
-            yield return new WaitForSeconds(0.5f);
+            for (int i = 0; i < qtyToSpawn; i++)
+            {
+                GameObject ob = Instantiate(item, this.transform.position, Quaternion.identity);
+                ob.GetComponentInChildren<ItemWorld>().GetItemSlot().SetQuantity(1);
+                yield return new WaitForSeconds(0.5f);
+            }
         }
+        
         
     }
 }

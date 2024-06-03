@@ -208,3 +208,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 0}
   materials: {fileID: 0}
+  timer: 5

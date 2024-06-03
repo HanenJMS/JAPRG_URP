@@ -68,7 +68,6 @@ namespace GameLab.CombatSystem
         public void RunCombat()
         {
             isRunning = true;
-
         }
         public float GetActionRange()
         {

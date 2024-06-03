@@ -19,11 +19,11 @@ namespace GameLab.UnitSystem.AbilitySystem
         [SerializeField] AbilityData abilityData;
         Unit castor;
         Unit target;
-        [SerializeField] DamageOnImpact im;
         private void Start()
         {
             StartCoroutine(Cast());
             StartCoroutine(ShootProjectile());
+            
         }
         public void SetCastInformation(Unit castor, Unit target, AbilityData ability)
         {
