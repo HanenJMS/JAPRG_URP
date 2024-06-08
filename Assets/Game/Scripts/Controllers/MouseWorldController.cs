@@ -28,7 +28,7 @@ public class MouseWorldController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = GetMousePosition();
+        //transform.position = GetMousePosition();
     }
     public static Vector3 GetMousePosition()
     {
@@ -54,6 +54,7 @@ public class MouseWorldController : MonoBehaviour
     }
     public static Interactable GetMouseRayCastInteractable()
     {
+        if (GetRaycastHit().collider == null) return null;
         return GetRaycastHit().collider.GetComponent<Interactable>();
     }
     public static List<Interactable> GetMouseRayCastInteractables()

@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameLab.InventorySystem
@@ -23,8 +22,16 @@ namespace GameLab.InventorySystem
         {
             return inventoryItem;
         }
-        public int GetSlotCapacity() => slotCapacity;
-        public int GetAvailableCapacity() => slotCapacity - currentQuantity;
+        public virtual int GetSlotCapacity()
+        {
+            return slotCapacity;
+        }
+
+        public virtual int GetAvailableCapacity()
+        {
+            return slotCapacity - currentQuantity;
+        }
+
         public void SetQuantity(int quantity)
         {
             currentQuantity = quantity;
@@ -40,7 +47,7 @@ namespace GameLab.InventorySystem
         }
         public static InventorySlot operator +(InventorySlot a, int b)
         {
-             return new(a.GetItemData(), a.GetQuantity() + b);
+            return new(a.GetItemData(), a.GetQuantity() + b);
         }
         public static InventorySlot operator -(InventorySlot a, int b)
         {

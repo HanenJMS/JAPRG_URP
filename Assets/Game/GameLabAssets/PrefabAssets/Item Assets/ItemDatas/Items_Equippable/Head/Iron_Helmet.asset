@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339f48e82dea867408d10742be9ef5d9, type: 3}
+  m_Name: Iron_Helmet
+  m_EditorClassIdentifier: 
+  description: 
+  itemSprite: {fileID: 21300000, guid: b227c6c1c35b36940b602110d9556b13, type: 3}
+  itemModelPrefab: {fileID: 1577006451429072, guid: b3f539c04a9bbbc45b139935d0d86d4a,
+    type: 3}
+  itemPickupPrefab: {fileID: 4558153976642440646, guid: 87c111fbb969cbc41987948aff4ffba1,
+    type: 3}
+  equipmentType: 2

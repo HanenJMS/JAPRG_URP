@@ -91,6 +91,7 @@ namespace GameLab.CombatSystem
         }
         public void Cancel()
         {
+            unit.GetActionHandler().GetActionType<MoveAction>().Cancel();
             isRunning = false;
             enemy = null;
             enemies.Clear();
