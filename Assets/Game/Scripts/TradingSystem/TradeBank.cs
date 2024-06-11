@@ -5,7 +5,7 @@ namespace GameLab.TradingSystem
     public static class TradeBank
     {
         
-        public static bool VerifyTrade(InventorySlot receiver, InventorySlot giver, int quantity)
+        public static bool VerifyTrade(IamSlot receiver, IamSlot giver, int quantity)
         {
             if (receiver.GetAvailableCapacity() < quantity)
             {
@@ -13,7 +13,7 @@ namespace GameLab.TradingSystem
             }
             return giver.GetQuantity() >= quantity;
         }
-        public static void Trade(InventorySlot receiver, InventorySlot giver, int quantity)
+        public static void Trade(IamSlot receiver, IamSlot giver, int quantity)
         {
             int i = receiver.GetQuantity() + quantity;
             receiver.SetQuantity(i);

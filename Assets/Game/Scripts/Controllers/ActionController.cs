@@ -4,6 +4,7 @@ using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 namespace GameLab.Controller
@@ -41,6 +42,10 @@ namespace GameLab.Controller
         private void LateUpdate()
         {
 
+            if(EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
             //handling action controller.
             if (playerUnit.GetHealthHandler().IsDead())
             {

@@ -23,18 +23,33 @@ namespace GameLab.UnitSystem.ActionSystem
 
         public bool CanExecuteOnTarget(object target)
         {
-            if (target is not ItemWorld) return false;
-            var item = target as ItemWorld;
-            if (item.GetItemSlot().GetItemData() is not EquipmentData) return false;
+            if (target is ItemWorld)
+            {
+                var item = target as ItemWorld;
+                if (item.GetItemSlot().GetItemData() is not EquipmentData) return false;
+            }
+            if (target is IamSlot)
+            {
+                var item = target as IamSlot;
+                if (item.GetItemData() is not EquipmentData) return false;
+            }
             return true;
         }
 
         public void ExecuteOnTarget(object target)
         {
             var unit = GetComponent<Unit>();
-            var itemWorld = target as ItemWorld;
-            unit.GetEquipmentHandler().EquipItem(itemWorld.GetItemSlot().GetItemData() as EquipmentData);
-            //(target as ItemWorld).PickUp();
+            if (target is ItemWorld)
+            {
+                var item = target as ItemWorld;
+                unit.GetEquipmentHandler().EquipItem(item.GetItemSlot());
+                item.PickUp();
+            }
+            if(target is IamSlot)
+            {
+                var item = target as IamSlot;
+                unit.GetEquipmentHandler().EquipItem(item);
+            }
         }
         public override string ToString()
         {

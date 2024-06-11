@@ -9,44 +9,43 @@ namespace GameLab.InventorySystem
 {
     public class EquipmentHandler : MonoBehaviour
     {
-        //Equipment
-        //headSlotHolder
-        //armorSlotHolder
-        //bootsSlotHolder
 
-        //EquipmentSlot head
-        //EquipmentSlot armor
-        //EquipmentSlot boots
-
-        [SerializeField] Dictionary<EquipmentType, EquipmentSlot> equipmentSlots = new();
-        [SerializeField] EquipmentSlot[] equipments = new EquipmentSlot[6];
-        public void EquipItem(EquipmentData equipItem)
+        [SerializeField]EquipmentInventory equipmentInventory = new();
+        public EquipmentInventory GetInventory() => equipmentInventory;
+        public void EquipItem(IamSlot equipItem)
         {
-            if (equipItem.GetEquipmentType() == EquipmentType.Head)
+            //equipmentInventory.EquipItem(equipItem);
+            var itemData = equipItem.GetItemData() as EquipmentData;
+            equipmentInventory.EquipItem(itemData);
+            if (itemData.GetEquipmentType() == EquipmentType.Head)
             {
-                headEquipped = equipItem as ArmorData;
                 if (equippedOnHeadWorld != null) Destroy(equippedOnHeadWorld.gameObject);
-                equippedOnHeadWorld = DrawEquipmentOn(headEquipped, headSlotHolder);
+                unit.GetInventoryHandler().AddToQuantity(equipmentInventory.GetSlot(itemData.GetEquipmentType()), 1);
+                unit.GetTradeHandler().TradeItem(equipmentInventory.GetSlot(itemData.GetEquipmentType()), equipItem, 1);
+                equippedOnHeadWorld = DrawEquipmentOn(itemData as ArmorData, headSlotHolder);
             }
-            if (equipItem.GetEquipmentType() == EquipmentType.Body)
+            if (itemData.GetEquipmentType() == EquipmentType.Body)
             {
-                bodyEquipped = equipItem as ArmorData;
-                equippedOnBodyWorld = Instantiate(equipItem.GetItemPrefab(), headSlotHolder);
+                bodyEquipped = itemData as ArmorData;
+                unit.GetTradeHandler().TradeItem(equipmentInventory.GetSlot(itemData.GetEquipmentType()), equipItem, 1);
+                equippedOnBodyWorld = DrawEquipmentOn(itemData as ArmorData, bodySlotHolder);
             }
-            if (equipItem.GetEquipmentType() == EquipmentType.Boots)
+            if (itemData.GetEquipmentType() == EquipmentType.Boots)
             {
-                bootsEquipped = equipItem as ArmorData;
-                equippedOnBootsWorld = Instantiate(equipItem.GetItemPrefab(), headSlotHolder);
+                bootsEquipped = itemData as ArmorData;
+                unit.GetTradeHandler().TradeItem(equipmentInventory.GetSlot(itemData.GetEquipmentType()), equipItem, 1);
+                equippedOnBootsWorld = DrawEquipmentOn(itemData as ArmorData, bootsSlotHolder);
             }
-            if (equipItem.GetEquipmentType() == EquipmentType.Main)
+            if (itemData.GetEquipmentType() == EquipmentType.Main)
             {
-                equippedMainWeapon = equipItem as WeaponData;
+                equippedMainWeapon = itemData as WeaponData;
+                unit.GetTradeHandler().TradeItem(equipmentInventory.GetSlot(itemData.GetEquipmentType()), equipItem, 1);
                 DrawWeapon();
             }
-            if (equipItem.GetEquipmentType() == EquipmentType.OffHand)
+            if (itemData.GetEquipmentType() == EquipmentType.OffHand)
             {
-                headEquipped = equipItem as ArmorData;
-                equippedOnHeadWorld = Instantiate(equipItem.GetItemPrefab(), headSlotHolder);
+                headEquipped = itemData as ArmorData;
+                equippedOnHeadWorld = Instantiate(itemData.GetItemPrefab(), headSlotHolder);
             }
         }
 

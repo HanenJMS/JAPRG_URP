@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameLab.InventorySystem
 {
-    public class InventoryHandler : MonoBehaviour
+    public class InventoryHandler : MonoBehaviour, IamInventory
     {
         [SerializeField] Dictionary<ItemData, InventorySlot> inventory = new();
 
@@ -25,7 +25,7 @@ namespace GameLab.InventorySystem
             }
             return inventorySlots[index];
         }
-        public void AddToQuantity(InventorySlot giverSlot, int quantity = 0)
+        public void AddToQuantity(IamSlot giverSlot, int quantity = 0)
         {
             AddItem(giverSlot.GetItemData());
             int qty = quantity;
@@ -37,7 +37,7 @@ namespace GameLab.InventorySystem
 
             UpdateList();
         }
-        public void RemoveFromQuantity(InventorySlot receiver, int quantity = 0)
+        public void RemoveFromQuantity(IamSlot receiver, int quantity = 0)
         {
             int qty = quantity;
             Debug.Log("Quantity to Drop : " + qty);
@@ -66,7 +66,7 @@ namespace GameLab.InventorySystem
             UpdateList();
 
         }
-        public InventorySlot GetInventorySlot(ItemData itemData)
+        public IamSlot GetInventorySlot(ItemData itemData)
         {
             if (!inventory.ContainsKey(itemData)) return null;
             return inventory[itemData];

@@ -5,10 +5,12 @@ using GameLab.InteractableSystem;
 using GameLab.InventorySystem;
 using GameLab.PartySystem;
 using GameLab.ResourceSystem;
+using GameLab.TradingSystem;
 using GameLab.UISystem;
 using GameLab.UnitSystem.AbilitySystem;
 using GameLab.UnitSystem.ActionSystem;
 using UnityEngine;
+using static Unity.VisualScripting.Dependencies.Sqlite.SQLiteConnection;
 
 namespace GameLab.UnitSystem
 {
@@ -22,6 +24,7 @@ namespace GameLab.UnitSystem
         PartyHandler partyHandler;
         EquipmentHandler equipmentHandler;
         InventoryHandler inventoryHandler;
+        TradeHandler tradeHandler;
         AbilityHandler abilityHandler;
         WorldSpaceUIHandler worldSpaceUIHandler;
         UnitAnimationHandler unitAnimationHandler;
@@ -37,6 +40,7 @@ namespace GameLab.UnitSystem
             abilityHandler = GetComponent<AbilityHandler>();
             inventoryHandler = GetComponent<InventoryHandler>();
             worldSpaceUIHandler = GetComponent<WorldSpaceUIHandler>();
+            tradeHandler = GetComponent<TradeHandler>();
             healthHandler.onDead += OnDeath;
         }
 
@@ -69,6 +73,7 @@ namespace GameLab.UnitSystem
         public AbilityHandler GetAbilityHandler() => abilityHandler;
         public EquipmentHandler GetEquipmentHandler() => equipmentHandler;
         public InventoryHandler GetInventoryHandler() => inventoryHandler;
+        public TradeHandler GetTradeHandler() => tradeHandler;
         public WorldSpaceUIHandler GetWorldSpaceUIHandler() => worldSpaceUIHandler;
     }
 }

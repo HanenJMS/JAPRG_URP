@@ -4,7 +4,7 @@ using UnityEngine;
 namespace GameLab.InventorySystem
 {
     [System.Serializable]
-    public class InventorySlot : IEquatable<InventorySlot>
+    public class InventorySlot : IEquatable<InventorySlot>, IamSlot
     {
         [SerializeField] ItemData inventoryItem;
         [SerializeField] int currentQuantity = 0;
@@ -22,12 +22,12 @@ namespace GameLab.InventorySystem
         {
             return inventoryItem;
         }
-        public virtual int GetSlotCapacity()
+        public int GetSlotCapacity()
         {
             return slotCapacity;
         }
 
-        public virtual int GetAvailableCapacity()
+        public int GetAvailableCapacity()
         {
             return slotCapacity - currentQuantity;
         }
@@ -35,7 +35,6 @@ namespace GameLab.InventorySystem
         public void SetQuantity(int quantity)
         {
             currentQuantity = quantity;
-            Debug.Log("ChangedQuantity: " + currentQuantity);
         }
         public int GetQuantity()
         {
@@ -44,14 +43,6 @@ namespace GameLab.InventorySystem
         public bool Equals(InventorySlot other)
         {
             return other.inventoryItem = inventoryItem;
-        }
-        public static InventorySlot operator +(InventorySlot a, int b)
-        {
-            return new(a.GetItemData(), a.GetQuantity() + b);
-        }
-        public static InventorySlot operator -(InventorySlot a, int b)
-        {
-            return new(a.GetItemData(), a.GetQuantity() - b);
         }
     }
 }
