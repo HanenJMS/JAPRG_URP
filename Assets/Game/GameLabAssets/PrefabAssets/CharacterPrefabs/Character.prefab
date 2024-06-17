@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8279748161572691554}
   m_Layer: 0
-  m_Name: holder
+  m_Name: HeadGearPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9841,6 +9841,7 @@ GameObject:
   - component: {fileID: 4897841143651027169}
   - component: {fileID: 3460741526962099659}
   - component: {fileID: 7023504510401299690}
+  - component: {fileID: 9202035355074720742}
   - component: {fileID: 3134935596300219750}
   - component: {fileID: 307864446189196601}
   - component: {fileID: 4106727272373688972}
@@ -9851,6 +9852,7 @@ GameObject:
   - component: {fileID: 8447237814104563052}
   - component: {fileID: 7306744453567013748}
   - component: {fileID: 97268100674398089}
+  - component: {fileID: 1477886362580807375}
   - component: {fileID: 6013764921578310138}
   m_Layer: 0
   m_Name: Character
@@ -10039,35 +10041,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9856531471cb4eb4f9374a034ad17c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equipments:
-  - inventoryItem: {fileID: 0}
-    currentQuantity: 0
-    slotCapacity: 0
-  - inventoryItem: {fileID: 0}
-    currentQuantity: 0
-    slotCapacity: 0
-  - inventoryItem: {fileID: 0}
-    currentQuantity: 0
-    slotCapacity: 0
-  - inventoryItem: {fileID: 0}
-    currentQuantity: 0
-    slotCapacity: 0
-  - inventoryItem: {fileID: 0}
-    currentQuantity: 0
-    slotCapacity: 0
-  - inventoryItem: {fileID: 0}
-    currentQuantity: 0
-    slotCapacity: 0
-  headSlotHolder: {fileID: 8279748161572691554}
-  helmetEquipped: {fileID: 0}
-  equippedHelm: {fileID: 0}
-  RightHandWeaponHolder: {fileID: 2619269615927902377}
-  LeftHandWeaponHolder: {fileID: 0}
-  defaultWeapon: {fileID: 11400000, guid: b4fcc1562c5b78e4fb6014f7fa7c5d3a, type: 2}
-  equippedMainWeapon: {fileID: 0}
-  MainWeaponDrawn: {fileID: 0}
-  currentWeapon: {fileID: 0}
+  equipmentInventory:
+    defaultWeapon: {fileID: 11400000, guid: b4fcc1562c5b78e4fb6014f7fa7c5d3a, type: 2}
+    drawnWeapon: {fileID: 0}
+  worldEquipmentHolder: {fileID: 9202035355074720742}
   unit: {fileID: 0}
+--- !u!114 &9202035355074720742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2409774882518399275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b19d584315372418a3632f609ede57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headSlot: {fileID: 543671538466171519}
+  bodySlot: {fileID: 0}
+  bootSlot: {fileID: 0}
+  mainHand: {fileID: 7237566479230796275}
+  offHand: {fileID: 0}
 --- !u!114 &3134935596300219750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10212,7 +10207,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorData:
-    texture: {fileID: 2800000, guid: 6920e95b0bcde224d9654e64ccc8254f, type: 3}
+    texture: {fileID: 2800000, guid: ca2f60a685d733140b8108f548d85dc5, type: 3}
+    hotspot: {x: 0, y: 0}
+--- !u!114 &1477886362580807375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2409774882518399275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e49060820fb402241a9354326d54e256, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorData:
+    texture: {fileID: 2800000, guid: 18998ef35f6b8474984b039c3366b132, type: 3}
     hotspot: {x: 0, y: 0}
 --- !u!114 &6013764921578310138
 MonoBehaviour:
@@ -10370,7 +10380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5294099165010407155}
   m_Layer: 0
-  m_Name: HeadSlot
+  m_Name: HeadSlotContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10964,7 +10974,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2619269615927902377}
   m_Layer: 0
-  m_Name: RightHandPosition
+  m_Name: MainHandPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10995,7 +11005,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6276569985462259946}
   m_Layer: 0
-  m_Name: RightHand_Equipped
+  m_Name: RightHandHolderContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

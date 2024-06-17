@@ -3,7 +3,7 @@
     [System.Serializable]
     public enum EquipmentType
     {
-        Main, OffHand, Head, Body, Boots
+        Main, OffHand, Head, Body, Boots, Default
     }
 
 }

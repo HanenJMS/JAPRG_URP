@@ -3496,7 +3496,7 @@ PrefabInstance:
     - target: {fileID: 8899892551273673542, guid: 2d3c181d92df69a4090b982e8a9d5bd3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00003451954
+      value: 0.2525575
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3766,6 +3766,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EquipmentSystemCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5926388214571647176, guid: 6f91caf0a1727804c908e36c1bd76b82,
+        type: 3}
+      propertyPath: m_IgnoreReversedGraphics
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6332861127776220003, guid: 6f91caf0a1727804c908e36c1bd76b82,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3795,6 +3800,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7522893061180149751, guid: 6f91caf0a1727804c908e36c1bd76b82,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7623388237905851533, guid: 6f91caf0a1727804c908e36c1bd76b82,
         type: 3}

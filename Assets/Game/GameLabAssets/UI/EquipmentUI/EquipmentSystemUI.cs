@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class EquipmentSystemUI : MonoBehaviour
 {
-
+    
     Unit selectedUnit;
+    EquipmentSlotUI selectedSlot;
     [SerializeField] List<EquipmentSlotUI> equipmentSlots;
+
     void Start()
     {
         UnitSelectionSystem.Instance.onSelectedUnit += OnSelectedUnit;

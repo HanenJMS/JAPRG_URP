@@ -1,5 +1,6 @@
 using GameLab.InteractableSystem;
 using GameLab.InventorySystem;
+using GameLab.UISystem;
 using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
 using System.Collections.Generic;
@@ -38,13 +39,27 @@ namespace GameLab.Controller
             moveAction = playerUnit.GetComponent<MoveAction>();
         }
 
-
+        object UIInteraction;
         private void LateUpdate()
         {
 
             if(EventSystem.current.IsPointerOverGameObject())
             {
-                return;
+                UIInteraction = MouseWorldController.GetRaycastHit().collider.GetComponent<EquipmentSlotUI>();
+                if (UIInteraction != null)
+                {
+                    executableActions = UnitSelectionSystem.Instance.GetSelectedUnit().GetActionHandler().GetExecutableActions(UIInteraction);
+                    selectedIndex = 0;
+                    MouseWorldController.SetMouseCursor(executableActions[selectedIndex].GetMouseCursorInfo());
+                }
+                if (Input.GetMouseButtonUp(1))
+                {
+                    if (executableActions[selectedIndex].CanExecuteOnTarget(UIInteraction))
+                    {
+                        executableActions[selectedIndex].ExecuteOnTarget(UIInteraction);
+                        return;
+                    }
+                }
             }
             //handling action controller.
             if (playerUnit.GetHealthHandler().IsDead())
