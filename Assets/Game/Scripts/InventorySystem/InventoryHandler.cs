@@ -12,9 +12,9 @@ namespace GameLab.InventorySystem
         [SerializeField] List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
         public Action onInventoryChange;
-        public List<InventorySlot> GetInventory()
+        public Dictionary<ItemData, InventorySlot> GetInventory()
         {
-            return inventorySlots;
+            return inventory;
         }
         public InventorySlot GetInventorySlot(int index)
         {
@@ -87,13 +87,17 @@ namespace GameLab.InventorySystem
                 }
             }
         }
-        void UpdateList()
+        public void UpdateList()
         {
-            inventorySlots.Clear();
-            foreach (KeyValuePair<ItemData, InventorySlot> inv in inventory)
+            Dictionary<ItemData, InventorySlot> newDictionary = new();
+            foreach (KeyValuePair<ItemData, InventorySlot> slot in inventory) 
             {
-                inventorySlots.Add(inv.Value);
+                if(slot.Value.GetQuantity() > 0)
+                {
+                    newDictionary.Add(slot.Key, slot.Value);
+                }
             }
+            inventory = newDictionary;
             onInventoryChange?.Invoke();
         }
     }

@@ -4,15 +4,10 @@ using UnityEngine.AI;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
-    public class MoveAction : MonoBehaviour, IAction
+    public class MoveAction : BaseAction
     {
         NavMeshAgent agent;
         ActionHandler actionHander;
-        [SerializeField] MouseCursorData cursorData;
-        public MouseCursorData GetMouseCursorInfo()
-        {
-            return cursorData;
-        }
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
@@ -20,13 +15,13 @@ namespace GameLab.UnitSystem.ActionSystem
         }
 
         Vector3 targetPosition;
-        public void ExecuteOnTarget(object target)
+        public override void ExecuteOnTarget(object target)
         {
             MoveToDestination(target);
             actionHander.SetCurrentAction(this);
         }
 
-        public bool CanExecuteOnTarget(object target)
+        public override bool CanExecuteOnTarget(object target)
         {
             if (target is Vector3) return true;
             return false;
@@ -50,16 +45,12 @@ namespace GameLab.UnitSystem.ActionSystem
             }
         }
 
-        public string ActionName()
-        {
-            return this.ToString();
-        }
         public override string ToString()
         {
             return "Move";
         }
 
-        public void Cancel()
+        public override void Cancel()
         {
             agent.SetDestination(this.transform.position);
         }

@@ -1,15 +1,31 @@
+using GameLab.UISystem;
+using GameLab.UnitSystem.ActionSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public abstract class BaseAction : MonoBehaviour, IEquatable<BaseAction>
+public abstract class BaseAction : MonoBehaviour, IAction
 {
-    public bool Equals(BaseAction other)
+
+    [SerializeField] MouseCursorData cursorData;
+    [SerializeField] Sprite actionSprite;
+
+    public string ActionName()
     {
-        Debug.Log("Fix BaseAction Equatable");
-        return false;
+        return ToString();
     }
 
+    public abstract void Cancel();
 
+    public abstract bool CanExecuteOnTarget(object target);
+
+    public abstract void ExecuteOnTarget(object target);
+
+    public MouseCursorData GetMouseCursorInfo()
+    {
+        return cursorData;
+    }
+    public Sprite GetActionSprite() => actionSprite;
 }

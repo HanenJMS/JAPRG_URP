@@ -4,24 +4,17 @@ using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
-    public class EquipAction : MonoBehaviour, IAction
+    public class EquipAction : BaseAction
     {
-        [SerializeField] MouseCursorData cursorData;
-        public MouseCursorData GetMouseCursorInfo()
-        {
-            return cursorData;
-        }
-        public string ActionName()
-        {
-            return "Equip";
-        }
 
-        public void Cancel()
+
+
+        public override void Cancel()
         {
 
         }
 
-        public bool CanExecuteOnTarget(object target)
+        public override bool CanExecuteOnTarget(object target)
         {
             if (target is ItemWorld)
             {
@@ -36,7 +29,7 @@ namespace GameLab.UnitSystem.ActionSystem
             return true;
         }
 
-        public void ExecuteOnTarget(object target)
+        public override void ExecuteOnTarget(object target)
         {
             var unit = GetComponent<Unit>();
             if (target is ItemWorld)
@@ -53,7 +46,7 @@ namespace GameLab.UnitSystem.ActionSystem
         }
         public override string ToString()
         {
-            return ActionName();
+            return "Equip";
         }
     }
 }

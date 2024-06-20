@@ -3,31 +3,23 @@ using GameLab.UISystem;
 using UnityEngine;
 namespace GameLab.UnitSystem.ActionSystem
 {
-    public class HireAction : MonoBehaviour, IAction
+    public class HireAction : BaseAction
     {
         ActionHandler actionHandler;
         PartyHandler partyHandler;
-        [SerializeField] MouseCursorData cursorData;
-        public MouseCursorData GetMouseCursorInfo()
-        {
-            return cursorData;
-        }
+
         private void Awake()
         {
             actionHandler = GetComponent<ActionHandler>();
             partyHandler = GetComponent<PartyHandler>();
         }
-        public string ActionName()
-        {
-            return ToString();
-        }
 
-        public void Cancel()
+        public override void Cancel()
         {
             
         }
 
-        public bool CanExecuteOnTarget(object target)
+        public override bool CanExecuteOnTarget(object target)
         {
             if(target is Unit)
             {
@@ -43,7 +35,7 @@ namespace GameLab.UnitSystem.ActionSystem
             return false;
         }
 
-        public void ExecuteOnTarget(object target)
+        public override void ExecuteOnTarget(object target)
         {
             partyHandler.SetLeader(GetComponent<Unit>());
             actionHandler.SetCurrentAction(this);

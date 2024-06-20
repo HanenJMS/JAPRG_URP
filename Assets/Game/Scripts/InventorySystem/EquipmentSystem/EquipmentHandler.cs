@@ -30,6 +30,7 @@ namespace GameLab.InventorySystem
             equipmentInventory.EquipItem(itemData);
             worldEquipmentHolder.EquipItem(itemData);
             unit.GetTradeHandler().TradeItem(equipmentInventory.GetSlot(itemData.GetEquipmentType()), equipItem, 1);
+            unit.GetInventoryHandler().UpdateList();
             if(itemData.GetEquipmentType() == EquipmentType.Main)
             {
                 DrawWeapon();
@@ -42,6 +43,11 @@ namespace GameLab.InventorySystem
             {
                 unit.GetInventoryHandler().AddToQuantity(equipmentInventory.GetSlot(equipmentType), 1);
                 equipmentInventory.UnequipItem(equipmentType);
+            }
+            worldEquipmentHolder.UnequipItem(equipmentType);
+            if (equipmentType == EquipmentType.Main)
+            {
+                DrawWeapon();
             }
         }
         public void DrawWeapon()

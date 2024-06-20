@@ -31,24 +31,32 @@ namespace GameLab.Controller
         }
         private void LateUpdate()
         {
+            if (!container.gameObject.activeSelf) return;
             
             if(Input.GetKeyDown(KeyCode.I))
             {
                 ClearUI();
-                if (selectedInventory == null) selectedInventory = UnitSelectionSystem.Instance.GetPlayerUnit().GetInventoryHandler();
-                UpdateUI(selectedInventory.GetInventory());
+                if (selectedInventory == null)
+                {
+                    selectedInventory = UnitSelectionSystem.Instance.GetPlayerUnit().GetInventoryHandler();
+                }
+                if (selectedInventory != null)
+                {
+                    UpdateUI(selectedInventory.GetInventory());
+                }
             }
         }
-        void UpdateUI(List<InventorySlot> slots)
+        void UpdateUI(Dictionary<ItemData, InventorySlot> slots)
         {
             if (slots == null) return;
             if (slots.Count == 0) return;
-            slots.ForEach(slot =>
+            ClearUI();
+            foreach (KeyValuePair<ItemData, InventorySlot> slot in slots)
             {
                 GameObject ui = Instantiate(inventorySlotUI, container.transform);
-                ui.GetComponent<InventorySlotUI>().SetUI(slot);
+                ui.GetComponent<InventorySlotUI>().SetUI(slot.Value);
                 inventorySlotUIs.Add(ui);
-            });
+            }
         }
         void ClearUI()
         {

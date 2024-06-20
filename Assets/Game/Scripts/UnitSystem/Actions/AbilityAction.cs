@@ -42,5 +42,10 @@ namespace GameLab.UnitSystem.AbilitySystem
         {
             throw new NotImplementedException();
         }
+
+        public Sprite GetActionSprite()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

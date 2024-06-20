@@ -1,4 +1,5 @@
 using GameLab.UISystem;
+using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
@@ -9,6 +10,7 @@ namespace GameLab.UnitSystem.ActionSystem
         public bool CanExecuteOnTarget(object target);
         public void Cancel();
         public MouseCursorData GetMouseCursorInfo();
+        public Sprite GetActionSprite();
     }
 }
 

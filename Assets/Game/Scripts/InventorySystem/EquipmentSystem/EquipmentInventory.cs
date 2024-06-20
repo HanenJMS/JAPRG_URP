@@ -61,10 +61,6 @@ namespace GameLab.InventorySystem
             equipmentInventory[equipmentType].SetItemData(null);
             onEquipmentChanged?.Invoke();
         }
-        public void SetWeaponDrawn(WeaponData weaponData)
-        {
-            drawnWeapon = weaponData;
-        }
         public WeaponData GetCurrentWeaponDrawn()
         {
             if(weaponDrawn && GetEquippedItem(EquipmentType.Main) != null)

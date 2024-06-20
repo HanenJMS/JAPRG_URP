@@ -45,21 +45,7 @@ namespace GameLab.Controller
 
             if(EventSystem.current.IsPointerOverGameObject())
             {
-                UIInteraction = MouseWorldController.GetRaycastHit().collider.GetComponent<EquipmentSlotUI>();
-                if (UIInteraction != null)
-                {
-                    executableActions = UnitSelectionSystem.Instance.GetSelectedUnit().GetActionHandler().GetExecutableActions(UIInteraction);
-                    selectedIndex = 0;
-                    MouseWorldController.SetMouseCursor(executableActions[selectedIndex].GetMouseCursorInfo());
-                }
-                if (Input.GetMouseButtonUp(1))
-                {
-                    if (executableActions[selectedIndex].CanExecuteOnTarget(UIInteraction))
-                    {
-                        executableActions[selectedIndex].ExecuteOnTarget(UIInteraction);
-                        return;
-                    }
-                }
+                return;
             }
             //handling action controller.
             if (playerUnit.GetHealthHandler().IsDead())

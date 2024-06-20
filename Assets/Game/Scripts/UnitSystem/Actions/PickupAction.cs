@@ -4,30 +4,22 @@ using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
-    public class PickupAction : MonoBehaviour, IAction
+    public class PickupAction : BaseAction
     {
-        [SerializeField] MouseCursorData cursorData;
-        public MouseCursorData GetMouseCursorInfo()
-        {
-            return cursorData;
-        }
-        public string ActionName()
-        {
-            return "Pick up";
-        }
 
-        public void Cancel()
+
+        public override void Cancel()
         {
 
         }
 
-        public bool CanExecuteOnTarget(object target)
+        public override bool CanExecuteOnTarget(object target)
         {
             if (target is not ItemWorld) return false;
             return true;
         }
 
-        public void ExecuteOnTarget(object target)
+        public override void ExecuteOnTarget(object target)
         {
             var unit = GetComponent<Unit>();
             unit.GetInventoryHandler().PickupItem(target as ItemWorld);
@@ -35,7 +27,7 @@ namespace GameLab.UnitSystem.ActionSystem
         }
         public override string ToString()
         {
-            return ActionName();
+            return "Pickup";
         }
     }
 }

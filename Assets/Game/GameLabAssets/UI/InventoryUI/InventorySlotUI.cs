@@ -1,4 +1,5 @@
 using GameLab.InventorySystem;
+using GameLab.UnitSystem;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,15 +13,27 @@ namespace GameLab.UISystem
     {
         [SerializeField] Image slotImage;
         [SerializeField] TextMeshProUGUI slotText;
+        [SerializeField] Button button;
         private void Awake()
         {
-
+            button = GetComponent<Button>();    
         }
         public void SetUI(InventorySlot ui)
         {
             slotImage.sprite = ui.GetItemData().GetItemSprite();
             slotText.text = ui.GetQuantity().ToString();
+            button?.onClick.AddListener(() =>
+            {
+                ActionSystemUI.Instance.SpawnActionButtons
+                (
+                    UnitSelectionSystem.Instance.
+                        GetSelectedUnit().
+                        GetActionHandler().
+                        GetExecutableActions(ui), ui
+                );
+            });
         }
+
     }
 }
 

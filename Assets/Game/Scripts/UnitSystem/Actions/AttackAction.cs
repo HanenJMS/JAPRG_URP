@@ -5,14 +5,12 @@ using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
-    public class AttackAction : MonoBehaviour, IAction
+    public class AttackAction : BaseAction
     {
         CombatHandler combatHandler;
         ActionHandler actionHandler;
         AbilityHandler abilityHandler;
         Unit selfUnit;
-
-        [SerializeField] MouseCursorData cursorData;
         private void Awake()
         {
             combatHandler = GetComponent<CombatHandler>();
@@ -21,7 +19,7 @@ namespace GameLab.UnitSystem.ActionSystem
             selfUnit = GetComponent<Unit>();
         }
         int damage = 5;
-        public void ExecuteOnTarget(object target)
+        public override void ExecuteOnTarget(object target)
         {
             if (target is Unit)
             {
@@ -32,7 +30,7 @@ namespace GameLab.UnitSystem.ActionSystem
 
         }
 
-        public bool CanExecuteOnTarget(object target)
+        public override bool CanExecuteOnTarget(object target)
         {
             if(target is Unit)
             {
@@ -43,24 +41,13 @@ namespace GameLab.UnitSystem.ActionSystem
             }
             return false;
         }
-        public void Cancel()
+        public override void Cancel()
         {
             combatHandler.Cancel();
-        }
-
-        public string ActionName()
-        {
-            return this.ToString();
         }
         public override string ToString()
         {
             return "Attack";
-        }
-
-        public MouseCursorData GetMouseCursorInfo()
-        {
-
-            return cursorData;
         }
     }
 }
