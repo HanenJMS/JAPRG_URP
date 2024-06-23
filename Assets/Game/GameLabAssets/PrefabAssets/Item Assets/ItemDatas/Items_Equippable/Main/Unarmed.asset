@@ -16,7 +16,9 @@ MonoBehaviour:
   itemSprite: {fileID: 0}
   itemModelPrefab: {fileID: 5966226896217949179, guid: a9480cb6a18b49e4892759760dba589b,
     type: 3}
-  weaponDamage: 10
+  itemPickupPrefab: {fileID: 0}
+  equipmentType: 0
+  weaponDamage: 1
   animationOverrider: {fileID: 22100000, guid: dd81495646c8fe14ba3ba68adda9b60b, type: 2}
   defaultAbility: {fileID: 11400000, guid: 3c7741ddf16cd364eae4fa7f6dc4f3e9, type: 2}
   weaponEffect: {fileID: 0}
