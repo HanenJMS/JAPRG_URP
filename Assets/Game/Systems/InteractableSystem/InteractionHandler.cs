@@ -13,25 +13,31 @@ namespace GameLab.UnitSystem
         public InteractAction InteractingAction { get; set; }
         Transform currentTargetLocation = null;
         
+        public void Cancel()
+        {
+            currentTarget = null;
+            currentTargetLocation = null;
+            
+        }
         private void LateUpdate()
         {
-            if(CurrentTarget != null && currentTargetLocation == null)
+            if (currentTarget == null) return;
+            if(currentTarget != null && currentTargetLocation == null)
             {
                 currentTargetLocation = currentTarget.GetCurrentWorldTransform();
             }
-            if(currentTargetLocation != null)
+            if(currentTargetLocation != null && currentTarget != null)
             {
-                bool inDistance = Vector3.Distance(this.transform.position, currentTargetLocation.position) < 2f;
+                bool inDistance = Vector3.Distance(this.transform.position, currentTargetLocation.position) < 1.5f;
                 if(!inDistance)
                 {
                     var mover = GetComponent<MoveAction>();
                     mover.MoveToDestination(currentTargetLocation.position);
                     return;
                 }
-                InteractingAction.Interact(CurrentTarget);
-                CurrentTarget = null;
-                currentTargetLocation = null;
-                GetComponent<ActionHandler>().SetCurrentAction(null);
+                InteractingAction.Interact(currentTarget);
+                Cancel();
+
             }
         }
     }

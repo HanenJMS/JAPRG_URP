@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
-    public class InteractAction : BaseAction
+    public abstract class InteractAction : BaseAction
     {
-        Unit unit;
+        internal Unit unit;
         private void Awake()
         {
             unit = GetComponent<Unit>();
@@ -15,24 +15,11 @@ namespace GameLab.UnitSystem.ActionSystem
         //this is a generic 
         public override void Cancel()
         {
+            base.Cancel();
+            var interactionHandler = GetComponent<InteractionHandler>();
+            interactionHandler.Cancel();
         }
-        public virtual void Interact(object target)
-        {
-            var building = target as Interactable_Building;
-            building.Interact(unit);
-        }
-        public override bool CanExecuteOnTarget(object target)
-        {
-            if(target is Interactable)
-            {
-                if (target is Interactable_Building)
-                {
-                    return true;
-                }
-            }
-            
-            return false;
-        }
+        public abstract void Interact(object target);
 
         public override void ExecuteOnTarget(object target)
         {
