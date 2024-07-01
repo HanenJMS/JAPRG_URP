@@ -8,15 +8,18 @@ namespace GameLab.UnitSystem.ActionSystem
     {
         NavMeshAgent agent;
         ActionHandler actionHander;
+        Unit unit;
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
             actionHander = GetComponent<ActionHandler>();
+            unit = GetComponent<Unit>();
         }
 
         Vector3 targetPosition;
         public override void ExecuteOnTarget(object target)
         {
+            
             MoveToDestination(target);
             actionHander.SetCurrentAction(this);
         }
@@ -29,6 +32,7 @@ namespace GameLab.UnitSystem.ActionSystem
 
         public void MoveToDestination(object target)
         {
+            if (unit.InBuilding()) unit.ExitBuilding();
             SetTargetPosition(target);
             agent.SetDestination(targetPosition);
         }
@@ -52,7 +56,10 @@ namespace GameLab.UnitSystem.ActionSystem
 
         public override void Cancel()
         {
-            agent.SetDestination(this.transform.position);
+            if(gameObject.activeSelf)
+            {
+                agent.SetDestination(this.transform.position);
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ namespace GameLab.UnitSystem
             }
             Instance = this;
         }
-        private void Start()
+        private void OnEnable()
         {
             playerUnit = GameObject.FindGameObjectWithTag("Player").GetComponent<Unit>();
         }
@@ -75,7 +75,7 @@ namespace GameLab.UnitSystem
         public Unit GetPlayerUnit() => playerUnit;
         public Unit GetSelectedUnit()
         {
-            return selectedUnit;
+            return selectedUnit != null ? selectedUnit : playerUnit ;
         }
 
     }

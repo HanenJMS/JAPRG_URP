@@ -1,6 +1,5 @@
 using GameLab.InteractableSystem;
 using GameLab.InventorySystem;
-using GameLab.UISystem;
 using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ namespace GameLab.Controller
 
         Unit playerUnit;
         [SerializeField] Unit currentSelectedUnit;
-        List<Interactable> interactables = new();
         Interactable interactable = null;
         List<IAction> executableActions = new();
         IAction selectedAction;
@@ -39,11 +37,10 @@ namespace GameLab.Controller
             moveAction = playerUnit.GetComponent<MoveAction>();
         }
 
-        object UIInteraction;
         private void LateUpdate()
         {
 
-            if(EventSystem.current.IsPointerOverGameObject())
+            if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
             }
@@ -82,6 +79,7 @@ namespace GameLab.Controller
             }
             else
             {
+                
                 interactable = null;
                 MouseWorldController.SetMouseCursor(moveAction.GetMouseCursorInfo());
                 if (Input.GetMouseButtonUp(1))

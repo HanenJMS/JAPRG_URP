@@ -13,17 +13,23 @@ public class EquipmentSystemUI : MonoBehaviour
     void Start()
     {
         UnitSelectionSystem.Instance.onSelectedUnit += OnSelectedUnit;
+        OnSelectedUnit();
     }
 
     void OnSelectedUnit()
     {
         if (selectedUnit != null) selectedUnit.GetEquipmentHandler().GetInventory().onEquipmentChanged -= UpdateUI;
         selectedUnit = UnitSelectionSystem.Instance.GetSelectedUnit();
+        if (selectedUnit == null) return;
         selectedUnit.GetEquipmentHandler().GetInventory().onEquipmentChanged += UpdateUI;
         UpdateUI();
     }
     void UpdateUI()
     {
+        if(selectedUnit == null)
+        {
+            selectedUnit = UnitSelectionSystem.Instance.GetSelectedUnit();
+        }
         if (selectedUnit != null)
         {
             foreach (EquipmentSlotUI ui in equipmentSlots)

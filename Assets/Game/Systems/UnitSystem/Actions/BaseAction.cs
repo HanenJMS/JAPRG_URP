@@ -1,23 +1,24 @@
 using GameLab.UISystem;
 using GameLab.UnitSystem.ActionSystem;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class BaseAction : MonoBehaviour, IAction
 {
 
     [SerializeField] MouseCursorData cursorData;
     [SerializeField] Sprite actionSprite;
-
+    [SerializeField] internal object target;
     public string ActionName()
     {
         return ToString();
     }
-
-    public abstract void Cancel();
+    /// <summary>
+    /// base keyword should only be called after overriden function. 
+    /// </summary>
+    public virtual void Cancel()
+    {
+        target = null;
+    }
 
     public abstract bool CanExecuteOnTarget(object target);
 
@@ -27,5 +28,8 @@ public abstract class BaseAction : MonoBehaviour, IAction
     {
         return cursorData;
     }
-    public Sprite GetActionSprite() => actionSprite;
+    public Sprite GetActionSprite()
+    {
+        return actionSprite;
+    }
 }

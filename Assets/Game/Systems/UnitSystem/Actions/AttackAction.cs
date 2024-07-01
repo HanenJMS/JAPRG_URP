@@ -23,6 +23,7 @@ namespace GameLab.UnitSystem.ActionSystem
         {
             if (target is Unit)
             {
+                this.target = target;
                 combatHandler.SetEnemy(target as Unit);
                 abilityHandler.UpdateAbility();
                 actionHandler.SetCurrentAction(this);

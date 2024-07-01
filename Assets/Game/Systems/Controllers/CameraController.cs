@@ -15,7 +15,7 @@ namespace GameLab.Controller
         float rotationSpeed = 100f;
         float zoomAmount = 1f;
         const float MIN_FOLLOW_Y = 5f;
-        const float MAX_FOLLOW_Y = 13f;
+        const float MAX_FOLLOW_Y = 35;
 
         Vector3 targetFollowOffset;
         CinemachineTransposer cineMachineTransposer;
@@ -92,6 +92,7 @@ namespace GameLab.Controller
             }
             float zoomSpeed = 3f;
             targetFollowOffset.y = Mathf.Clamp(targetFollowOffset.y, MIN_FOLLOW_Y, MAX_FOLLOW_Y);
+            targetFollowOffset.z = -Mathf.Clamp(targetFollowOffset.y, MIN_FOLLOW_Y, MAX_FOLLOW_Y);
             cineMachineTransposer.m_FollowOffset = Vector3.Lerp(cineMachineTransposer.m_FollowOffset, targetFollowOffset, Time.unscaledDeltaTime * zoomSpeed);
             cinemachineCamera.m_Lens.FieldOfView = Mathf.Clamp(cinemachineCamera.m_Lens.FieldOfView += -Input.mouseScrollDelta.y * zoomSpeed, 25f, 50f);
         }

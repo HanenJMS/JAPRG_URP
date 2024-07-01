@@ -20,6 +20,8 @@ namespace GameLab.UISystem
         }
         public void SetUI(InventorySlot ui)
         {
+            if (ui == null) return;
+            if (ui.GetItemData() == null) return;
             slotImage.sprite = ui.GetItemData().GetItemSprite();
             slotText.text = ui.GetQuantity().ToString();
             button?.onClick.AddListener(() =>

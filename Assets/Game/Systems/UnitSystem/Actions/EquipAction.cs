@@ -19,14 +19,14 @@ namespace GameLab.UnitSystem.ActionSystem
             if (target is ItemWorld)
             {
                 var item = target as ItemWorld;
-                if (item.GetItemSlot().GetItemData() is not EquipmentData) return false;
+                if (item.GetItemSlot().GetItemData() is  EquipmentData) return true;
             }
             if (target is IamSlot)
             {
                 var item = target as IamSlot;
-                if (item.GetItemData() is not EquipmentData) return false;
+                if (item.GetItemData() is EquipmentData) return true;
             }
-            return true;
+            return false;
         }
 
         public override void ExecuteOnTarget(object target)

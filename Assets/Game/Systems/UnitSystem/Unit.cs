@@ -29,6 +29,8 @@ namespace GameLab.UnitSystem
         WorldSpaceUIHandler worldSpaceUIHandler;
         UnitAnimationHandler unitAnimationHandler;
         StatHandler statHandler;
+
+        Interactable_Building currentBuildingLocation = null;
         private void Awake()
         {
             actionHandler = GetComponent<ActionHandler>();
@@ -50,6 +52,13 @@ namespace GameLab.UnitSystem
             actionHandler.SetCurrentAction(null);
             unitAnimationHandler.SetTrigger("death");
             GetComponent<CapsuleCollider>().enabled = false;
+        }
+        public void EnterBuilding(Interactable_Building building) => currentBuildingLocation = building;
+        public bool InBuilding() => currentBuildingLocation != null;
+        public void ExitBuilding()
+        {
+            currentBuildingLocation.Exit(this);
+            currentBuildingLocation = null;
         }
         public ActionHandler GetActionHandler()
         {

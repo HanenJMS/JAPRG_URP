@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
-    public class PickupAction : BaseAction
+    public class PickupAction : InteractAction
     {
 
 
@@ -20,6 +20,10 @@ namespace GameLab.UnitSystem.ActionSystem
         }
 
         public override void ExecuteOnTarget(object target)
+        {
+            base.ExecuteOnTarget(target);
+        }
+        public override void Interact(object target)
         {
             var unit = GetComponent<Unit>();
             unit.GetInventoryHandler().PickupItem(target as ItemWorld);

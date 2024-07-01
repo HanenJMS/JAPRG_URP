@@ -24,6 +24,10 @@ namespace GameLab.InventorySystem
         {
             return itemSlot;
         }
+        public override void Interact(object interaction)
+        {
+            PickUp();
+        }
         public void PickUp()
         {
             if(itemSlot.GetQuantity() <= 0)

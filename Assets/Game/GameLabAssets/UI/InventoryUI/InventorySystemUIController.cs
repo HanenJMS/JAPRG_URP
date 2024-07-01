@@ -16,11 +16,15 @@ namespace GameLab.Controller
         private void Start()
         {
             UnitSelectionSystem.Instance.onSelectedUnit += SetSelected;
+            SetSelected();
         }
         void SetSelected()
         {
             if (selectedInventory != null) selectedInventory.onInventoryChange -= UpdateUI;
-            selectedInventory = UnitSelectionSystem.Instance.GetSelectedUnit().GetInventoryHandler();
+            var unit = UnitSelectionSystem.Instance.GetSelectedUnit();
+            if (unit == null) return;
+            selectedInventory = unit.GetInventoryHandler();
+            if (selectedInventory == null) return;
             selectedInventory.onInventoryChange += UpdateUI;
             UpdateUI();
         }
