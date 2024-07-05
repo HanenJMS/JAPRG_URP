@@ -46,7 +46,10 @@ namespace GameLab.UnitSystem
             tradeHandler = GetComponent<TradeHandler>();
             healthHandler.onDead += OnDeath;
         }
-
+        public override void Interact(object interaction)
+        {
+            
+        }
         void OnDeath()
         {
             actionHandler.SetCurrentAction(null);

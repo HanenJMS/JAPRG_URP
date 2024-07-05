@@ -5,7 +5,6 @@ namespace GameLab.WorldSpaceComponents
     public class TimeDelayDestroyParticle : MonoBehaviour
     {
         [SerializeField] ParticleSystem ps;
-        float time = 0f;
         [SerializeField] float duration = 5f;
 
         private void OnEnable()

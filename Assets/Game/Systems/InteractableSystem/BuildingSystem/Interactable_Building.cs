@@ -1,6 +1,7 @@
 using GameLab.UnitSystem;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace GameLab.InteractableSystem
 {
@@ -9,7 +10,14 @@ namespace GameLab.InteractableSystem
         List<Unit> residents = new();
         Unit owner;
         [SerializeField] Transform entrance;
-        public override Transform GetCurrentWorldTransform() => entrance;
+        BuildingWorld buildingWorld;
+        private void Start()
+        {
+            buildingWorld = GetComponentInParent<BuildingWorld>();
+            NavMeshObstacle obs = GetComponent<NavMeshObstacle>();
+            
+        }
+        public override Transform GetCurrentWorldTransform() => buildingWorld.GetBuildingEntranceLocation();
         public override void Interact(object interaction)
         {
             var unit = interaction as Unit;
@@ -25,8 +33,9 @@ namespace GameLab.InteractableSystem
             if(residents.Contains(unit))
             {
                 unit.gameObject.SetActive(true);
-                unit.transform.position = entrance.position;
+                unit.transform.position = buildingWorld.GetBuildingEntranceLocation().position;
                 residents.Remove(unit);
+                Debug.Log($"Inn has :  {residents.Count}");
             }
         }
     }
