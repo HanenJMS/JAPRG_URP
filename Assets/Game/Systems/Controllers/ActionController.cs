@@ -119,6 +119,8 @@ namespace GameLab.Controller
             {
                 playerUnit.gameObject.GetComponent<EquipmentHandler>().WithdrawCombat();
             }
+
+            
         }
     }
 

@@ -10,7 +10,7 @@ namespace GameLab.StatSystem
 
         private void Awake()
         {
-           
+            InitializeStats();
         }
         void InitializeStats()
         {
@@ -25,6 +25,8 @@ namespace GameLab.StatSystem
                 statDictionary.Add(statType, new BaseStat(statType));
             }
         }
+        public BaseStat GetStatType(StatType statType)
+        { return statDictionary[statType]; }
     }
 }
 

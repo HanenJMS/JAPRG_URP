@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33990321452497680}
   - component: {fileID: 23543269416779982}
   - component: {fileID: 64147117404104502}
-  - component: {fileID: 4105465751840588643}
   m_Layer: 0
   m_Name: SM_Bld_Preset_Hut_01_Optimized
   m_TagString: Untagged
@@ -109,19 +108,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 1ba617a7f360e6e4e91d19d693273135, type: 3}
---- !u!208 &4105465751840588643
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743051142854260}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 3.4370003, y: 4.6190004, z: 3.6250002}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -3.3260002, y: 2.107, z: -3.5140002}
-  m_TimeToStationary: 0.5

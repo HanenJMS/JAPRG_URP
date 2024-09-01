@@ -181,8 +181,6 @@ GameObject:
   - component: {fileID: 4503457832226144}
   - component: {fileID: 33167985223415266}
   - component: {fileID: 23978386312288432}
-  - component: {fileID: 64687872510004352}
-  - component: {fileID: 2274462648506679406}
   m_Layer: 0
   m_Name: SM_Bld_Preset_House_Windmill_01_Optimized 1
   m_TagString: Untagged
@@ -260,44 +258,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64687872510004352
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706033077068076}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 8803e77aa12d10b4295ba588378c0140, type: 3}
---- !u!208 &2274462648506679406
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1706033077068076}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 4.649, y: 7.7460003, z: 5.0010004}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -1.25, y: 8.982, z: -1.973}
-  m_TimeToStationary: 0.5
 --- !u!1 &1908442315000742
 GameObject:
   m_ObjectHideFlags: 0

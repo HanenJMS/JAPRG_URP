@@ -96,8 +96,6 @@ GameObject:
   - component: {fileID: 4064253928706500}
   - component: {fileID: 33439336608258744}
   - component: {fileID: 23626087711531378}
-  - component: {fileID: 64812237718403650}
-  - component: {fileID: -4228435292494223770}
   m_Layer: 0
   m_Name: SM_Bld_Preset_House_09_A_Optimized 1
   m_TagString: Untagged
@@ -173,41 +171,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64812237718403650
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1739242526329770}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 8438475f44d13b94c998936191271a32, type: 3}
---- !u!208 &-4228435292494223770
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1739242526329770}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 4.2790003, y: 5.4540005, z: 4.306}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -1.25, y: 2.9420002, z: -2.6680002}
-  m_TimeToStationary: 0.5

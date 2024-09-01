@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 33305806584282894}
   - component: {fileID: 23248651411709740}
   - component: {fileID: 64685465148324142}
-  - component: {fileID: -1286577228635883074}
   m_Layer: 0
   m_Name: SM_Bld_Preset_Church_01_B_Optimized
   m_TagString: Untagged
@@ -195,19 +194,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 07ad3d95327270a46a64bab4c3ca45d6, type: 3}
---- !u!208 &-1286577228635883074
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472185838633946}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 3.2240002, y: 7.1200004, z: 5.459}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -1.25, y: 4.6080003, z: -3.8200002}
-  m_TimeToStationary: 0.5

@@ -59,6 +59,7 @@ namespace GameLab.UnitSystem
             {
                 SetSelectedUnit(playerUnit);
                 onPlayerSelected?.Invoke();
+                
             }
         }
 
@@ -66,6 +67,7 @@ namespace GameLab.UnitSystem
         {
             selectedUnit = unit;
             onSelectedUnit?.Invoke();
+            Debug.Log($"{selectedUnit.name} strength : {selectedUnit.GetStatHandler().GetStatType(StatSystem.StatType.Strength).GetStatValue()}");
         }
         void DeselectUnit()
         {

@@ -7,8 +7,11 @@ namespace GameLab.UnitSystem.ActionSystem
         
         public override void Interact(object target)
         {
-            var building = target as Interactable_Building;
-            building.Interact(unit);
+            if(target is Interactable_Building)
+            {
+                var building = target as Interactable_Building;
+                building.Interact(unit);
+            }
         }
         public override bool CanExecuteOnTarget(object target)
         {

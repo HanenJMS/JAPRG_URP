@@ -4,16 +4,20 @@ using UnityEngine;
 
 namespace GameLab.StatSystem
 {
-    public class BaseStat : MonoBehaviour
+    public struct BaseStat
     {
 
         
         [SerializeField] StatType statType;
-        public BaseStat(StatType statType)
+        [SerializeField] int statValue;
+        public BaseStat(StatType statType, int statValue = 0)
         {
             this.statType = statType;
+            this.statValue = statValue;
         }
         public StatType GetStatType() => statType;
+        public int GetStatValue() => statValue;
+        
     }
 }
 

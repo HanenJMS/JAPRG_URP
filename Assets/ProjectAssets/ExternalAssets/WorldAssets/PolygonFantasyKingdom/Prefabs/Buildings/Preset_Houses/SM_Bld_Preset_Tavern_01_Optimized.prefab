@@ -182,7 +182,6 @@ GameObject:
   - component: {fileID: 33633843957460988}
   - component: {fileID: 23725928028412524}
   - component: {fileID: 64905481549383620}
-  - component: {fileID: 4962412310119680052}
   m_Layer: 0
   m_Name: SM_Bld_Preset_Tavern_01_Optimized
   m_TagString: Untagged
@@ -282,22 +281,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 1fc3d0f44adcfff449f87cefa0841fc5, type: 3}
---- !u!208 &4962412310119680052
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1405846119302248}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 7.149, y: 4.6210003, z: 4.945}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -2.5, y: 5.8570004, z: -5.6670003}
-  m_TimeToStationary: 0.5
 --- !u!1 &1458096004886374
 GameObject:
   m_ObjectHideFlags: 0

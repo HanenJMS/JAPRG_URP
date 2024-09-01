@@ -9,7 +9,16 @@ namespace GameLab.UnitSystem
     public class InteractionHandler : MonoBehaviour
     {
         Interactable currentTarget;
-        public Interactable CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
+        public Interactable CurrentTarget
+        {
+            get { return currentTarget; }
+            set
+            {
+                currentTarget = value;
+                currentTargetLocation = currentTarget.transform;
+            }
+        }
+
         public InteractAction InteractingAction { get; set; }
         Transform currentTargetLocation = null;
         
@@ -22,10 +31,8 @@ namespace GameLab.UnitSystem
         private void LateUpdate()
         {
             if (currentTarget == null) return;
-            if(currentTarget != null && currentTargetLocation == null)
-            {
-                currentTargetLocation = currentTarget.GetCurrentWorldTransform();
-            }
+            if (currentTargetLocation == null) currentTargetLocation = currentTarget.transform;
+            
             if(currentTargetLocation != null && currentTarget != null)
             {
                 bool inDistance = Vector3.Distance(this.transform.position, currentTargetLocation.position) < 1.5f;
@@ -35,8 +42,11 @@ namespace GameLab.UnitSystem
                     mover.MoveToDestination(currentTargetLocation.position);
                     return;
                 }
-                InteractingAction.Interact(currentTarget);
-                Cancel();
+                if(inDistance)
+                {
+                    InteractingAction.Interact(currentTarget);
+                    Cancel();
+                }
 
             }
         }

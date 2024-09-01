@@ -14,9 +14,9 @@ public class ItemSpawner : MonoBehaviour
     private void Start()
     {
         if (prefab == null) return;
-        StartCoroutine(SpawnItem());
+        StartCoroutine(Spawn());
     }
-    IEnumerator SpawnItem()
+    IEnumerator Spawn()
     {
         foreach (var item in prefab)
         {
@@ -26,8 +26,6 @@ public class ItemSpawner : MonoBehaviour
                 ob.GetComponentInChildren<ItemWorld>().GetItemSlot().SetQuantity(1);
                 yield return new WaitForSeconds(0.5f);
             }
-        }
-        
-        
+        }    
     }
 }

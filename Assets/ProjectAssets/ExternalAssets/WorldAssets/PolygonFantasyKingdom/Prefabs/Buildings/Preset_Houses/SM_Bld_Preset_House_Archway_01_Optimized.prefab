@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 33540725743070756}
   - component: {fileID: 23495702124195436}
   - component: {fileID: 64019491186092422}
-  - component: {fileID: -4957322898314783648}
   m_Layer: 0
   m_Name: SM_Bld_Preset_House_Archway_01_Optimized
   m_TagString: Untagged
@@ -198,22 +197,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 1f89c8801dd45044c96ce83da572b37a, type: 3}
---- !u!208 &-4957322898314783648
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1326707324818654}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 5.6260004, y: 6.4960003, z: 3.3120003}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -2.598, y: 7.7320004, z: -10.088}
-  m_TimeToStationary: 0.5
 --- !u!1 &1629505037873298
 GameObject:
   m_ObjectHideFlags: 0

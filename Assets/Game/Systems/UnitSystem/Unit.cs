@@ -44,6 +44,7 @@ namespace GameLab.UnitSystem
             inventoryHandler = GetComponent<InventoryHandler>();
             worldSpaceUIHandler = GetComponent<WorldSpaceUIHandler>();
             tradeHandler = GetComponent<TradeHandler>();
+            statHandler = GetComponent<StatHandler>();
             healthHandler.onDead += OnDeath;
         }
         public override void Interact(object interaction)

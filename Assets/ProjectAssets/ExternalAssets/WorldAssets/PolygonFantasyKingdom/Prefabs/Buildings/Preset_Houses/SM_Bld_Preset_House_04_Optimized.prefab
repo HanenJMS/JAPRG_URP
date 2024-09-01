@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 33562368178920150}
   - component: {fileID: 23987764054880468}
   - component: {fileID: 64432655415394316}
-  - component: {fileID: -7021429096273911134}
   m_Layer: 0
   m_Name: SM_Bld_Preset_House_04_Optimized
   m_TagString: Untagged
@@ -195,19 +194,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: a465951bff0e7024887ea85ee9c63193, type: 3}
---- !u!208 &-7021429096273911134
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682407712963166}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 7.9130006, y: 6.7520003, z: 4.8450003}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -5.9620004, y: 4.2400002, z: -3.7500002}
-  m_TimeToStationary: 0.5
