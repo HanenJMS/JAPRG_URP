@@ -9,7 +9,7 @@ namespace GameLab.GridSystem
 
         public static Pathfinding Instance { get; private set; }
         [SerializeField] private Transform gridDebugObject;
-        GridSystem<PathNode> gridSystem;
+        HexGridSystem<PathNode> gridSystem;
         [SerializeField] int width, height;
         [SerializeField] float cellSize;
         [SerializeField] LayerMask obstacleLayerMask;
@@ -21,7 +21,7 @@ namespace GameLab.GridSystem
                 return;
             }
             Instance = this;
-            gridSystem = new GridSystem<PathNode>(width, height, cellSize, (GridSystem<PathNode> g, GridPosition gp) => new PathNode(gp));
+            gridSystem = new HexGridSystem<PathNode>(width, height, cellSize, (HexGridSystem<PathNode> g, GridPosition gp) => new PathNode(gp));
             //gridSystem.CreateDebugObject(gridDebugObject);
         }
         private void Start()

@@ -14,5 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingPrefabs:
   - {fileID: 7963191275869625114, guid: 67cd42d02497581449740358843d82bb, type: 3}
-  - {fileID: 1310738999662834, guid: c1a5ec9923b0ca24da53a16255d53238, type: 3}
-  - {fileID: 1134997539092316, guid: 491a6f8076375c04f808a73b596efa5d, type: 3}

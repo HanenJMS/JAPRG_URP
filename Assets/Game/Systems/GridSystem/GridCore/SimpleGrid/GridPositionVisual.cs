@@ -7,7 +7,8 @@ namespace GameLab.GridSystem
         public static GridPositionVisual Instance { get; private set; }
 
         [SerializeField] Transform gridPositionVisual;
-        Dictionary<GridPosition, MeshRenderer> gridPositionVisualList;
+        Dictionary<GridPosition, GridPositionVisualCell> gridPositionVisualList;
+        
         private void Awake()
         {
             if (Instance != null)
@@ -24,8 +25,10 @@ namespace GameLab.GridSystem
                 Transform gridVisualTransform = Instantiate(gridPositionVisual, LevelGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity, this.transform);
 
                 Vector3 newVisualScale = new(LevelGridSystem.Instance.GetGridCellSize(), 1, LevelGridSystem.Instance.GetGridCellSize());
+
                 gridVisualTransform.localScale = newVisualScale;
-                gridPositionVisualList.Add(gridPosition, gridVisualTransform.GetComponentInChildren<MeshRenderer>());
+
+                gridPositionVisualList.Add(gridPosition, gridVisualTransform.GetComponent<GridPositionVisualCell>());
             }
             //UnitActionSystem.Instance.onSelectedUnit += ShowSelectedUnitSelectedActionVisual;
             //LevelGridSystem.Instance.onUpdateGridPosition += ShowSelectedUnitSelectedActionVisual;
@@ -34,9 +37,9 @@ namespace GameLab.GridSystem
         }
         void HideAllGridPosition()
         {
-            foreach (KeyValuePair<GridPosition, MeshRenderer> grid in gridPositionVisualList)
+            foreach (var grid in gridPositionVisualList)
             {
-                grid.Value.enabled = false;
+                grid.Value.HideGridPositionVisual();
             }
         }
         void ShowSelectedUnitSelectedActionVisual()
@@ -44,14 +47,14 @@ namespace GameLab.GridSystem
             //if (UnitActionSystem.Instance.GetSelectedAction() == null) return;
             //ShowGridPositions(UnitActionSystem.Instance.GetSelectedAction().GetValidTargetInRange());
         }
-        public void ShowGridPositions(List<GridPosition> positions)
+        public void ShowGridPositions(List<GridPosition> positions, string state)
         {
             HideAllGridPosition();
             foreach (GridPosition gridPosition in positions)
             {
                 if (gridPositionVisualList.ContainsKey(gridPosition))
                 {
-                    gridPositionVisualList[gridPosition].enabled = true;
+                    gridPositionVisualList[gridPosition].ShowGridPositionVisual(state);
                 }
             }
         }

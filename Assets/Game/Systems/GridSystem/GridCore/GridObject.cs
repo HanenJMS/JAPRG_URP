@@ -11,15 +11,22 @@ namespace GameLab.GridSystem
         List<object> objectList;
         List<GridPosition> neighborGridPositions = new();
         bool isOccupied;
+        bool isInfluenced;
+
+
         public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPosition)        {
             this.gridSystem = gridSystem;
             this.gridPosition = gridPosition;
             objectList = new();
             isOccupied = false;
-
+            isInfluenced = false;
 
         }
-        public List<GridPosition> GetNeighborGridPositions() => neighborGridPositions;
+        public List<GridPosition> GetNeighborGridPositions()
+        {
+            return neighborGridPositions;
+        }
+
         public void AddObjectToGrid(object gridObject)
         {
             objectList.Add(gridObject);
@@ -52,21 +59,41 @@ namespace GameLab.GridSystem
         {
             return objectList;
         }
+
         public void InitializeNeighborGridPositionList()
         {
-            for (int x = -1; x <= 1; x++)
-            {
-                for (int z = -1; z <= 1; z++)
-                {
-                    var gp = new GridPosition(x, z);
-                    var gpTest = gp + gridPosition;
-                    if (gpTest == this.gridPosition) continue;
-                    if (!LevelGridSystem.Instance.GridPositionIsValid(gpTest)) continue;
-                    neighborGridPositions.Add(gp + gridPosition);
+            bool isOdd = gridPosition.z % 2 == 1;
 
+            //northern neighbors
+            var gp5 = new GridPosition(isOdd ? +1 : -1, +1) + gridPosition;
+            var gp3 = new GridPosition(0, +1) + gridPosition;
+
+            //center neighbor
+            var gp1 = new GridPosition(-1, 0) + gridPosition;
+            var gp2 = new GridPosition(+1, 0) + gridPosition;
+
+            //south neighbor
+            var gp6 = new GridPosition(isOdd ? +1 : -1, -1) + gridPosition;
+            var gp4 = new GridPosition(0, -1) + gridPosition;
+
+            neighborGridPositions.Add(gp1);
+            neighborGridPositions.Add(gp2);
+            neighborGridPositions.Add(gp3);
+            neighborGridPositions.Add(gp4);
+            neighborGridPositions.Add(gp5);
+            neighborGridPositions.Add(gp6);
+
+            List<GridPosition> tempPositions = new();
+            foreach (var item in neighborGridPositions)
+            {
+                if (LevelGridSystem.Instance.GridPositionIsValid(item))
+                {
+                    tempPositions.Add(item);
                 }
             }
+            neighborGridPositions = tempPositions;
         }
+
         public override string ToString()
         {
             string unitOnGrid = "";

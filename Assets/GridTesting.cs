@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GridTesting : MonoBehaviour
 {
+    [SerializeField] string gridPositionState;
     private void LateUpdate()
     {
         if(Input.GetMouseButtonUp(0))
@@ -17,7 +18,7 @@ public class GridTesting : MonoBehaviour
                 Debug.Log(item.ToString());
                 visualizeNeighborGridPositions.Add(item);
             }
-            GridPositionVisual.Instance.ShowGridPositions(visualizeNeighborGridPositions);
+            GridPositionVisual.Instance.ShowGridPositions(visualizeNeighborGridPositions, gridPositionState);
         }
     }
 }

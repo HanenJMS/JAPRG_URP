@@ -24,8 +24,8 @@ namespace GameLab.Controller
         {
             cineMachineTransposer = cinemachineCamera.GetCinemachineComponent<CinemachineTransposer>();
             targetFollowOffset = cineMachineTransposer.m_FollowOffset;
-            UnitSelectionSystem.Instance.onPlayerSelected += OnPlayerSelected;
-            UnitSelectionSystem.Instance.onDeselectedUnit += OnDeselectUnit;
+            //UnitSelectionSystem.Instance.onPlayerSelected += OnPlayerSelected;
+            //UnitSelectionSystem.Instance.onDeselectedUnit += OnDeselectUnit;
         }
 
         private void LateUpdate()

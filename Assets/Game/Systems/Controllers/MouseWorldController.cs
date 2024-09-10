@@ -32,7 +32,7 @@ public class MouseWorldController : MonoBehaviour
     }
     public static Vector3 GetMousePosition()
     {
-        RaycastHit hit = GetRaycastHit(instance.mousePlaneLayer);
+        RaycastHit hit = GetRaycastHit();
         return hit.point;
     }
     public static RaycastHit GetRaycastHit(LayerMask layerMask)
