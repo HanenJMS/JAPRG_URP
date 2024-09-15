@@ -9,11 +9,7 @@ namespace GameLab.Controller
     {
         private void LateUpdate()
         {
-            if (Input.GetMouseButtonUp(0))
-            {
-                var gp = LevelHexGridSystem.Instance.GetGridPosition(MouseWorldController.GetMousePosition());
-                HexGridVisualSystem.Instance.SetHexCellColor(gp, Color.green);
-            }
+
         }
     }
 

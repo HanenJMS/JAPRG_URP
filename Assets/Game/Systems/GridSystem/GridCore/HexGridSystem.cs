@@ -58,11 +58,11 @@ namespace GameLab.GridSystem
             var gp = new GridPosition(x, z);
 
             var closestGp = gp;
-            foreach (var item in LevelHexGridSystem.Instance.GetGridObject(gp).GetNeighborGridPositions())
+            foreach (var item in LevelHexGridSystem.Instance.GetGridObject(gp).GetGridHexCellNeighbors())
             {
-                if (Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(item), worldPosition) < Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(closestGp), worldPosition)) 
+                if (Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(item.Value), worldPosition) < Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(closestGp), worldPosition)) 
                 {
-                    closestGp = item;
+                    closestGp = item.Value;
                 }
             }
             return closestGp;

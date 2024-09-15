@@ -3,12 +3,17 @@ using System.Collections.Generic;
 
 namespace GameLab.GridSystem
 {
+    public enum HexCellDirections
+    {
+        NE, E, SE, SW, W, NW
+    }
+
     public class HexGridObject
     {
         HexGridSystem<HexGridObject> gridSystem;
         GridPosition gridPosition;
         List<object> objectList;
-        List<GridPosition> neighborGridPositions = new();
+        Dictionary<HexCellDirections, GridPosition> hexCellNeighbors = new();
         bool isOccupied;
         bool isInfluenced;
 
@@ -21,9 +26,9 @@ namespace GameLab.GridSystem
             isInfluenced = false;
 
         }
-        public List<GridPosition> GetNeighborGridPositions()
+        public Dictionary<HexCellDirections, GridPosition> GetGridHexCellNeighbors()
         {
-            return neighborGridPositions;
+            return hexCellNeighbors;
         }
 
         public void AddObjectToGrid(object gridObject)
@@ -62,36 +67,38 @@ namespace GameLab.GridSystem
         public void InitializeNeighborGridPositionList()
         {
             bool isOdd = gridPosition.z % 2 == 1;
-
+            var W = new GridPosition(-1, 0);
+            var E = new GridPosition(+1, 0);
             //northern neighbors
-            var gp5 = new GridPosition(isOdd ? +1 : -1, +1) + gridPosition;
-            var gp3 = new GridPosition(0, +1) + gridPosition;
-
-            //center neighbor
-            var gp1 = new GridPosition(-1, 0) + gridPosition;
-            var gp2 = new GridPosition(+1, 0) + gridPosition;
-
-            //south neighbor
-            var gp6 = new GridPosition(isOdd ? +1 : -1, -1) + gridPosition;
-            var gp4 = new GridPosition(0, -1) + gridPosition;
-
-            neighborGridPositions.Add(gp1);
-            neighborGridPositions.Add(gp2);
-            neighborGridPositions.Add(gp3);
-            neighborGridPositions.Add(gp4);
-            neighborGridPositions.Add(gp5);
-            neighborGridPositions.Add(gp6);
-
-            List<GridPosition> tempPositions = new();
-            foreach (var item in neighborGridPositions)
+            var NE = new GridPosition(1, 1);
+            var SE = new GridPosition(1, -1);
+            var SW = new GridPosition(0, -1);
+            var NW = new GridPosition(0, 1); 
+            if(!isOdd)
             {
-                if (LevelHexGridSystem.Instance.GridPositionIsValid(item))
+                NE = new GridPosition(0, 1);
+                SE = new GridPosition(0, -1);
+                SW = new GridPosition(-1, -1);
+                NW = new GridPosition(-1, 1);
+            }
+
+            hexCellNeighbors.Add(HexCellDirections.NE, NE + gridPosition);
+            hexCellNeighbors.Add(HexCellDirections.E, E + gridPosition);
+            hexCellNeighbors.Add(HexCellDirections.SE, SE + gridPosition);
+            hexCellNeighbors.Add(HexCellDirections.SW, SW + gridPosition);
+            hexCellNeighbors.Add(HexCellDirections.W, W + gridPosition);
+            hexCellNeighbors.Add(HexCellDirections.NW, NW + gridPosition);
+
+            Dictionary<HexCellDirections, GridPosition> tempPositions = new();
+            foreach (var item in hexCellNeighbors)
+            {
+                if (LevelHexGridSystem.Instance.GridPositionIsValid(item.Value))
                 {
-                    tempPositions.Add(item);
+                    tempPositions.Add(item.Key, item.Value);
                 }
             }
-            neighborGridPositions.Clear();
-            neighborGridPositions = tempPositions;
+            hexCellNeighbors.Clear();
+            hexCellNeighbors = tempPositions;
         }
 
         public override string ToString()

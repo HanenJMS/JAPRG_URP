@@ -42,19 +42,23 @@ namespace GameLab.GridSystem
             List<HexCell> cells = new List<HexCell>();
             foreach (var item in gridPositionVisualList)
             {
+
                 cells.Add(item.Value);
             }
             hexCells = cells.ToArray();
 
             foreach (var item in hexCells)
             {
-                item.InitializeCorners();
+                item.InitlializeCell();
             }
-
+            //Material hexMeshMaterial = hexMesh.GetComponent<Renderer>().material;
             foreach(var item in hexCells)
             {
+                //item.SetMaterial(hexMeshMaterial);
                 item.SetColor(defaultColor);
             }
+            
+            
 
             hexMesh.Triangulate(hexCells);
         }
@@ -65,9 +69,17 @@ namespace GameLab.GridSystem
             {
                 gridPositionVisualList[gp].SetColor(color);
             }
+            hexMesh.Triangulate(hexCells);
         }
 
-
+        public HexCell GetHexCell(GridPosition gp)
+        {
+            if(gridPositionVisualList.ContainsKey(gp))
+            {
+                return gridPositionVisualList[gp];
+            }
+            return null;
+        }
     }
 }
 

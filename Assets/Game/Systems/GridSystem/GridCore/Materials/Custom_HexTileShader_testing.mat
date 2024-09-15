@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_HexGridShader_custom
-  m_Shader: {fileID: 4800000, guid: 5926a62d36df7f744a8b37c2a5009512, type: 3}
+  m_Name: Custom_HexTileShader_testing
+  m_Shader: {fileID: 4800000, guid: ae91624076d1dcf4093453b14a22daae, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

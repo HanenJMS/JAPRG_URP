@@ -1,4 +1,4 @@
-Shader "Custom/HexGridShader_custom"
+Shader "Custom/HexTileShader_testing"
 {
     Properties
     {
