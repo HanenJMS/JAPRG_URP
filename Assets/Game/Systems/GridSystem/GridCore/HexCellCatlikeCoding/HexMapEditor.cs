@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,8 +7,9 @@ namespace GameLab.GridSystem
     public class HexMapEditor : MonoBehaviour
     {
         [SerializeField] Color[] colors;
+        [SerializeField]
         private Color activeColor;
-
+        int activeElevation;
         void Start()
         {
             SelectColor(0);
@@ -18,7 +17,11 @@ namespace GameLab.GridSystem
         public void SelectColor(int index)
         {
             if (index < colors.Count())
-            activeColor = colors[index];
+                activeColor = colors[index];
+        }
+        public void SetElevation(float elevation)
+        {
+            activeElevation = ((int)elevation);
         }
         private void LateUpdate()
         {
@@ -30,8 +33,17 @@ namespace GameLab.GridSystem
             !EventSystem.current.IsPointerOverGameObject())
             {
                 var gp = LevelHexGridSystem.Instance.GetGridPosition(MouseWorldController.GetMousePosition());
-                HexGridVisualSystem.Instance.SetHexCellColor(gp, activeColor);
+                EditCell(HexGridVisualSystem.Instance.GetHexCell(gp));
             }
+        }
+
+        private void EditCell(HexCell cell)
+        {
+            cell.SetColor(activeColor);
+            cell.SetElevation(activeElevation);
+            HexGridVisualSystem.Instance.SetHexCellElevation(cell.GetGridPosition());
+            HexGridVisualSystem.Instance.Refresh();
+
         }
     }
 

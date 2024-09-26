@@ -6,11 +6,12 @@ namespace GameLab.GridSystem
     {
         public int x;
         public int z;
-
-        public HexGridCoordinates(int x, int z)
+        public int y;
+        public HexGridCoordinates(int x, int z, int y = 0)
         {
             this.x = x;
             this.z = z;
+            this.y = y;
         }
 
         public override bool Equals(object obj)
@@ -30,7 +31,8 @@ namespace GameLab.GridSystem
 
         public override string ToString()
         {
-            return $"({x}, {z})";
+            return $"({x}, {z})\n" +
+                        $"  {y}";
         }
         public static bool operator == (HexGridCoordinates a, HexGridCoordinates b)
         {

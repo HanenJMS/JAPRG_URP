@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using UnityEditor.Build.Pipeline;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace GameLab.GridSystem
 {
+
 
     public class HexCell : MonoBehaviour
     {
@@ -15,13 +14,22 @@ namespace GameLab.GridSystem
         Dictionary<HexCellDirections, GridPosition> hexCellNeighbors;
         Color color;
         float solidFactor = 0.75f;
-
+        int elevation;
+        float elevationStep = 5f;
         float blendFactor;
+        int terracesPerSlope = 2;
+        float horizontalTerraceStepSize;
+        int terraceSteps;
+        float verticalTerraceStepSize;
         /// <summary>
         /// Set corners and neighbor cells
         /// </summary>
         public void InitlializeCell()
         {
+
+            terraceSteps = terracesPerSlope * 2 + 1;
+            horizontalTerraceStepSize = 1f / terraceSteps;
+            verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
             blendFactor = 1f - solidFactor;
             InitializeCorners();
             InitializeNeighbors();
@@ -61,11 +69,26 @@ namespace GameLab.GridSystem
         {
             gridPosition = new(gp.x, gp.z);
         }
+        public int GetElevation()
+        {
+            return elevation;
+        }
+        public void SetElevation(int elevation)
+        {
+            this.elevation = elevation;
+            Vector3 position = transform.localPosition;
+            position.y = elevation;
+            transform.localPosition = position;
+        }
         public void SetColor(Color color)
         {
             this.color = color;
         }
-        public Color GetCellColor() => color;
+        public Color GetCellColor()
+        {
+            return color;
+        }
+
         public void InitializeNeighbors()
         {
             hexCellNeighbors = new();
@@ -85,22 +108,16 @@ namespace GameLab.GridSystem
                 NW = new GridPosition(-1, 1) + this.gridPosition;
             }
 
-            hexCellNeighbors.Add(HexCellDirections.NE, NE );
+            hexCellNeighbors.Add(HexCellDirections.NE, NE);
             hexCellNeighbors.Add(HexCellDirections.E, E);
             hexCellNeighbors.Add(HexCellDirections.SE, SE);
             hexCellNeighbors.Add(HexCellDirections.SW, SW);
             hexCellNeighbors.Add(HexCellDirections.W, W);
             hexCellNeighbors.Add(HexCellDirections.NW, NW);
-            //Dictionary<HexCellDirections, GridPosition> tempPositions = new();
-            //foreach (var item in hexCellNeighbors)
-            //{
-            //    if (LevelHexGridSystem.Instance.GridPositionIsValid(item.Value))
-            //    {
-            //        tempPositions.Add(item.Key, item.Value);
-            //    }
-            //}
-            //hexCellNeighbors.Clear();
-            //hexCellNeighbors = tempPositions;
+        }
+        public GridPosition GetGridPosition()
+        {
+            return gridPosition;
         }
         public GridPosition GetHexCellNeighborGridPosition(HexCellDirections direction)
         {
@@ -127,25 +144,46 @@ namespace GameLab.GridSystem
 
         public GridPosition GetPreviousDirectionHexNeighbor(HexCellDirections directions)
         {
-            var PrevDirection = GetPreviousDirection(directions);
+            var PrevDirection = HexMetric.GetPreviousDirection(directions);
             return hexCellNeighbors[PrevDirection];
         }
         public GridPosition GetNextDirectionHexNeighbor(HexCellDirections directions)
         {
-            var nextDirection = GetNextDirection(directions);
+            var nextDirection = HexMetric.GetNextDirection(directions);
             return hexCellNeighbors[nextDirection];
         }
-        public HexCellDirections GetNextDirection(HexCellDirections directions)
-        {
-             return (directions == HexCellDirections.NW ? HexCellDirections.NE : directions + 1);
-        }
-        public HexCellDirections GetPreviousDirection(HexCellDirections directions)
-        {
-            return directions == HexCellDirections.NE ? HexCellDirections.NW : directions - 1;
-        }
-        public  Vector3 GetBridge(HexCellDirections direction)
+
+        public Vector3 GetBridge(HexCellDirections direction)
         {
             return (corners[(int)direction] + corners[(int)direction + 1]) * blendFactor;
+        }
+        public float GetElevationAtStep()
+        {
+            return elevation * elevationStep;
+        }
+
+        public int GetTerraceSteps()
+        {
+            return terraceSteps;
+        }
+
+
+        public HexEdgeType GetEdgeType(HexCellDirections direction)
+        {
+            return HexMetric.GetEdgeType
+            (
+                elevation, HexGridVisualSystem.Instance.GetHexCell(hexCellNeighbors[direction]).GetElevation()
+            );
+        }
+        public HexEdgeType GetEdgeType(HexCell otherCell)
+        {
+            return HexMetric.GetEdgeType(
+                elevation, otherCell.GetElevation()
+            );
+        }
+        public HexEdgeType GetEdgeType(HexEdgeType edgeType)
+        {
+            return HexMetric.GetEdgeType(edgeType);
         }
     }
 }

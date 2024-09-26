@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 namespace GameLab.GridSystem
 {
@@ -9,6 +10,7 @@ namespace GameLab.GridSystem
 
         [SerializeField] Transform gridPositionVisual;
         Dictionary<GridPosition, HexCell> gridPositionVisualList;
+        Dictionary<GridPosition, Transform> gridObjectList;
         HexMesh hexMesh;
         //for HexGrid references
         float outerRadius;
@@ -26,6 +28,7 @@ namespace GameLab.GridSystem
             }
             Instance = this;
             gridPositionVisualList = new();
+            gridObjectList = new();
             hexMesh = GetComponentInChildren<HexMesh>();
         }
         private void Start()
@@ -36,13 +39,13 @@ namespace GameLab.GridSystem
 
                 var hexCell = gridVisualTransform.GetComponent<HexCell>();
                 gridPositionVisualList.Add(gridPosition, hexCell);
+                gridObjectList.Add(gridPosition, gridVisualTransform);
                 hexCell.SetGridPosition(gridPosition);
             }
 
             List<HexCell> cells = new List<HexCell>();
             foreach (var item in gridPositionVisualList)
             {
-
                 cells.Add(item.Value);
             }
             hexCells = cells.ToArray();
@@ -57,12 +60,31 @@ namespace GameLab.GridSystem
                 //item.SetMaterial(hexMeshMaterial);
                 item.SetColor(defaultColor);
             }
-            
-            
+            InitializeElevation();
+            Refresh();
+            //InitializeElevation();
 
+
+        }
+        public void Refresh()
+        {
             hexMesh.Triangulate(hexCells);
         }
+        public void InitializeElevation()
+        {
+            foreach (var item in gridObjectList)
+            {
+                SetHexCellElevation(item.Key);
+            }
+        }
+        public void SetHexCellElevation(GridPosition gp)
+        {
+            var hexCell = gridPositionVisualList[gp];
+            Vector3 pos = hexCell.transform.position;
+            pos.y = hexCell.GetElevation();
+            gridObjectList[gp].transform.position = pos;
 
+        }
         public void SetHexCellColor(GridPosition gp, Color color)
         {
             if(gridPositionVisualList.ContainsKey(gp))
