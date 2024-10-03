@@ -4,7 +4,7 @@ namespace GameLab.TradingSystem
 {
     public static class TradeBank
     {
-        
+
         public static bool VerifyTrade(IamSlot receiver, IamSlot giver, int quantity)
         {
             if (receiver.GetAvailableCapacity() < quantity)

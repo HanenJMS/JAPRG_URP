@@ -10,10 +10,16 @@ namespace GameLab.GridSystem
         [SerializeField]
         private Color activeColor;
         int activeElevation;
+        [SerializeField] Texture2D noiseSource;
+        private void Awake()
+        {
+            HexMetric.noiseSource = noiseSource;
+        }
         void Start()
         {
             SelectColor(0);
         }
+
         public void SelectColor(int index)
         {
             if (index < colors.Count())

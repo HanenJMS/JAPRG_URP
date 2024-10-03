@@ -63,7 +63,7 @@ namespace GameLab.InventorySystem
         }
         public WeaponData GetCurrentWeaponDrawn()
         {
-            if(weaponDrawn && GetEquippedItem(EquipmentType.Main) != null)
+            if (weaponDrawn && GetEquippedItem(EquipmentType.Main) != null)
             {
                 return GetEquippedItem(EquipmentType.Main) as WeaponData;
             }

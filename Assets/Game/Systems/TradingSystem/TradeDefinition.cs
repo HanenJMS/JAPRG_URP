@@ -1,7 +1,4 @@
 using GameLab.InventorySystem;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameLab.TradingSystem
 {
@@ -22,10 +19,25 @@ namespace GameLab.TradingSystem
             this.quantity = quantity;
         }
 
-        public InventorySlot GetBuyerInventory() => receiver;
-        public InventorySlot GetSellerInventory() => giver;
-        public int GetQuantity() => quantity;
-        public int GetCash() => buyerCash;
+        public InventorySlot GetBuyerInventory()
+        {
+            return receiver;
+        }
+
+        public InventorySlot GetSellerInventory()
+        {
+            return giver;
+        }
+
+        public int GetQuantity()
+        {
+            return quantity;
+        }
+
+        public int GetCash()
+        {
+            return buyerCash;
+        }
     }
 }
 

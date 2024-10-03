@@ -1,7 +1,6 @@
 using GameLab.InventorySystem;
 using GameLab.UISystem;
 using GameLab.UnitSystem;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,8 +35,8 @@ namespace GameLab.Controller
         private void LateUpdate()
         {
             if (!container.gameObject.activeSelf) return;
-            
-            if(Input.GetKeyDown(KeyCode.I))
+
+            if (Input.GetKeyDown(KeyCode.I))
             {
                 ClearUI();
                 if (selectedInventory == null)

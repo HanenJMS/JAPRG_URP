@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameLab.UISystem
@@ -24,12 +21,12 @@ namespace GameLab.UISystem
         public void SetColor(Color color)
         {
             text.color = color;
-            
+
         }
         private void LateUpdate()
         {
             timer -= Time.deltaTime;
-            if(timer <= 0)
+            if (timer <= 0)
             {
                 Destroy(this.gameObject);
             }

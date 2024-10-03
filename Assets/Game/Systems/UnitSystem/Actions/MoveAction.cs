@@ -1,4 +1,3 @@
-using GameLab.UISystem;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,7 +18,7 @@ namespace GameLab.UnitSystem.ActionSystem
         Vector3 targetPosition;
         public override void ExecuteOnTarget(object target)
         {
-            
+
             MoveToDestination(target);
             actionHander.SetCurrentAction(this);
         }
@@ -56,7 +55,7 @@ namespace GameLab.UnitSystem.ActionSystem
 
         public override void Cancel()
         {
-            if(gameObject.activeSelf)
+            if (gameObject.activeSelf)
             {
                 agent.SetDestination(this.transform.position);
             }

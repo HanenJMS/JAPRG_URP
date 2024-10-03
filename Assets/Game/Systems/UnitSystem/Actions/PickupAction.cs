@@ -1,6 +1,4 @@
 using GameLab.InventorySystem;
-using GameLab.UISystem;
-using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {

@@ -1,6 +1,5 @@
 using GameLab.UnitSystem;
 using GameLab.UnitSystem.ActionSystem;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameLab.AI
@@ -75,10 +74,10 @@ namespace GameLab.AI
                 }
                 unit.GetCombatHandler().RemoveEnemy(targetUnit);
                 targetUnit = null;
-                
+
             }
-            
-            
+
+
         }
         void SetAIState()
         {

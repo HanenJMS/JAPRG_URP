@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.VFX;
 using UnityEngine;
+using UnityEngine.VFX;
 namespace GameLab.UnitSystem.AbilitySystem
 {
     public class AbilityProjectileVFX : MonoBehaviour

@@ -4,10 +4,10 @@ namespace GameLab.UnitSystem.ActionSystem
 {
     public class EnterBuildingAction : InteractAction
     {
-        
+
         public override void Interact(object target)
         {
-            if(target is Interactable_Building)
+            if (target is Interactable_Building)
             {
                 var building = target as Interactable_Building;
                 building.Interact(unit);

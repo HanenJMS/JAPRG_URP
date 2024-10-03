@@ -13,7 +13,7 @@ namespace GameLab.UISystem
         [SerializeField] Button button;
         private void Awake()
         {
-            if(EquippedImage == null)
+            if (EquippedImage == null)
             {
                 EquippedImage = GetComponentInChildren<Image>();
             }
@@ -32,7 +32,10 @@ namespace GameLab.UISystem
             EquippedImage.sprite = image;
         }
 
-        public EquipmentType GetEquipmentType() => equipmentType;
+        public EquipmentType GetEquipmentType()
+        {
+            return equipmentType;
+        }
     }
 }
 

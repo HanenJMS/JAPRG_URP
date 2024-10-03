@@ -1,9 +1,6 @@
 ﻿#if UNITY_EDITOR
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-using System.IO;
+using UnityEngine;
 
 namespace HovlStudio
 {
@@ -253,7 +250,7 @@ namespace HovlStudio
                     if (material.shader == Add_CG || material.shader == Add_CG_HDRP)
                     {
                         if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
-                        material.shader = Add_CG_URP;       
+                        material.shader = Add_CG_URP;
                         if (material.HasProperty("_CullMode"))
                         {
                             var cull = material.GetFloat("_CullMode");
@@ -282,8 +279,8 @@ namespace HovlStudio
                 {
                     if (material.shader == BlendDistort || material.shader == BlendDistort_HDRP)
                     {
-                            material.shader = BlendDistort_URP;
-                            if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
+                        material.shader = BlendDistort_URP;
+                        if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
                     }
                 }
 
@@ -308,8 +305,8 @@ namespace HovlStudio
                     if (material.shader == SwordSlash || material.shader == SwordSlash_HDRP)
                     {
 
-                            material.shader = SwordSlash_URP;
-                            if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
+                        material.shader = SwordSlash_URP;
+                        if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
                     }
                 }
 
@@ -317,8 +314,8 @@ namespace HovlStudio
                 {
                     if (material.shader == ShockWave || material.shader == ShockWave_HDRP)
                     {
-                            material.shader = ShockWave_URP;
-                            if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
+                        material.shader = ShockWave_URP;
+                        if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
 
                     }
                 }
@@ -327,8 +324,8 @@ namespace HovlStudio
                 {
                     if (material.shader == SoftNoise || material.shader == SoftNoise_HDRP)
                     {
-                            material.shader = SoftNoise_URP;
-                            if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
+                        material.shader = SoftNoise_URP;
+                        if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
 
                     }
                 }
@@ -360,7 +357,7 @@ namespace HovlStudio
                 {
                     if (material.shader == Blend_TwoSides_URP || material.shader == Blend_TwoSides_HDRP)
                     {
-                            material.shader = Blend_TwoSides;
+                        material.shader = Blend_TwoSides;
                     }
                 }
 
@@ -368,7 +365,7 @@ namespace HovlStudio
                 {
                     if (material.shader == Blend_Normals_URP || material.shader == Blend_Normals_HDRP)
                     {
-                            material.shader = Blend_Normals;
+                        material.shader = Blend_Normals;
                     }
                 }
 
@@ -376,7 +373,7 @@ namespace HovlStudio
                 {
                     if (material.shader == Ice_URP || material.shader == Ice_HDRP)
                     {
-                            material.shader = Ice;
+                        material.shader = Ice;
                     }
                 }
 
@@ -384,7 +381,7 @@ namespace HovlStudio
                 {
                     if (material.shader == ParallaxIce_URP || material.shader == ParallaxIce_HDRP)
                     {
-                            material.shader = ParallaxIce;
+                        material.shader = ParallaxIce;
                     }
                 }
 
@@ -616,16 +613,16 @@ namespace HovlStudio
                 {
                     if (material.shader == SwordSlash || material.shader == SwordSlash_URP)
                     {
-                            material.SetFloat("_ZWrite", 0);
-                            material.SetFloat("_StencilRef", 0);
-                            material.SetShaderPassEnabled("TransparentBackface", false);
-                            material.SetOverrideTag("RenderType", "Transparent");
-                            material.SetFloat("_AlphaDstBlend", 10);
-                            material.SetFloat("_DstBlend", 10);
-                            material.SetFloat("_SrcBlend", 1);
-                            material.EnableKeyword("_BLENDMODE_ALPHA _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT");
-                            material.shader = SwordSlash_HDRP;
-                            if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
+                        material.SetFloat("_ZWrite", 0);
+                        material.SetFloat("_StencilRef", 0);
+                        material.SetShaderPassEnabled("TransparentBackface", false);
+                        material.SetOverrideTag("RenderType", "Transparent");
+                        material.SetFloat("_AlphaDstBlend", 10);
+                        material.SetFloat("_DstBlend", 10);
+                        material.SetFloat("_SrcBlend", 1);
+                        material.EnableKeyword("_BLENDMODE_ALPHA _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT");
+                        material.shader = SwordSlash_HDRP;
+                        if (material.HasProperty("_ZWrite")) material.SetFloat("_ZWrite", 0);
                     }
                 }
 
@@ -633,16 +630,16 @@ namespace HovlStudio
                 {
                     if (material.shader == ShockWave || material.shader == ShockWave_URP)
                     {
-                            material.SetFloat("_StencilRef", 0);
-                            material.SetFloat("_AlphaDstBlend", 1);
-                            material.SetFloat("_DstBlend", 1);
-                            material.SetFloat("_ZWrite", 0);
-                            material.SetFloat("_SrcBlend", 1);
-                            material.EnableKeyword("_BLENDMODE_ADD _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT");
-                            material.SetShaderPassEnabled("TransparentBackface", false);
-                            material.SetOverrideTag("RenderType", "Transparent");
-                            material.SetFloat("_CullModeForward", 0);
-                            material.shader = ShockWave_HDRP;
+                        material.SetFloat("_StencilRef", 0);
+                        material.SetFloat("_AlphaDstBlend", 1);
+                        material.SetFloat("_DstBlend", 1);
+                        material.SetFloat("_ZWrite", 0);
+                        material.SetFloat("_SrcBlend", 1);
+                        material.EnableKeyword("_BLENDMODE_ADD _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT");
+                        material.SetShaderPassEnabled("TransparentBackface", false);
+                        material.SetOverrideTag("RenderType", "Transparent");
+                        material.SetFloat("_CullModeForward", 0);
+                        material.shader = ShockWave_HDRP;
                     }
                 }
 

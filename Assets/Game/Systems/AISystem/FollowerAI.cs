@@ -34,7 +34,7 @@ namespace GameLab.AI
         void OnPartyLeaderChanged()
         {
             Leader = partyHandler.GetLeader();
-            if(!isActive)
+            if (!isActive)
             {
                 aiHandler.SetCurrentAIState(this);
             }
@@ -47,7 +47,7 @@ namespace GameLab.AI
             {
                 CancelState();
                 return;
-            }    
+            }
             if (Leader != null)
             {
                 if (Vector3.Distance(this.transform.position, Leader.transform.position) > 1.5f)

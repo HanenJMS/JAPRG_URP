@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +19,7 @@ namespace GameLab.StatSystem
         }
         void AddStat(StatType statType)
         {
-            if(!statDictionary.ContainsKey(statType))
+            if (!statDictionary.ContainsKey(statType))
             {
                 statDictionary.Add(statType, new BaseStat(statType));
             }

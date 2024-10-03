@@ -1,12 +1,11 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameLab.UnitSystem
 {
     public class UnitSelectionSystem : MonoBehaviour
     {
-        [SerializeField]Unit selectedUnit;
+        [SerializeField] Unit selectedUnit;
         Unit playerUnit;
         public Action onSelectedUnit;
         public Action onRightDoubleClick;
@@ -16,7 +15,7 @@ namespace GameLab.UnitSystem
         public static UnitSelectionSystem Instance;
         private void Awake()
         {
-            if(Instance != null)
+            if (Instance != null)
             {
                 Destroy(this);
                 return;
@@ -36,12 +35,12 @@ namespace GameLab.UnitSystem
                     SetSelectedUnit(mouseOverUnit);
                 }
             }
-            if(Input.GetMouseButtonUp(1))
+            if (Input.GetMouseButtonUp(1))
             {
-                if(MouseWorldController.GetRaycastHit().transform.TryGetComponent<Unit>(out Unit mouseOverUnit))
+                if (MouseWorldController.GetRaycastHit().transform.TryGetComponent<Unit>(out Unit mouseOverUnit))
                 {
-                    
-                    if(selectedUnit != mouseOverUnit)
+
+                    if (selectedUnit != mouseOverUnit)
                     {
                         SetSelectedUnit(mouseOverUnit);
                     }
@@ -59,7 +58,7 @@ namespace GameLab.UnitSystem
             {
                 SetSelectedUnit(playerUnit);
                 onPlayerSelected?.Invoke();
-                
+
             }
         }
 
@@ -72,12 +71,16 @@ namespace GameLab.UnitSystem
         void DeselectUnit()
         {
             selectedUnit = null;
-            onDeselectedUnit?.Invoke(); 
+            onDeselectedUnit?.Invoke();
         }
-        public Unit GetPlayerUnit() => playerUnit;
+        public Unit GetPlayerUnit()
+        {
+            return playerUnit;
+        }
+
         public Unit GetSelectedUnit()
         {
-            return selectedUnit != null ? selectedUnit : playerUnit ;
+            return selectedUnit != null ? selectedUnit : playerUnit;
         }
 
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameLab.UnitSystem
@@ -12,7 +10,10 @@ namespace GameLab.UnitSystem
     public class UnitModel : MonoBehaviour
     {
         [SerializeField] UnitGender unitGender;
-        public UnitGender GetGender() => unitGender;
+        public UnitGender GetGender()
+        {
+            return unitGender;
+        }
     }
 }
 

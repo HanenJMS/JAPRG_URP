@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Workorder
 {
     int progress = 0;
@@ -11,6 +9,6 @@ public class Workorder
     public void Cancel()
     {
         Assigned = false;
-        
+
     }
 }

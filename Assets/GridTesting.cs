@@ -1,5 +1,4 @@
 using GameLab.GridSystem;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +7,7 @@ public class GridTesting : MonoBehaviour
     [SerializeField] string gridPositionState;
     private void LateUpdate()
     {
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             var mouseGp = LevelGridSystem.Instance.GetGridPosition(MouseWorldController.GetMousePosition());
             var gridObject = LevelGridSystem.Instance.GetGridObject(mouseGp);

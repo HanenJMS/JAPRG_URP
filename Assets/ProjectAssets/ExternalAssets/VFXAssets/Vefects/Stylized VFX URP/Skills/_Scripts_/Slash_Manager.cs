@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Slash_Manager : MonoBehaviour
@@ -30,18 +28,18 @@ public class Slash_Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(delay > 0)
+        if (delay > 0)
         {
             delay -= Time.deltaTime;
         }
 
-        if(delay <= 0)
+        if (delay <= 0)
         {
             DoTheSlash(currentFXList[currentFXElement]);
             delay = reinitializeDelay;
         }
 
-        if(magicAttacksManager != null)
+        if (magicAttacksManager != null)
         {
             ChangeEffect();
         }
@@ -49,7 +47,7 @@ public class Slash_Manager : MonoBehaviour
         InputsFXElement();
         InputsFXType();
 
-        if(usingSlashCircle)
+        if (usingSlashCircle)
         {
             //SlashCircle();
         }

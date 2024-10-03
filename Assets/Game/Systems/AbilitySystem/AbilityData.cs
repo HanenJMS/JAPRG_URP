@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameLab.UnitSystem.AbilitySystem
@@ -21,7 +20,7 @@ namespace GameLab.UnitSystem.AbilitySystem
         [SerializeField] bool isMelee;
         [SerializeField] bool isContinuous;
         [SerializeField] AnimationClip animationClip;
-        [SerializeField] GameObject damageWorldText; 
+        [SerializeField] GameObject damageWorldText;
         public AnimatorOverrideController GetAnimation()
         {
             return AnimatorOverrideController;
@@ -41,12 +40,36 @@ namespace GameLab.UnitSystem.AbilitySystem
         {
             return animationClip;
         }
-        public GameObject GetDamageWorldText() => damageWorldText;
-        public AbilityType GetAbilityType() => abilityType;
-        public int GetAbilityPower() => pow;
-        public float GetProjectileSpeed() => projectileSpeed;
-        public bool GetIsMelee() => isMelee;
-        public bool GetIsContinuous() => isContinuous;
+        public GameObject GetDamageWorldText()
+        {
+            return damageWorldText;
+        }
+
+        public AbilityType GetAbilityType()
+        {
+            return abilityType;
+        }
+
+        public int GetAbilityPower()
+        {
+            return pow;
+        }
+
+        public float GetProjectileSpeed()
+        {
+            return projectileSpeed;
+        }
+
+        public bool GetIsMelee()
+        {
+            return isMelee;
+        }
+
+        public bool GetIsContinuous()
+        {
+            return isContinuous;
+        }
+
         public float GetRange()
         {
             return range;

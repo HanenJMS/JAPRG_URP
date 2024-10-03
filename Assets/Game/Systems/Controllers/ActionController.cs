@@ -79,7 +79,7 @@ namespace GameLab.Controller
             }
             else
             {
-                
+
                 interactable = null;
                 MouseWorldController.SetMouseCursor(moveAction.GetMouseCursorInfo());
                 if (Input.GetMouseButtonUp(1))
@@ -120,7 +120,7 @@ namespace GameLab.Controller
                 playerUnit.gameObject.GetComponent<EquipmentHandler>().WithdrawCombat();
             }
 
-            
+
         }
     }
 

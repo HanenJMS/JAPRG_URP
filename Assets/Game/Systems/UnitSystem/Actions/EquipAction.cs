@@ -1,6 +1,4 @@
 using GameLab.InventorySystem;
-using GameLab.UISystem;
-using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
@@ -31,7 +29,7 @@ namespace GameLab.UnitSystem.ActionSystem
             if (target is ItemWorld)
             {
                 var item = target as ItemWorld;
-                if (item.GetItemSlot().GetItemData() is  EquipmentData) return true;
+                if (item.GetItemSlot().GetItemData() is EquipmentData) return true;
             }
             if (target is IamSlot)
             {

@@ -1,7 +1,4 @@
 using GameLab.InventorySystem;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
 namespace GameLab.UnitSystem.AbilitySystem
@@ -21,7 +18,7 @@ namespace GameLab.UnitSystem.AbilitySystem
         private void LateUpdate()
         {
             transform.position += transform.forward * Time.deltaTime * castedAbility.GetProjectileSpeed();
-           
+
         }
 
         public void SetDamageOnImpact(Unit castor, Unit onTarget, AbilityData used)
@@ -40,7 +37,7 @@ namespace GameLab.UnitSystem.AbilitySystem
             {
                 target.GetCombatHandler().TakeDamage(castor, castedAbility);
             }
-            if(freeHitImpact || other.GetComponent<Unit>() == target)
+            if (freeHitImpact || other.GetComponent<Unit>() == target)
             {
                 GetComponent<AbilityProjectileVFX>().SpawnImpactVFX(other);
             }

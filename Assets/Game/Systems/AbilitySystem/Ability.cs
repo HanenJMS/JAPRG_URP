@@ -6,7 +6,7 @@ namespace GameLab.UnitSystem.AbilitySystem
     internal class Ability
     {
         [SerializeField] AbilityData abilityData;
-        
+
         [SerializeField] int requiredExperience;
 
     }

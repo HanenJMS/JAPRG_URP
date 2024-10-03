@@ -1,12 +1,11 @@
 using GameLab.InteractableSystem;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameLab.InventorySystem
 {
     public class ItemWorld : Interactable
     {
-        [SerializeField] ItemData itemdata; 
+        [SerializeField] ItemData itemdata;
         [SerializeField] InventorySlot itemSlot;
         [SerializeField] GameObject itemWorldContainer;
 
@@ -17,7 +16,7 @@ namespace GameLab.InventorySystem
         }
         private void Start()
         {
-            if(itemdata == null) { return; }
+            if (itemdata == null) { return; }
             itemSlot.SetItemData(itemdata);
         }
         public InventorySlot GetItemSlot()
@@ -30,7 +29,7 @@ namespace GameLab.InventorySystem
         }
         public void PickUp()
         {
-            if(itemSlot.GetQuantity() <= 0)
+            if (itemSlot.GetQuantity() <= 0)
             {
                 Destroy(itemWorldContainer);
             }

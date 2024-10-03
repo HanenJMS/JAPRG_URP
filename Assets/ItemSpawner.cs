@@ -1,8 +1,5 @@
 using GameLab.InventorySystem;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor;
 using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
@@ -26,6 +23,6 @@ public class ItemSpawner : MonoBehaviour
                 ob.GetComponentInChildren<ItemWorld>().GetItemSlot().SetQuantity(1);
                 yield return new WaitForSeconds(0.5f);
             }
-        }    
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace GameLab.GridSystem
             return $"({x}, {z})\n" +
                         $"  {y}";
         }
-        public static bool operator == (HexGridCoordinates a, HexGridCoordinates b)
+        public static bool operator ==(HexGridCoordinates a, HexGridCoordinates b)
         {
             return a.x == b.x && a.z == b.z;
         }

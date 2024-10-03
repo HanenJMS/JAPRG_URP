@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 namespace GameLab.UnitSystem.AbilitySystem
 {
@@ -23,7 +20,7 @@ namespace GameLab.UnitSystem.AbilitySystem
         {
             StartCoroutine(Cast());
             StartCoroutine(ShootProjectile());
-            
+
         }
         public void SetCastInformation(Unit castor, Unit target, AbilityData ability)
         {
@@ -37,7 +34,7 @@ namespace GameLab.UnitSystem.AbilitySystem
         }
         IEnumerator Cast()
         {
-            for (int i = 0; i < multiCast-1; i++)
+            for (int i = 0; i < multiCast - 1; i++)
             {
                 yield return new WaitForSeconds(duration);
                 multiCast--;
@@ -50,15 +47,15 @@ namespace GameLab.UnitSystem.AbilitySystem
                 //cast.GetComponent<AbilityCast>().SetCastInformation(castor, target, abilityData);
 
             }
-            
+
         }
         IEnumerator ShootProjectile()
         {
             yield return new WaitForSeconds(duration);
-            for(int i = 0; i < castMultipleProjectiles; i++)
+            for (int i = 0; i < castMultipleProjectiles; i++)
             {
                 GameObject impact = Instantiate(abilityProjectile, castHolder.position, castHolder.rotation);
-                
+
                 impact.GetComponent<AbilityProjectile>().SetDamageOnImpact(castor, target, abilityData);
 
                 yield return new WaitForSeconds(0.37f);

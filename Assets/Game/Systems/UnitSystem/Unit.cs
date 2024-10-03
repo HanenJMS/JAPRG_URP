@@ -49,7 +49,7 @@ namespace GameLab.UnitSystem
         }
         public override void Interact(object interaction)
         {
-            
+
         }
         void OnDeath()
         {
@@ -57,8 +57,16 @@ namespace GameLab.UnitSystem
             unitAnimationHandler.SetTrigger("death");
             GetComponent<CapsuleCollider>().enabled = false;
         }
-        public void EnterBuilding(Interactable_Building building) => currentBuildingLocation = building;
-        public bool InBuilding() => currentBuildingLocation != null;
+        public void EnterBuilding(Interactable_Building building)
+        {
+            currentBuildingLocation = building;
+        }
+
+        public bool InBuilding()
+        {
+            return currentBuildingLocation != null;
+        }
+
         public void ExitBuilding()
         {
             currentBuildingLocation.Exit(this);

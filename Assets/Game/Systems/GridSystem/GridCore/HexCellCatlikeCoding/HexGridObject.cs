@@ -69,8 +69,8 @@ namespace GameLab.GridSystem
             var NE = new GridPosition(1, 1);
             var SE = new GridPosition(1, -1);
             var SW = new GridPosition(0, -1);
-            var NW = new GridPosition(0, 1); 
-            if(!isOdd)
+            var NW = new GridPosition(0, 1);
+            if (!isOdd)
             {
                 NE = new GridPosition(0, 1);
                 SE = new GridPosition(0, -1);

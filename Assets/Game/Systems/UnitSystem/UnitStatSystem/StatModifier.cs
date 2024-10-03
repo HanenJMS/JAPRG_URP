@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-
 public enum StatModifierType
 {
     Buff = 1, Debuff = -1

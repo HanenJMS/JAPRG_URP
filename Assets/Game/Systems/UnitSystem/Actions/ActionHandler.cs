@@ -13,7 +13,7 @@ namespace GameLab.UnitSystem.ActionSystem
         private void Awake()
         {
             actions = GetComponents<IAction>();
-            foreach(IAction action in actions)
+            foreach (IAction action in actions)
             {
                 Debug.Log(action.ToString());
             }
@@ -25,11 +25,11 @@ namespace GameLab.UnitSystem.ActionSystem
         public void SetCurrentAction(IAction action)
         {
             if (currentAction == action) return;
-            if (currentAction != action && currentAction != null) 
+            if (currentAction != action && currentAction != null)
             {
                 currentAction.Cancel();
             }
-            
+
             currentAction = action;
         }
         public IAction GetselectedAction(IAction action)

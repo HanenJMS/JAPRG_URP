@@ -1,7 +1,5 @@
 using GameLab.InteractableSystem;
 using GameLab.UnitSystem.ActionSystem;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameLab.UnitSystem
@@ -11,7 +9,7 @@ namespace GameLab.UnitSystem
         Interactable currentTarget;
         public Interactable CurrentTarget
         {
-            get { return currentTarget; }
+            get => currentTarget;
             set
             {
                 currentTarget = value;
@@ -21,28 +19,28 @@ namespace GameLab.UnitSystem
 
         public InteractAction InteractingAction { get; set; }
         Transform currentTargetLocation = null;
-        
+
         public void Cancel()
         {
             currentTarget = null;
             currentTargetLocation = null;
-            
+
         }
         private void LateUpdate()
         {
             if (currentTarget == null) return;
             if (currentTargetLocation == null) currentTargetLocation = currentTarget.transform;
-            
-            if(currentTargetLocation != null && currentTarget != null)
+
+            if (currentTargetLocation != null && currentTarget != null)
             {
                 bool inDistance = Vector3.Distance(this.transform.position, currentTargetLocation.position) < 1.5f;
-                if(!inDistance)
+                if (!inDistance)
                 {
                     var mover = GetComponent<MoveAction>();
                     mover.MoveToDestination(currentTargetLocation.position);
                     return;
                 }
-                if(inDistance)
+                if (inDistance)
                 {
                     InteractingAction.Interact(currentTarget);
                     Cancel();

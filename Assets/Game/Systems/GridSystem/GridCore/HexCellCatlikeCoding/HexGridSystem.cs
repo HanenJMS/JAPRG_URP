@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace GameLab.GridSystem
 {
@@ -26,7 +24,7 @@ namespace GameLab.GridSystem
             this.grid = new Dictionary<GridPosition, TGridObject>();
             this.allGridPositions = new();
 
-            innerRadius = cellSize/2 * innerRadiusConstant;
+            innerRadius = cellSize / 2 * innerRadiusConstant;
             for (int x = 0; x < width; x++)
             {
                 for (int z = 0; z < height; z++)
@@ -49,7 +47,7 @@ namespace GameLab.GridSystem
         {
             Debug.Log($"raw WorldPosition : {worldPosition.ToString()}");
 
-            int z = Mathf.RoundToInt( worldPosition.z / (cellSize / 2 * 1.5f));
+            int z = Mathf.RoundToInt(worldPosition.z / (cellSize / 2 * 1.5f));
 
             int x = Mathf.RoundToInt
                 (
@@ -60,7 +58,7 @@ namespace GameLab.GridSystem
             var closestGp = gp;
             foreach (var item in LevelHexGridSystem.Instance.GetGridObject(gp).GetGridHexCellNeighbors())
             {
-                if (Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(item.Value), worldPosition) < Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(closestGp), worldPosition)) 
+                if (Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(item.Value), worldPosition) < Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(closestGp), worldPosition))
                 {
                     closestGp = item.Value;
                 }

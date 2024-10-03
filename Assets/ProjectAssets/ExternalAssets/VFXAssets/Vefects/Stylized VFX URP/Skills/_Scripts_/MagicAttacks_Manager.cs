@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MagicAttacks_Manager : MonoBehaviour
@@ -34,19 +32,19 @@ public class MagicAttacks_Manager : MonoBehaviour
 
     void Update()
     {
-        if(delay > 0)
+        if (delay > 0)
         {
             delay -= Time.deltaTime;
         }
 
-        if(delay <= 0)
+        if (delay <= 0)
         {
             currentFX_Element = nextFX_Element;
             CastProjectile();
             delay = reinitializeDelay;
         }
-        
-        if(isCasting)
+
+        if (isCasting)
         {
             ShootProjectile();
         }
@@ -73,12 +71,12 @@ public class MagicAttacks_Manager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (nextFX_Element < FXList_Cast.Length -1)
+            if (nextFX_Element < FXList_Cast.Length - 1)
             {
                 nextFX_Element += 1;
             }
 
-            else if (nextFX_Element >= FXList_Cast.Length -1)
+            else if (nextFX_Element >= FXList_Cast.Length - 1)
             {
                 nextFX_Element = 0;
             }
@@ -94,7 +92,7 @@ public class MagicAttacks_Manager : MonoBehaviour
 
             else if (nextFX_Element <= 0)
             {
-                nextFX_Element = FXList_Cast.Length -1;
+                nextFX_Element = FXList_Cast.Length - 1;
             }
 
         }
@@ -131,5 +129,5 @@ public class MagicAttacks_Manager : MonoBehaviour
         }
     }
 
-  
+
 }

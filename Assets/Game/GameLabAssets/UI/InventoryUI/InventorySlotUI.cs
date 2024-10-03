@@ -1,7 +1,5 @@
 using GameLab.InventorySystem;
 using GameLab.UnitSystem;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +14,7 @@ namespace GameLab.UISystem
         [SerializeField] Button button;
         private void Awake()
         {
-            button = GetComponent<Button>();    
+            button = GetComponent<Button>();
         }
         public void SetUI(InventorySlot ui)
         {

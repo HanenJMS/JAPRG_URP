@@ -8,7 +8,7 @@ namespace GameLab.GridSystem
 
         [SerializeField] Transform gridPositionVisual;
         Dictionary<GridPosition, GridPositionVisualCell> gridPositionVisualList;
-        
+
         private void Awake()
         {
             if (Instance != null)

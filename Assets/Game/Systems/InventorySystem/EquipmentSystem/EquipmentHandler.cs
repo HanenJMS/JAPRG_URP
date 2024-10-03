@@ -1,6 +1,5 @@
 using GameLab.Animation;
 using GameLab.UnitSystem;
-using NUnit.Framework.Interfaces;
 using UnityEngine;
 
 
@@ -34,7 +33,7 @@ namespace GameLab.InventorySystem
             worldEquipmentHolder.EquipItem(itemData);
             unit.GetTradeHandler().TradeItem(equipmentInventory.GetSlot(itemData.GetEquipmentType()), equipItem, 1);
             unit.GetInventoryHandler().UpdateList();
-            if(itemData.GetEquipmentType() == EquipmentType.Main)
+            if (itemData.GetEquipmentType() == EquipmentType.Main)
             {
                 DrawWeapon(true);
             }
@@ -42,7 +41,7 @@ namespace GameLab.InventorySystem
 
         public void UnequipItem(EquipmentType equipmentType)
         {
-            if(equipmentInventory.GetSlot(equipmentType).GetQuantity() > 0)
+            if (equipmentInventory.GetSlot(equipmentType).GetQuantity() > 0)
             {
                 unit.GetInventoryHandler().AddToQuantity(equipmentInventory.GetSlot(equipmentType), 1);
                 equipmentInventory.UnequipItem(equipmentType);

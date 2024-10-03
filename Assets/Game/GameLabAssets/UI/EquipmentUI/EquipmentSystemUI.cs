@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EquipmentSystemUI : MonoBehaviour
 {
-    
+
     Unit selectedUnit;
     EquipmentSlotUI selectedSlot;
     [SerializeField] List<EquipmentSlotUI> equipmentSlots;
@@ -26,7 +26,7 @@ public class EquipmentSystemUI : MonoBehaviour
     }
     void UpdateUI()
     {
-        if(selectedUnit == null)
+        if (selectedUnit == null)
         {
             selectedUnit = UnitSelectionSystem.Instance.GetSelectedUnit();
         }

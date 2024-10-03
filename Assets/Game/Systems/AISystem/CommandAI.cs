@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace GameLab.AI
@@ -11,7 +7,7 @@ namespace GameLab.AI
     {
         private void LateUpdate()
         {
-            
+
         }
         public void ActivateState()
         {

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 namespace GameLab.Animation
@@ -41,7 +40,7 @@ namespace GameLab.Animation
         }
         public void ReturnToOverrider()
         {
-            if(currentOverrider != null)
+            if (currentOverrider != null)
             {
                 animator.runtimeAnimatorController = currentOverrider;
             }
@@ -66,7 +65,7 @@ namespace GameLab.Animation
         }
         void AnimationEnd()
         {
-           ReturnToOverrider();
+            ReturnToOverrider();
         }
     }
 }

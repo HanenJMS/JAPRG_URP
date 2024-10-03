@@ -1,7 +1,5 @@
 using GameLab.CombatSystem;
-using GameLab.UISystem;
 using GameLab.UnitSystem.AbilitySystem;
-using UnityEngine;
 
 namespace GameLab.UnitSystem.ActionSystem
 {
@@ -33,7 +31,7 @@ namespace GameLab.UnitSystem.ActionSystem
 
         public override bool CanExecuteOnTarget(object target)
         {
-            if(target is Unit)
+            if (target is Unit)
             {
                 var unit = target as Unit;
                 if (unit.GetHealthHandler().IsDead()) return false;

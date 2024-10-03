@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -11,7 +9,7 @@ namespace GameLab.WorldSpaceComponents
 
         private void OnDestroy()
         {
-            if(audioClip != null)
+            if (audioClip != null)
             {
                 GameObject obj = new();
                 GameObject obj1 = Instantiate(obj, this.transform.position, Quaternion.identity);

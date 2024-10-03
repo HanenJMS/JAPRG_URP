@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 namespace GameLab.GridSystem
 {
@@ -55,7 +53,7 @@ namespace GameLab.GridSystem
                 item.InitlializeCell();
             }
             //Material hexMeshMaterial = hexMesh.GetComponent<Renderer>().material;
-            foreach(var item in hexCells)
+            foreach (var item in hexCells)
             {
                 //item.SetMaterial(hexMeshMaterial);
                 item.SetColor(defaultColor);
@@ -87,7 +85,7 @@ namespace GameLab.GridSystem
         }
         public void SetHexCellColor(GridPosition gp, Color color)
         {
-            if(gridPositionVisualList.ContainsKey(gp))
+            if (gridPositionVisualList.ContainsKey(gp))
             {
                 gridPositionVisualList[gp].SetColor(color);
             }
@@ -96,7 +94,7 @@ namespace GameLab.GridSystem
 
         public HexCell GetHexCell(GridPosition gp)
         {
-            if(gridPositionVisualList.ContainsKey(gp))
+            if (gridPositionVisualList.ContainsKey(gp))
             {
                 return gridPositionVisualList[gp];
             }

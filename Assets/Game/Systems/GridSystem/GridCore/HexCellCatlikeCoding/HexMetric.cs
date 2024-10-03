@@ -1,7 +1,3 @@
-using GameLab.GridSystem;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace GameLab.GridSystem
@@ -19,6 +15,17 @@ namespace GameLab.GridSystem
         public static int terraceSteps = terracesPerSlope * 2 + 1;
         public static float horizontalTerraceStepSize = 1f / terraceSteps;
         public static float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
+        public static Texture2D noiseSource;
+        public const float cellPerturbStrength = 5f;
+        public const float elevationPerturbStrength = 1.5f;
+        public const float noiseScale = 0.003f;
+        public static Vector4 SampleNoise(Vector3 position)
+        {
+            return noiseSource.GetPixelBilinear(
+                position.x * noiseScale,
+                position.z * noiseScale
+            );
+        }
 
         public static HexCellDirections GetNextDirection(HexCellDirections directions)
         {
@@ -58,7 +65,7 @@ namespace GameLab.GridSystem
             {
                 return HexEdgeType.DescendingSlope;
             }
-            if(delta >= 2)
+            if (delta >= 2)
             {
                 return HexEdgeType.RisingCliff;
             }

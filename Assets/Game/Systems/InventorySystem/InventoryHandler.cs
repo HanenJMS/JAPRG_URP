@@ -90,9 +90,9 @@ namespace GameLab.InventorySystem
         public void UpdateList()
         {
             Dictionary<ItemData, InventorySlot> newDictionary = new();
-            foreach (KeyValuePair<ItemData, InventorySlot> slot in inventory) 
+            foreach (KeyValuePair<ItemData, InventorySlot> slot in inventory)
             {
-                if(slot.Value.GetQuantity() > 0)
+                if (slot.Value.GetQuantity() > 0)
                 {
                     newDictionary.Add(slot.Key, slot.Value);
                 }

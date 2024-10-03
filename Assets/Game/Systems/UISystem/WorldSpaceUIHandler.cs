@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameLab.UISystem
@@ -17,17 +15,17 @@ namespace GameLab.UISystem
         {
             var go = Instantiate(worldTextUIObject, TextWorldContainer);
             go.GetComponent<WorldSpaceTextUI>().SetText(text);
-            if(this.worldTextUIObject == null)
+            if (this.worldTextUIObject == null)
             {
                 this.worldTextUIObject = worldTextUIObject;
             }
 
-            if(int.TryParse(text, out int y))
+            if (int.TryParse(text, out int y))
             {
                 textSum += y;
                 subCountTimer = Mathf.Clamp(subCountTimer += 1f, 0, 3f);
             }
-            
+
             if (subCountTimer >= 2f)
             {
                 isActive = true;

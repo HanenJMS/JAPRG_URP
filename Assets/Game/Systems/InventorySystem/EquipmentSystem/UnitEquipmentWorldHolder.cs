@@ -15,7 +15,7 @@ namespace GameLab.InventorySystem
 
         private void Awake()
         {
-            foreach(EquipmentWorldSpaceContainer ewsc in GetComponentsInChildren<EquipmentWorldSpaceContainer>())
+            foreach (EquipmentWorldSpaceContainer ewsc in GetComponentsInChildren<EquipmentWorldSpaceContainer>())
             {
                 equipmentSlotReferences.Add(ewsc.GetEquipmentType(), ewsc.gameObject);
                 equippedItemReferences.Add(ewsc.GetEquipmentType(), null);

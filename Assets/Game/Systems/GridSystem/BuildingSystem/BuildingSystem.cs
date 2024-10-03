@@ -14,7 +14,7 @@ namespace GameLab.BuildingSystem
         }
         private void LateUpdate()
         {
-            if(Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1))
             {
                 GridPosition gp = LevelGridSystem.Instance.GetGridPosition(MouseWorldController.GetMousePosition());
                 var building = Instantiate(buildingTable.GetBuildingList()[0], LevelGridSystem.Instance.GetWorldPosition(gp), Quaternion.identity);

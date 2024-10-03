@@ -22,7 +22,7 @@ namespace GameLab.AI
         public void SetCurrentAIState(IAIState state)
         {
             if (currentState == state) return;
-            if(currentState != null)
+            if (currentState != null)
             {
                 currentState.CancelState();
             }
@@ -31,7 +31,7 @@ namespace GameLab.AI
         }
         private void LateUpdate()
         {
-            if(unit.GetHealthHandler().IsDead())
+            if (unit.GetHealthHandler().IsDead())
             {
                 return;
             }

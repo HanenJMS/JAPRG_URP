@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingWorld : MonoBehaviour
@@ -10,5 +8,8 @@ public class BuildingWorld : MonoBehaviour
         entrancePosition = GetComponentInChildren<Building_World_Entrance>().transform;
     }
 
-    public Transform GetBuildingEntranceLocation() => entrancePosition;
+    public Transform GetBuildingEntranceLocation()
+    {
+        return entrancePosition;
+    }
 }

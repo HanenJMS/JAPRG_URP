@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Unity.Entities;
-using Unity.Mathematics;
-using Unity.Transforms;
+using UnityEngine;
 public class ECSManager : MonoBehaviour
 {
     EntityManager manager;
@@ -12,6 +8,6 @@ public class ECSManager : MonoBehaviour
     private void Start()
     {
         manager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        
+
     }
 }
