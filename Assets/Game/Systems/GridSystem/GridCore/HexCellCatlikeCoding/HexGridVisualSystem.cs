@@ -50,6 +50,7 @@ namespace GameLab.GridSystem
 
             foreach (var item in hexCells)
             {
+                item.SetElevation(0);
                 item.InitlializeCell();
             }
             //Material hexMeshMaterial = hexMesh.GetComponent<Renderer>().material;

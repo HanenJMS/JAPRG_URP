@@ -2,23 +2,45 @@ using UnityEngine;
 
 namespace GameLab.GridSystem
 {
+    public struct EdgeVertices
+    {
+        public Vector3 v1, v2, v3, v4;
+        public EdgeVertices(Vector3 corner1, Vector3 corner2)
+        {
+            v1 = corner1;
+            v2 = Vector3.Lerp(corner1, corner2, 1f / 3f);
+            v3 = Vector3.Lerp(corner1, corner2, 2f / 3f);
+            v4 = corner2;
+        }
+        public static EdgeVertices TerraceLerp(
+            EdgeVertices a, EdgeVertices b, int step)
+        {
+            EdgeVertices result;
+            result.v1 = HexMetric.TerraceLerp(a.v1, b.v1, step);
+            result.v2 = HexMetric.TerraceLerp(a.v2, b.v2, step);
+            result.v3 = HexMetric.TerraceLerp(a.v3, b.v3, step);
+            result.v4 = HexMetric.TerraceLerp(a.v4, b.v4, step);
+            return result;
+        }
+    }
     public enum HexEdgeType
     {
         Flat, Slope, DescendingSlope, RisingSlope, DescendingCliff, RisingCliff, Cliff
     }
     public static class HexMetric
     {
-        public static float solidFactor = 0.75f;
-        public static float elevationStep = 5f;
+        public static float solidFactor = 0.8f;
+        public static float elevationStep = 3f;
         public static float blendFactor = 1f - solidFactor;
         public static int terracesPerSlope = 2;
         public static int terraceSteps = terracesPerSlope * 2 + 1;
         public static float horizontalTerraceStepSize = 1f / terraceSteps;
         public static float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
         public static Texture2D noiseSource;
-        public const float cellPerturbStrength = 5f;
+        public const float cellPerturbStrength = 4f;
         public const float elevationPerturbStrength = 1.5f;
-        public const float noiseScale = 0.003f;
+        public const float noiseScale = 0.0033f;
+        public const int chunkSizeX = 5, chunkSizeZ = 5;
         public static Vector4 SampleNoise(Vector3 position)
         {
             return noiseSource.GetPixelBilinear(
@@ -83,6 +105,7 @@ namespace GameLab.GridSystem
             }
             return edgeType;
         }
+
     }
 }
 
