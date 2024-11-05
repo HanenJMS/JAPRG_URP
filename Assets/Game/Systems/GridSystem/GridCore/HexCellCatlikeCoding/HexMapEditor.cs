@@ -1,6 +1,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 
 namespace GameLab.GridSystem
 {
@@ -39,7 +40,10 @@ namespace GameLab.GridSystem
             !EventSystem.current.IsPointerOverGameObject())
             {
                 var gp = LevelHexGridSystem.Instance.GetGridPosition(MouseWorldController.GetMousePosition());
+                Debug.Log(gp.ToString());
+                
                 EditCell(HexGridVisualSystem.Instance.GetHexCell(gp));
+                Debug.Log(HexGridVisualSystem.Instance.GetHexCell(gp).ToString());
             }
         }
 
@@ -48,7 +52,7 @@ namespace GameLab.GridSystem
             cell.SetColor(activeColor);
             cell.SetElevation(activeElevation);
             HexGridVisualSystem.Instance.SetHexCellElevation(cell.GetGridPosition());
-            HexGridVisualSystem.Instance.Refresh();
+            HexGridVisualSystem.Instance.Refresh(cell.GetCellChunkIndex());
 
         }
     }

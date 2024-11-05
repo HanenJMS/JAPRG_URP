@@ -12,7 +12,7 @@ namespace GameLab.GridSystem
         [SerializeField] int width, height, cellsize;
         [SerializeField] Transform debugObject;
         HexGridSystem<HexGridObject> gridSystem;
-
+        int chunkCountX = 4, chunkCountZ = 3;
         // Start is called before the first frame update
         private void Awake()
         {
@@ -22,7 +22,12 @@ namespace GameLab.GridSystem
                 return;
             }
             Instance = this;
+        }
+        public void CreateGrid(int width = 5, int height = 5)
+        {
 
+            this.width = width;
+            this.height = height;
             gridSystem = new HexGridSystem<HexGridObject>(width, height, cellsize, (HexGridSystem<HexGridObject> g, GridPosition gridPosition) => new(g, gridPosition));
             gridSystem.CreateDebugObject(debugObject);
             foreach (var item in GetAllGridPositions())

@@ -13,6 +13,7 @@ namespace GameLab.GridSystem
         float innerRadius;
         int width, height;
         float cellSize;
+        
 
         Dictionary<GridPosition, TGridObject> grid;
         List<GridPosition> allGridPositions;

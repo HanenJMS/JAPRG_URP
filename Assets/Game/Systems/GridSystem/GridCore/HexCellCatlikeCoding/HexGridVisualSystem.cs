@@ -6,7 +6,8 @@ namespace GameLab.GridSystem
     {
         public static HexGridVisualSystem Instance { get; private set; }
 
-        [SerializeField] Transform gridPositionVisual;
+        [SerializeField] Transform hexCellPrefab;
+        [SerializeField] Transform gridPositionChunkPrefab;
         Dictionary<GridPosition, HexCell> gridPositionVisualList;
         Dictionary<GridPosition, Transform> gridObjectList;
         HexMesh hexMesh;
@@ -15,9 +16,10 @@ namespace GameLab.GridSystem
         float innerRadiusConstant = 0.866025404f;
         public Color defaultColor = Color.white;
         public Color touchedColor = Color.magenta;
+        HexGridChunk[] chunks;
         HexCell[] hexCells;
-
-
+        int cellCountX, cellCountZ;
+        int chunkCountX = 4, chunkCountZ = 3;
         private void Awake()
         {
             if (Instance != null)
@@ -27,18 +29,30 @@ namespace GameLab.GridSystem
             Instance = this;
             gridPositionVisualList = new();
             gridObjectList = new();
-            hexMesh = GetComponentInChildren<HexMesh>();
+            
+        }
+        void AddCellToChunk(int x, int z, HexCell cell)
+        {
+            int chunkX = x / HexMetric.chunkSizeX;
+            int chunkZ = z / HexMetric.chunkSizeZ;
+            HexGridChunk chunk = chunks[chunkX + chunkZ * chunkCountX];
+
+            int localX = x - chunkX * HexMetric.chunkSizeX;
+            int localZ = z - chunkZ * HexMetric.chunkSizeZ;
+            chunk.AddCell(localX + localZ * HexMetric.chunkSizeX, cell);
         }
         private void Start()
         {
+            LevelHexGridSystem.Instance.CreateGrid(chunkCountX * HexMetric.chunkSizeX, chunkCountZ * HexMetric.chunkSizeZ);
+            CreateChunks();
             foreach (GridPosition gridPosition in LevelHexGridSystem.Instance.GetAllGridPositions())
             {
-                Transform gridVisualTransform = Instantiate(gridPositionVisual, LevelHexGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity, this.transform);
-
-                var hexCell = gridVisualTransform.GetComponent<HexCell>();
+                Transform hexCellObject = Instantiate(hexCellPrefab, LevelHexGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity, this.transform);
+                var hexCell = hexCellObject.GetComponent<HexCell>();
                 gridPositionVisualList.Add(gridPosition, hexCell);
-                gridObjectList.Add(gridPosition, gridVisualTransform);
+                gridObjectList.Add(gridPosition, hexCellObject.transform);
                 hexCell.SetGridPosition(gridPosition);
+                AddCellToChunk(gridPosition.x, gridPosition.z, hexCell);
             }
 
             List<HexCell> cells = new List<HexCell>();
@@ -60,14 +74,25 @@ namespace GameLab.GridSystem
                 item.SetColor(defaultColor);
             }
             InitializeElevation();
-            Refresh();
             //InitializeElevation();
 
 
         }
-        public void Refresh()
+        void CreateChunks()
         {
-            hexMesh.Triangulate(hexCells);
+            chunks = new HexGridChunk[chunkCountX * chunkCountZ];
+
+            for (int z = 0, i = 0; z < chunkCountZ; z++)
+            {
+                for (int x = 0; x < chunkCountX; x++)
+                {
+                    HexGridChunk chunk = chunks[i++] = Instantiate(gridPositionChunkPrefab, this.transform).GetComponent<HexGridChunk>();
+                }
+            }
+        }
+        public void Refresh(int chunkIndex)
+        {
+            chunks[chunkIndex].Refresh();
         }
         public void InitializeElevation()
         {

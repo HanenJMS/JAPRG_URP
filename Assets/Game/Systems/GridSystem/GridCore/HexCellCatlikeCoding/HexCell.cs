@@ -17,6 +17,7 @@ namespace GameLab.GridSystem
         int elevation;
         float elevationStep = 5f;
         float blendFactor;
+        int chunkIndex = 0;
         /// <summary>
         /// Set corners and neighbor cells
         /// </summary>
@@ -170,6 +171,14 @@ namespace GameLab.GridSystem
         public HexEdgeType GetEdgeType(HexEdgeType edgeType)
         {
             return HexMetric.GetEdgeType(edgeType);
+        }
+        public int GetCellChunkIndex()
+        {
+            return chunkIndex;
+        }
+        public void SetCellChunkIndex(int index)
+        {
+            chunkIndex = index;
         }
     }
 }
