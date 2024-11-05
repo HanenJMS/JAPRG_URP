@@ -40,6 +40,7 @@ namespace GameLab.GridSystem
             int localX = x - chunkX * HexMetric.chunkSizeX;
             int localZ = z - chunkZ * HexMetric.chunkSizeZ;
             chunk.AddCell(localX + localZ * HexMetric.chunkSizeX, cell);
+            cell.SetCellChunkIndex(chunkX + chunkZ * chunkCountX);
         }
         private void Start()
         {
