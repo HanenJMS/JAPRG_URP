@@ -41,6 +41,7 @@ namespace GameLab.GridSystem
             int localZ = z - chunkZ * HexMetric.chunkSizeZ;
             chunk.AddCell(localX + localZ * HexMetric.chunkSizeX, cell);
             cell.SetCellChunkIndex(chunkX + chunkZ * chunkCountX);
+            cell.SetCellChunk(chunk);
         }
         private void Start()
         {
@@ -50,10 +51,11 @@ namespace GameLab.GridSystem
             {
                 Transform hexCellObject = Instantiate(hexCellPrefab, LevelHexGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity, this.transform);
                 var hexCell = hexCellObject.GetComponent<HexCell>();
-                gridPositionVisualList.Add(gridPosition, hexCell);
-                gridObjectList.Add(gridPosition, hexCellObject.transform);
                 hexCell.SetGridPosition(gridPosition);
                 AddCellToChunk(gridPosition.x, gridPosition.z, hexCell);
+                gridPositionVisualList.Add(gridPosition, hexCell);
+                gridObjectList.Add(gridPosition, hexCellObject.transform);
+                
             }
 
             List<HexCell> cells = new List<HexCell>();

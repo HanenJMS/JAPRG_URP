@@ -10,18 +10,15 @@ namespace GameLab.GridSystem
     {
         [SerializeField] Mesh hexMesh;
         MeshCollider meshCollider;
-        List<Vector3> vertices;
-        List<int> triangles;
-        List<Color> colors;
+        static List<Vector3> vertices = new();
+        static List<int> triangles = new();
+        static List<Color> colors = new();
         private void Awake()
         {
 
             GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
             meshCollider = gameObject.AddComponent<MeshCollider>();
             hexMesh.name = "Hex Mesh";
-            vertices = new List<Vector3>();
-            triangles = new List<int>();
-            colors = new();
         }
 
         public void Triangulate(HexCell[] cells)

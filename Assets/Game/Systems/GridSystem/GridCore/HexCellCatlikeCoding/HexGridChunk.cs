@@ -13,18 +13,21 @@ namespace GameLab.GridSystem
             hexCells = new HexCell[HexMetric.chunkSizeX * HexMetric.chunkSizeZ];
             hexhMesh = GetComponentInChildren<HexMesh>();
         }
-        private void Start()
+
+        private void LateUpdate()
         {
-            Refresh();
+            hexhMesh.Triangulate(hexCells);
+            enabled = false;
         }
         public void Refresh()
         {
-            hexhMesh.Triangulate(hexCells);
+            enabled = true;
         }
         public void AddCell(int index, HexCell cell)
         {
             hexCells[index] = cell;
             cell.transform.SetParent(transform);
         }
+
     }
 }

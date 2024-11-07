@@ -1,7 +1,6 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering.Universal;
 
 namespace GameLab.GridSystem
 {
@@ -41,7 +40,7 @@ namespace GameLab.GridSystem
             {
                 var gp = LevelHexGridSystem.Instance.GetGridPosition(MouseWorldController.GetMousePosition());
                 Debug.Log(gp.ToString());
-                
+
                 EditCell(HexGridVisualSystem.Instance.GetHexCell(gp));
                 Debug.Log(HexGridVisualSystem.Instance.GetHexCell(gp).ToString());
             }

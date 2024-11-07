@@ -17,7 +17,8 @@ namespace GameLab.GridSystem
         int elevation;
         float elevationStep = 5f;
         float blendFactor;
-        int chunkIndex = 0;
+        int chunkIndex = int.MinValue;
+        HexGridChunk chunk;
         /// <summary>
         /// Set corners and neighbor cells
         /// </summary>
@@ -68,6 +69,9 @@ namespace GameLab.GridSystem
         }
         public void SetElevation(int elevation)
         {
+            if (this.elevation == elevation)
+                return;
+
             this.elevation = elevation;
             Vector3 position = transform.localPosition;
             position.y = elevation * HexMetric.elevationStep;
@@ -75,6 +79,27 @@ namespace GameLab.GridSystem
                 (HexMetric.SampleNoise(position).y * 2f - 1f) *
                 HexMetric.elevationPerturbStrength;
             transform.localPosition = position;
+
+            Refresh();
+
+        }
+        void Refresh()
+        {
+            if(chunk != null)
+                chunk.Refresh();
+
+            List<HexGridChunk> chunks = new();
+            chunks.Add(chunk);
+            foreach (var item in hexCellNeighbors)
+            {
+                var hexNeighbor = HexGridVisualSystem.Instance.GetHexCell(item.Value);
+                if (hexNeighbor == null) continue;
+                if(!chunks.Contains(hexNeighbor.GetHexGridChunk()))
+                {
+                    hexNeighbor.GetHexGridChunk().Refresh();
+                    chunks.Add(hexNeighbor.GetHexGridChunk());
+                }
+            }
         }
         public void SetColor(Color color)
         {
@@ -172,6 +197,10 @@ namespace GameLab.GridSystem
         {
             return HexMetric.GetEdgeType(edgeType);
         }
+        public HexGridChunk GetHexGridChunk()
+        {
+            return chunk;
+        }
         public int GetCellChunkIndex()
         {
             return chunkIndex;
@@ -179,6 +208,10 @@ namespace GameLab.GridSystem
         public void SetCellChunkIndex(int index)
         {
             chunkIndex = index;
+        }
+        public void SetCellChunk(HexGridChunk chunk)
+        {
+            this.chunk = chunk;
         }
     }
 }
