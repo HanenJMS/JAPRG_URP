@@ -10,7 +10,6 @@ namespace GameLab.GridSystem
         [SerializeField] Transform gridPositionChunkPrefab;
         Dictionary<GridPosition, HexCell> gridPositionVisualList;
         Dictionary<GridPosition, Transform> gridObjectList;
-        HexMesh hexMesh;
         //for HexGrid references
         float outerRadius;
         float innerRadiusConstant = 0.866025404f;
@@ -69,14 +68,11 @@ namespace GameLab.GridSystem
             {
                 item.SetElevation(0);
                 item.InitlializeCell();
-            }
-            //Material hexMeshMaterial = hexMesh.GetComponent<Renderer>().material;
-            foreach (var item in hexCells)
-            {
-                //item.SetMaterial(hexMeshMaterial);
                 item.SetColor(defaultColor);
             }
+
             InitializeElevation();
+
             //InitializeElevation();
 
 
@@ -112,14 +108,7 @@ namespace GameLab.GridSystem
             gridObjectList[gp].transform.position = pos;
 
         }
-        public void SetHexCellColor(GridPosition gp, Color color)
-        {
-            if (gridPositionVisualList.ContainsKey(gp))
-            {
-                gridPositionVisualList[gp].SetColor(color);
-            }
-            hexMesh.Triangulate(hexCells);
-        }
+
 
         public HexCell GetHexCell(GridPosition gp)
         {

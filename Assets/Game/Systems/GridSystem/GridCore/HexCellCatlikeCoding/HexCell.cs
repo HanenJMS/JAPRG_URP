@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace GameLab.GridSystem
 {
@@ -12,13 +13,15 @@ namespace GameLab.GridSystem
         float innerRadiusConstant = 0.866025404f;
         GridPosition gridPosition;
         Dictionary<HexCellDirections, GridPosition> hexCellNeighbors;
-        Color color;
+        public Color color;
         float solidFactor = 0.75f;
         int elevation;
         float elevationStep = 5f;
         float blendFactor;
         int chunkIndex = int.MinValue;
         HexGridChunk chunk;
+        bool hasIncomingRiver, hasOutgoingRiver;
+        HexCellDirections incomingRiver, outgoingRiver;
         /// <summary>
         /// Set corners and neighbor cells
         /// </summary>
@@ -79,31 +82,52 @@ namespace GameLab.GridSystem
                 (HexMetric.SampleNoise(position).y * 2f - 1f) *
                 HexMetric.elevationPerturbStrength;
             transform.localPosition = position;
-
+            if (
+                hasOutgoingRiver &&
+                elevation < HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(outgoingRiver)).GetElevation()
+)
+            {
+                RemoveOutgoingRiver();
+            }
+            if (
+                hasIncomingRiver &&
+                elevation > HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(incomingRiver)).GetElevation()
+            )
+            {
+                RemoveIncomingRiver();
+            }
             Refresh();
 
         }
         void Refresh()
         {
-            if(chunk != null)
+            if (chunk != null)
+            {
                 chunk.Refresh();
+                RefreshChunks();
+            }
+        }
 
+        private void RefreshChunks()
+        {
             List<HexGridChunk> chunks = new();
             chunks.Add(chunk);
             foreach (var item in hexCellNeighbors)
             {
                 var hexNeighbor = HexGridVisualSystem.Instance.GetHexCell(item.Value);
                 if (hexNeighbor == null) continue;
-                if(!chunks.Contains(hexNeighbor.GetHexGridChunk()))
+                if (!chunks.Contains(hexNeighbor.GetHexGridChunk()))
                 {
                     hexNeighbor.GetHexGridChunk().Refresh();
                     chunks.Add(hexNeighbor.GetHexGridChunk());
                 }
             }
         }
+
         public void SetColor(Color color)
         {
             this.color = color;
+            Refresh();
         }
         public Color GetCellColor()
         {
@@ -212,6 +236,117 @@ namespace GameLab.GridSystem
         public void SetCellChunk(HexGridChunk chunk)
         {
             this.chunk = chunk;
+        }
+
+        public bool HasIncomingRiver
+        {
+            get
+            {
+                return hasIncomingRiver;
+            }
+        }
+
+        public bool HasOutgoingRiver
+        {
+            get
+            {
+                return hasOutgoingRiver;
+            }
+        }
+
+        public HexCellDirections IncomingRiver
+        {
+            get
+            {
+                return incomingRiver;
+            }
+        }
+
+        public HexCellDirections OutgoingRiver
+        {
+            get
+            {
+                return outgoingRiver;
+            }
+        }
+        public bool HasRiver
+        {
+            get
+            {
+                return hasIncomingRiver || hasOutgoingRiver;
+            }
+        }
+        public bool HasRiverBeginOrEnd
+        {
+            get
+            {
+                return hasIncomingRiver != hasOutgoingRiver;
+            }
+        }
+        public bool HasRiverThroughEdge(HexCellDirections direction)
+        {
+            return
+                hasIncomingRiver && incomingRiver == direction ||
+                hasOutgoingRiver && outgoingRiver == direction;
+        }
+        public void RemoveOutgoingRiver()
+        {
+            if (!hasOutgoingRiver)
+            {
+                return;
+            }
+            hasOutgoingRiver = false;
+            RefreshSelfOnly();
+
+            HexCell neighbor = HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(outgoingRiver));
+            neighbor.hasIncomingRiver = false;
+            neighbor.RefreshSelfOnly();
+        }
+        void RefreshSelfOnly()
+        {
+            chunk.Refresh();
+        }
+        public void RemoveIncomingRiver()
+        {
+            if (!hasIncomingRiver)
+            {
+                return;
+            }
+            hasIncomingRiver = false;
+            RefreshSelfOnly();
+
+            HexCell neighbor = HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(incomingRiver));
+            neighbor.hasOutgoingRiver = false;
+            neighbor.RefreshSelfOnly();
+        }
+        public void RemoveRiver()
+        {
+            RemoveOutgoingRiver();
+            RemoveIncomingRiver();
+        }
+        public void SetOutgoingRiver(HexCellDirections direction)
+        {
+            if (hasOutgoingRiver && outgoingRiver == direction)
+            {
+                return;
+            }
+            HexCell neighbor = HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(direction));
+            if (!neighbor || elevation < neighbor.elevation)
+            {
+                return;
+            }
+            RemoveOutgoingRiver();
+            if (hasIncomingRiver && incomingRiver == direction)
+            {
+                RemoveIncomingRiver();
+            }
+            hasOutgoingRiver = true;
+            outgoingRiver = direction;
+            RefreshSelfOnly();
+            neighbor.RemoveIncomingRiver();
+            neighbor.hasIncomingRiver = true;
+            neighbor.incomingRiver = HexMetric.GetOppositeDirection(direction);
+            neighbor.RefreshSelfOnly();
         }
     }
 }

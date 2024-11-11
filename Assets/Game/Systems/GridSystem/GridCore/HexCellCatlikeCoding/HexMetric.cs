@@ -1,3 +1,4 @@
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace GameLab.GridSystem
@@ -105,7 +106,15 @@ namespace GameLab.GridSystem
             }
             return edgeType;
         }
-
+        public static HexCellDirections GetOppositeDirection(HexCellDirections direction)
+        {
+            HexCellDirections dir = direction + 3;
+            if (dir > HexCellDirections.NW)
+            {
+                dir = (HexCellDirections)(dir - HexCellDirections.NW);
+            }
+            return dir;
+        }
     }
 }
 
