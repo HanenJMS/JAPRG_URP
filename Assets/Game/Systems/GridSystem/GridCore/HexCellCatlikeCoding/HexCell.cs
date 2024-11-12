@@ -8,7 +8,6 @@ namespace GameLab.GridSystem
 
     public class HexCell : MonoBehaviour
     {
-        Vector3[] corners;
         float outerRadius;
         float innerRadiusConstant = 0.866025404f;
         GridPosition gridPosition;
@@ -17,7 +16,6 @@ namespace GameLab.GridSystem
         float solidFactor = 0.75f;
         int elevation;
         float elevationStep = 5f;
-        float blendFactor;
         int chunkIndex = int.MinValue;
         HexGridChunk chunk;
         bool hasIncomingRiver, hasOutgoingRiver;
@@ -27,40 +25,7 @@ namespace GameLab.GridSystem
         /// </summary>
         public void InitlializeCell()
         {
-            blendFactor = 1f - solidFactor;
-            InitializeCorners();
             InitializeNeighbors();
-        }
-
-        public void InitializeCorners()
-        {
-            outerRadius = LevelHexGridSystem.Instance.GetGridCellSize() / 2;
-            float innerRadiusCalculated = outerRadius * innerRadiusConstant;
-            Vector3[] corners =
-            {
-                    //0 North
-                    new Vector3(0f, 0f, outerRadius),
-
-                    //NorthEast
-                    new Vector3(innerRadiusCalculated, 0f, 0.5f * outerRadius),
-                    //120 SouthEast
-                    new Vector3(innerRadiusCalculated, 0f, -0.5f * outerRadius),
-                    //180 South
-                    new Vector3(0f, 0f, -outerRadius),
-                    //240 SouthWest
-                    new Vector3(-innerRadiusCalculated, 0f, -0.5f * outerRadius),
-                    //300 NorthWest
-                    new Vector3(-innerRadiusCalculated, 0f, 0.5f * outerRadius),
-
-                    //north edge cases
-                    new Vector3(0f, 0f, outerRadius)
-            };
-            this.corners = corners;
-        }
-
-        public Vector3[] GetCorners()
-        {
-            return corners;
         }
         public void SetGridPosition(GridPosition gp)
         {
@@ -168,25 +133,6 @@ namespace GameLab.GridSystem
         {
             return hexCellNeighbors[direction];
         }
-        public Vector3 GetFirstCorner(HexCellDirections direction)
-        {
-            return corners[(int)direction];
-        }
-        public Vector3 GetSecondCorner(HexCellDirections direction)
-        {
-            return corners[((int)direction + 1)];
-        }
-
-        public Vector3 GetFirstSolidCorner(HexCellDirections direction)
-        {
-            return corners[(int)direction] * solidFactor;
-        }
-
-        public Vector3 GetSecondSolidCorner(HexCellDirections direction)
-        {
-            return corners[(int)direction + 1] * solidFactor;
-        }
-
         public GridPosition GetPreviousDirectionHexNeighbor(HexCellDirections directions)
         {
             var PrevDirection = HexMetric.GetPreviousDirection(directions);
@@ -197,13 +143,6 @@ namespace GameLab.GridSystem
             var nextDirection = HexMetric.GetNextDirection(directions);
             return hexCellNeighbors[nextDirection];
         }
-
-        public Vector3 GetBridge(HexCellDirections direction)
-        {
-            return (corners[(int)direction] + corners[(int)direction + 1]) * blendFactor;
-        }
-
-
         public HexEdgeType GetEdgeType(HexCellDirections direction)
         {
             return HexMetric.GetEdgeType
@@ -237,7 +176,15 @@ namespace GameLab.GridSystem
         {
             this.chunk = chunk;
         }
-
+        public float StreamBedY
+        {
+            get
+            {
+                return
+                    (elevation + HexMetric.streamBedElevationOffset) *
+                    HexMetric.elevationStep;
+            }
+        }
         public bool HasIncomingRiver
         {
             get
@@ -245,7 +192,6 @@ namespace GameLab.GridSystem
                 return hasIncomingRiver;
             }
         }
-
         public bool HasOutgoingRiver
         {
             get
@@ -253,7 +199,6 @@ namespace GameLab.GridSystem
                 return hasOutgoingRiver;
             }
         }
-
         public HexCellDirections IncomingRiver
         {
             get
@@ -261,7 +206,6 @@ namespace GameLab.GridSystem
                 return incomingRiver;
             }
         }
-
         public HexCellDirections OutgoingRiver
         {
             get

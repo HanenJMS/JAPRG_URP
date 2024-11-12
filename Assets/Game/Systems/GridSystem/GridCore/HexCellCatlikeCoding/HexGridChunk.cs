@@ -6,18 +6,23 @@ namespace GameLab.GridSystem
     public class HexGridChunk : MonoBehaviour
     {
         HexCell[] hexCells;
-        HexMesh hexhMesh;
+        public HexMesh terrain;
         
         private void Awake()
         {
             hexCells = new HexCell[HexMetric.chunkSizeX * HexMetric.chunkSizeZ];
-            hexhMesh = GetComponentInChildren<HexMesh>();
         }
 
         private void LateUpdate()
         {
-            hexhMesh.Triangulate(hexCells);
+            Triangulate();
             enabled = false;
+        }
+        public void Triangulate()
+        {
+            terrain.Clear();
+            terrain.Triangulate(hexCells);
+            terrain.Apply();
         }
         public void Refresh()
         {

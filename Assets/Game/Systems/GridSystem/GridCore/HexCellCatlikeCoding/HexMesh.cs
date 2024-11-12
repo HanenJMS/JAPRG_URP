@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace GameLab.GridSystem
 {
@@ -25,7 +26,6 @@ namespace GameLab.GridSystem
         {
             hexMesh.Clear();
             vertices.Clear();
-
             colors.Clear();
             triangles.Clear();
             for (int i = 0; i < cells.Length; i++)
@@ -54,10 +54,35 @@ namespace GameLab.GridSystem
             Vector3 center = cell.transform.localPosition;
             EdgeVertices e = new EdgeVertices
             (
-            center + cell.GetFirstSolidCorner(direction),
-            center + cell.GetSecondSolidCorner(direction)
+            center + HexMetric.GetFirstSolidCorner(direction),
+            center + HexMetric.GetSecondSolidCorner(direction)
             );
-            TriangulateEdgeFan(center, e, cell.GetCellColor());
+
+            if (cell.HasRiver)
+            {
+                if (cell.HasRiverThroughEdge(direction))
+                {
+                    e.v3.y = cell.StreamBedY;
+                    if (cell.HasRiverBeginOrEnd)
+                    {
+                        TriangulateWithRiverBeginOrEnd(direction, cell, center, e);
+                    }
+                    else
+                    {
+                        TriangulateWithRiver(direction, cell, center, e);
+                    }
+                }
+                else
+                {
+                    TriangulateAdjacentToRiver(direction, cell, center, e);
+                }
+            }
+            else
+            {
+                TriangulateEdgeFan(center, e, cell.GetCellColor());
+            }
+
+            
 
             if (direction <= HexCellDirections.SE)
             {
@@ -71,13 +96,16 @@ namespace GameLab.GridSystem
             var directionalNeighbor = HexGridVisualSystem.Instance.GetHexCell(cell.GetHexCellNeighborGridPosition(direction));
             if (directionalNeighbor == null) return;
             //rectangular bridge between hexagon tiles
-            var directionalBridge = cell.GetBridge(direction);
+            var directionalBridge = HexMetric.GetBridge(direction);
             directionalBridge.y = directionalNeighbor.transform.position.y - cell.transform.position.y;
             EdgeVertices e2 = new EdgeVertices(
                 e1.v1 + directionalBridge,
-                e1.v4 + directionalBridge
+                e1.v5 + directionalBridge
             );
-
+            if (cell.HasRiverThroughEdge(direction))
+            {
+                e2.v3.y = directionalNeighbor.StreamBedY;
+            }
             if (HexMetric.GetEdgeType(cell.GetEdgeType(direction)) == HexEdgeType.Slope)
             {
                 //TriangulateEdgeTerraces(direction, cell, e1.v1, e1.v4, directionalNeighbor, e2.v1, e2.v4);
@@ -92,7 +120,7 @@ namespace GameLab.GridSystem
             HexCell nextDirectionalNeighbor = HexGridVisualSystem.Instance.GetHexCell(cell.GetNextDirectionHexNeighbor(direction));
             if (direction <= HexCellDirections.E && nextDirectionalNeighbor != null)
             {
-                var nextDirectionalNeighborBridgeVector = e1.v4 + cell.GetBridge(HexMetric.GetNextDirection(direction));
+                var nextDirectionalNeighborBridgeVector = e1.v5 + HexMetric.GetBridge(HexMetric.GetNextDirection(direction));
                 nextDirectionalNeighborBridgeVector.y = nextDirectionalNeighbor.transform.position.y;
 
 
@@ -102,8 +130,8 @@ namespace GameLab.GridSystem
                     {
                         TriangulateCorner
                         (
-                            e1.v4, cell,
-                            e2.v4, directionalNeighbor,
+                            e1.v5, cell,
+                            e2.v5, directionalNeighbor,
                             nextDirectionalNeighborBridgeVector, nextDirectionalNeighbor
                         );
                     }
@@ -112,8 +140,8 @@ namespace GameLab.GridSystem
                         TriangulateCorner
                         (
                             nextDirectionalNeighborBridgeVector, nextDirectionalNeighbor,
-                            e1.v4, cell,
-                            e2.v4, directionalNeighbor
+                            e1.v5, cell,
+                            e2.v5, directionalNeighbor
                         );
                     }
                 }
@@ -121,9 +149,9 @@ namespace GameLab.GridSystem
                 {
                     TriangulateCorner
                     (
-                        e2.v4, directionalNeighbor,
+                        e2.v5, directionalNeighbor,
                         nextDirectionalNeighborBridgeVector, nextDirectionalNeighbor,
-                        e1.v4, cell
+                        e1.v5, cell
 
                     );
                 }
@@ -132,8 +160,8 @@ namespace GameLab.GridSystem
                     TriangulateCorner
                     (
                         nextDirectionalNeighborBridgeVector, nextDirectionalNeighbor,
-                         e1.v4, cell,
-                         e2.v4, directionalNeighbor
+                         e1.v5, cell,
+                         e2.v5, directionalNeighbor
                     );
                 }
             }
@@ -141,7 +169,7 @@ namespace GameLab.GridSystem
         void TriangulateEdgeTerraces(EdgeVertices start, HexCell startCell, EdgeVertices end, HexCell endCell)
         {
             Vector3 v3 = HexMetric.TerraceLerp(start.v1, end.v1, 1);
-            Vector3 v4 = HexMetric.TerraceLerp(start.v4, end.v4, 1);
+            Vector3 v4 = HexMetric.TerraceLerp(start.v5, end.v5, 1);
             Color c2 = HexMetric.TerraceLerp(startCell.GetCellColor(), endCell.GetCellColor(), 1);
 
             EdgeVertices e2 = EdgeVertices.TerraceLerp(start, end, 1);
@@ -323,7 +351,7 @@ namespace GameLab.GridSystem
 
             float b = 1f / (rightCell.GetElevation() - startCell.GetElevation());
             b = Mathf.Abs(b);
-            Vector3 boundary = Vector3.Lerp(Perturb(start), Perturb(right), b);
+            Vector3 boundary = Vector3.Lerp(HexMetric.Perturb(start), HexMetric.Perturb(right), b);
             Color boundaryColor = Color.Lerp(startCell.GetCellColor(), rightCell.GetCellColor(), b);
 
             TriangulateBoundaryTriangle
@@ -338,7 +366,7 @@ namespace GameLab.GridSystem
             }
             else
             {
-                AddTriangleUnperturbed(Perturb(left), Perturb(right), boundary);
+                AddTriangleUnperturbed(HexMetric.Perturb(left), HexMetric.Perturb(right), boundary);
                 AddTriangleColor(leftCell.GetCellColor(), rightCell.GetCellColor(), boundaryColor);
             }
         }
@@ -351,7 +379,7 @@ namespace GameLab.GridSystem
         {
             float b = 1f / (leftCell.GetElevation() - beginCell.GetElevation());
             b = Mathf.Abs(b);
-            Vector3 boundary = Vector3.Lerp(Perturb(begin), Perturb(left), b);
+            Vector3 boundary = Vector3.Lerp(HexMetric.Perturb(begin), HexMetric.Perturb(left), b);
 
             Color boundaryColor = Color.Lerp(beginCell.GetCellColor(), leftCell.GetCellColor(), b);
 
@@ -368,7 +396,7 @@ namespace GameLab.GridSystem
             }
             else
             {
-                AddTriangleUnperturbed(Perturb(left), Perturb(right), boundary);
+                AddTriangleUnperturbed(HexMetric.Perturb(left), HexMetric.Perturb(right), boundary);
                 AddTriangleColor(leftCell.GetCellColor(), rightCell.GetCellColor(), boundaryColor);
             }
         }
@@ -380,23 +408,23 @@ namespace GameLab.GridSystem
             Vector3 boundary, Color boundaryColor
         )
         {
-            Vector3 v2 = Perturb(HexMetric.TerraceLerp(begin, left, 1));
+            Vector3 v2 = HexMetric.Perturb(HexMetric.TerraceLerp(begin, left, 1));
             Color c2 = HexMetric.TerraceLerp(beginCell.GetCellColor(), leftCell.GetCellColor(), 1);
 
-            AddTriangleUnperturbed(Perturb(begin), v2, boundary);
+            AddTriangleUnperturbed(HexMetric.Perturb(begin), v2, boundary);
             AddTriangleColor(beginCell.GetCellColor(), c2, boundaryColor);
 
             for (int i = 2; i < HexMetric.terraceSteps; i++)
             {
                 Vector3 v1 = v2;
                 Color c1 = c2;
-                v2 = Perturb(HexMetric.TerraceLerp(begin, left, i));
+                v2 = HexMetric.Perturb(HexMetric.TerraceLerp(begin, left, i));
                 c2 = HexMetric.TerraceLerp(beginCell.GetCellColor(), leftCell.GetCellColor(), i);
                 AddTriangleUnperturbed(v1, v2, boundary);
                 AddTriangleColor(c1, c2, boundaryColor);
             }
 
-            AddTriangleUnperturbed(v2, Perturb(left), boundary);
+            AddTriangleUnperturbed(v2, HexMetric.Perturb(left), boundary);
             AddTriangleColor(c2, leftCell.GetCellColor(), boundaryColor);
         }
         void TriangulateBoundaryTriangleOther
@@ -433,6 +461,8 @@ namespace GameLab.GridSystem
             AddTriangleColor(color);
             AddTriangle(center, edge.v3, edge.v4);
             AddTriangleColor(color);
+            AddTriangle(center, edge.v4, edge.v5);
+            AddTriangleColor(color);
         }
         void TriangulateEdgeStrip
         (
@@ -446,13 +476,15 @@ namespace GameLab.GridSystem
             AddQuadColor(c1, c2);
             AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);
             AddQuadColor(c1, c2);
+            AddQuad(e1.v4, e1.v5, e2.v4, e2.v5);
+            AddQuadColor(c1, c2);
         }
         void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             int vertexIndex = vertices.Count;
-            vertices.Add(Perturb(v1));
-            vertices.Add(Perturb(v2));
-            vertices.Add(Perturb(v3));
+            vertices.Add(HexMetric.Perturb(v1));
+            vertices.Add(HexMetric.Perturb(v2));
+            vertices.Add(HexMetric.Perturb(v3));
             triangles.Add(vertexIndex);
             triangles.Add(vertexIndex + 1);
             triangles.Add(vertexIndex + 2);
@@ -474,10 +506,10 @@ namespace GameLab.GridSystem
         void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
         {
             int vertexIndex = vertices.Count;
-            vertices.Add(Perturb(v1));
-            vertices.Add(Perturb(v2));
-            vertices.Add(Perturb(v3));
-            vertices.Add(Perturb(v4));
+            vertices.Add(HexMetric.Perturb(v1));
+            vertices.Add(HexMetric.Perturb(v2));
+            vertices.Add(HexMetric.Perturb(v3));
+            vertices.Add(HexMetric.Perturb(v4));
             triangles.Add(vertexIndex);
             triangles.Add(vertexIndex + 2);
             triangles.Add(vertexIndex + 1);
@@ -499,13 +531,14 @@ namespace GameLab.GridSystem
             colors.Add(c2);
             colors.Add(c2);
         }
-        Vector3 Perturb(Vector3 position)
+        void AddQuadColor(Color color)
         {
-            Vector4 sample = HexMetric.SampleNoise(position);
-            position.x += (sample.x * 2f - 1f) * HexMetric.cellPerturbStrength;
-            position.z += (sample.z * 2f - 1f) * HexMetric.cellPerturbStrength;
-            return position;
+            colors.Add(color);
+            colors.Add(color);
+            colors.Add(color);
+            colors.Add(color);
         }
+
         void AddTriangleUnperturbed(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             int vertexIndex = vertices.Count;
@@ -515,6 +548,134 @@ namespace GameLab.GridSystem
             triangles.Add(vertexIndex);
             triangles.Add(vertexIndex + 1);
             triangles.Add(vertexIndex + 2);
+        }
+
+        //rivers
+        void TriangulateWithRiver
+        (
+            HexCellDirections direction,
+            HexCell cell, 
+            Vector3 center, 
+            EdgeVertices e
+        )
+        {
+            Vector3 centerL, centerR;
+            if (cell.HasRiverThroughEdge(direction.GetOppositeDirection()))
+            {
+                centerL = center +
+                    HexMetric.GetFirstSolidCorner(direction.GetPreviousDirection()) * 0.25f;
+                centerR = center +
+                    HexMetric.GetSecondSolidCorner(direction.GetNextDirection()) * 0.25f;
+            }
+            else if (cell.HasRiverThroughEdge(direction.GetNextDirection()))
+            {
+                centerL = center;
+                centerR = Vector3.Lerp(center, e.v5, 2f / 3f);
+            }
+            else if (cell.HasRiverThroughEdge(direction.GetPreviousDirection()))
+            {
+                centerL = Vector3.Lerp(center, e.v1, 2f / 3f);
+                centerR = center;
+            }
+            else if (cell.HasRiverThroughEdge(direction.Next2()))
+            {
+                centerL = center;
+                centerR = center +
+                    HexMetric.GetSolidEdgeMiddle(direction.GetNextDirection()) * (0.5f * HexMetric.innerToOuter); ;
+            }
+            else
+            {
+                centerL = center +
+                HexMetric.GetSolidEdgeMiddle(direction.GetPreviousDirection()) * (0.5f * HexMetric.innerToOuter); ;
+                centerR = center;
+            }
+
+            center = Vector3.Lerp(centerL, centerR, 0.5f);
+            EdgeVertices m = new EdgeVertices
+            (
+                Vector3.Lerp(centerL, e.v1, 0.5f),
+                Vector3.Lerp(centerR, e.v5, 0.5f),
+                1f / 6f
+            );
+
+            m.v3.y = center.y = e.v3.y;
+
+            TriangulateEdgeStrip(m, cell.GetCellColor(), e, cell.GetCellColor());
+            AddTriangle(centerL, m.v1, m.v2);
+            AddTriangleColor(cell.GetCellColor());
+            AddQuad(centerL, center, m.v2, m.v3);
+            AddQuadColor(cell.GetCellColor());
+            AddQuad(center, centerR, m.v3, m.v4);
+            AddQuadColor(cell.GetCellColor());
+            AddTriangle(centerR, m.v4, m.v5);
+            AddTriangleColor(cell.GetCellColor());
+        }
+        void TriangulateAdjacentToRiver
+        (
+            HexCellDirections direction, 
+            HexCell cell, 
+            Vector3 center, 
+            EdgeVertices e
+        )
+        {
+            if (cell.HasRiverThroughEdge(direction.GetNextDirection()))
+            {
+                if (cell.HasRiverThroughEdge(direction.GetPreviousDirection()))
+                {
+                    center += HexMetric.GetSolidEdgeMiddle(direction) *
+                        (HexMetric.innerToOuter * 0.5f);
+                }
+                else if (cell.HasRiverThroughEdge(direction.Previous2()))
+                {
+                    center += HexMetric.GetFirstSolidCorner(direction) * 0.25f;
+                }
+            }
+            else if (cell.HasRiverThroughEdge(direction.GetPreviousDirection()) && cell.HasRiverThroughEdge(direction.Next2()))
+            {
+                center += HexMetric.GetSecondSolidCorner(direction) * 0.25f;
+            }
+            EdgeVertices m = new EdgeVertices
+            (
+                Vector3.Lerp(center, e.v1, 0.5f),
+                Vector3.Lerp(center, e.v5, 0.5f)
+            );
+
+            TriangulateEdgeStrip(m, cell.GetCellColor(), e, cell.GetCellColor());
+            TriangulateEdgeFan(center, m, cell.GetCellColor());
+        }
+        void TriangulateWithRiverBeginOrEnd
+        (
+            HexCellDirections direction, 
+            HexCell cell, 
+            Vector3 center, 
+            EdgeVertices e
+        )
+        {
+            EdgeVertices m = new EdgeVertices
+            (
+                Vector3.Lerp(center, e.v1, 0.5f),
+                Vector3.Lerp(center, e.v5, 0.5f)
+            );
+
+            m.v3.y = e.v3.y;
+            TriangulateEdgeStrip(m, cell.GetCellColor(), e, cell.GetCellColor());
+            TriangulateEdgeFan(center, m, cell.GetCellColor());
+        }
+        public void Clear()
+        {
+            hexMesh.Clear();
+            vertices.Clear();
+            colors.Clear();
+            triangles.Clear();
+        }
+
+        public void Apply()
+        {
+            hexMesh.SetVertices(vertices);
+            hexMesh.SetColors(colors);
+            hexMesh.SetTriangles(triangles, 0);
+            hexMesh.RecalculateNormals();
+            meshCollider.sharedMesh = hexMesh;
         }
     }
 }
