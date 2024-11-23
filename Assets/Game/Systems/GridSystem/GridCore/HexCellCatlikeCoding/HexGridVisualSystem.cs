@@ -8,8 +8,7 @@ namespace GameLab.GridSystem
 
         [SerializeField] Transform hexCellPrefab;
         [SerializeField] Transform gridPositionChunkPrefab;
-        Dictionary<GridPosition, HexCell> gridPositionVisualList;
-        Dictionary<GridPosition, Transform> gridObjectList;
+        Dictionary<GridPosition, HexCell> gridPositionHexCellDictionary;
         //for HexGrid references
         float outerRadius;
         float innerRadiusConstant = 0.866025404f;
@@ -26,9 +25,8 @@ namespace GameLab.GridSystem
                 Destroy(this);
             }
             Instance = this;
-            gridPositionVisualList = new();
-            gridObjectList = new();
-            
+            gridPositionHexCellDictionary = new();
+           
         }
         void AddCellToChunk(int x, int z, HexCell cell)
         {
@@ -48,32 +46,25 @@ namespace GameLab.GridSystem
             CreateChunks();
             foreach (GridPosition gridPosition in LevelHexGridSystem.Instance.GetAllGridPositions())
             {
-                Transform hexCellObject = Instantiate(hexCellPrefab, LevelHexGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity, this.transform);
+                Transform hexCellObject = Instantiate(hexCellPrefab, LevelHexGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity);
                 var hexCell = hexCellObject.GetComponent<HexCell>();
                 hexCell.SetGridPosition(gridPosition);
-                AddCellToChunk(gridPosition.x, gridPosition.z, hexCell);
-                gridPositionVisualList.Add(gridPosition, hexCell);
-                gridObjectList.Add(gridPosition, hexCellObject.transform);
-                
+                gridPositionHexCellDictionary.Add(gridPosition, hexCell);
+
             }
 
             List<HexCell> cells = new List<HexCell>();
-            foreach (var item in gridPositionVisualList)
+            foreach (var item in gridPositionHexCellDictionary)
             {
                 cells.Add(item.Value);
+                AddCellToChunk(item.Key.x, item.Key.z, item.Value);
             }
             hexCells = cells.ToArray();
 
-            foreach (var item in hexCells)
+            foreach (var item in chunks)
             {
-                item.SetElevation(0);
-                item.InitlializeCell();
-                item.SetColor(defaultColor);
+                item.InitializeCells();
             }
-
-            InitializeElevation();
-
-            //InitializeElevation();
 
 
         }
@@ -95,26 +86,26 @@ namespace GameLab.GridSystem
         }
         public void InitializeElevation()
         {
-            foreach (var item in gridObjectList)
+            foreach (var item in gridPositionHexCellDictionary)
             {
                 SetHexCellElevation(item.Key);
             }
         }
         public void SetHexCellElevation(GridPosition gp)
         {
-            var hexCell = gridPositionVisualList[gp];
+            var hexCell = gridPositionHexCellDictionary[gp];
             Vector3 pos = hexCell.transform.position;
             pos.y = hexCell.GetElevation();
-            gridObjectList[gp].transform.position = pos;
+            gridPositionHexCellDictionary[gp].transform.position = pos;
 
         }
 
 
         public HexCell GetHexCell(GridPosition gp)
         {
-            if (gridPositionVisualList.ContainsKey(gp))
+            if (gridPositionHexCellDictionary.ContainsKey(gp))
             {
-                return gridPositionVisualList[gp];
+                return gridPositionHexCellDictionary[gp];
             }
             return null;
         }

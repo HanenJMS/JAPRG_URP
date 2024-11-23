@@ -36,28 +36,35 @@ namespace GameLab.GridSystem
         }
         private void LateUpdate()
         {
-            HandleInput();
-        }
-        public void HandleInput()
-        {
-            if (Input.GetMouseButtonUp(0) &&
-            !EventSystem.current.IsPointerOverGameObject())
+            if 
+            ( 
+                Input.GetMouseButton(0) &&
+                !EventSystem.current.IsPointerOverGameObject()
+            )
             {
-                var currentCellGridPosition = LevelHexGridSystem.Instance.GetGridPosition(MouseWorldController.GetMousePosition());
-                var currentHexCell = HexGridVisualSystem.Instance.GetHexCell(currentCellGridPosition);
-                Debug.Log(currentCellGridPosition.ToString());
-
-                if (previousCell && previousCell != currentHexCell)
+                HandleInput();
+            }
+            else
+            {
+                previousCell = null;
+            }
+        }
+        void HandleInput()
+        {
+            if (MouseWorldController.GetMousePosition(out RaycastHit hit))
+            {
+                HexCell currentCell = HexGridVisualSystem.Instance.GetHexCell(LevelHexGridSystem.Instance.GetGridPosition(hit.point));
+                if (previousCell != null && previousCell != currentCell)
                 {
-                    ValidateDrag(currentHexCell);
+                    ValidateDrag(currentCell);
+                    Debug.Log($"{currentCell.GetGridPosition().ToString()}");
                 }
                 else
                 {
                     isDrag = false;
                 }
-                EditCell(currentHexCell);
-                Debug.Log(currentHexCell.ToString());
-                previousCell = currentHexCell;
+                EditCell(currentCell);
+                previousCell = currentCell;
             }
             else
             {
@@ -66,15 +73,13 @@ namespace GameLab.GridSystem
         }
         void ValidateDrag(HexCell currentCell)
         {
-            for (
-                dragDirection = HexCellDirections.NE;
-                dragDirection <= HexCellDirections.NW;
-                dragDirection++
-            )
+            for (dragDirection = HexCellDirections.NE; dragDirection <= HexCellDirections.NW; dragDirection++) 
             {
-                if (HexGridVisualSystem.Instance.GetHexCell(previousCell.GetNextDirectionHexNeighbor(dragDirection)) == currentCell)
+                if (previousCell.GetHexCellNeighbor(dragDirection) == currentCell)
                 {
                     isDrag = true;
+                    Debug.Log("direction: " + dragDirection.ToString());
+                    Debug.Log("opp direction: "+ dragDirection.GetOppositeDirection().ToString());
                     return;
                 }
             }
@@ -89,6 +94,7 @@ namespace GameLab.GridSystem
             if (applyElevation)
             {
                 cell.SetElevation(activeElevation);
+                HexGridVisualSystem.Instance.SetHexCellElevation(cell.GetGridPosition());
             }
             cell.SetColor(activeColor);
             if (riverMode == OptionalToggle.No)
@@ -97,14 +103,15 @@ namespace GameLab.GridSystem
             }
             else if (isDrag && riverMode == OptionalToggle.Yes)
             {
-                HexCell otherCell = HexGridVisualSystem.Instance.GetHexCell(cell.GetHexCellNeighborGridPosition(HexMetric.GetOppositeDirection(dragDirection)));
-                if (otherCell)
-                {
-                    otherCell.SetOutgoingRiver(dragDirection);
-                }
+                //HexCell otherCell = HexGridVisualSystem.Instance.GetHexCell(cell.GetHexCellNeighborGridPosition(dragDirection.GetOppositeDirection()));
+                //if (otherCell)
+                //{
+                //    otherCell.SetOutgoingRiver(dragDirection);
+                //}
+                previousCell.SetOutgoingRiver(dragDirection);
             }
 
-            HexGridVisualSystem.Instance.SetHexCellElevation(cell.GetGridPosition());
+            
             HexGridVisualSystem.Instance.Refresh(cell.GetCellChunkIndex());
 
 

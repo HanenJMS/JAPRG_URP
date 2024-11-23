@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using UnityEditor.TerrainTools;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace GameLab.GridSystem
 {
-
+    //Set default properties
 
     public class HexCell : MonoBehaviour
     {
@@ -15,7 +16,7 @@ namespace GameLab.GridSystem
         public Color color;
         float solidFactor = 0.75f;
         int elevation;
-        float elevationStep = 5f;
+        //float elevationStep = 5f;
         int chunkIndex = int.MinValue;
         HexGridChunk chunk;
         bool hasIncomingRiver, hasOutgoingRiver;
@@ -23,10 +24,22 @@ namespace GameLab.GridSystem
         /// <summary>
         /// Set corners and neighbor cells
         /// </summary>
+        /// 
+
+        public float RiverSurfaceY
+        {
+            get
+            {
+                return
+                    transform.position.y + HexMetric.riverSurfaceElevationOffset;
+            }
+        }
+        public float StreamBedY => transform.position.y + HexMetric.streamBedElevationOffset;
         public void InitlializeCell()
         {
             InitializeNeighbors();
         }
+
         public void SetGridPosition(GridPosition gp)
         {
             gridPosition = new(gp.x, gp.z);
@@ -143,6 +156,10 @@ namespace GameLab.GridSystem
             var nextDirection = HexMetric.GetNextDirection(directions);
             return hexCellNeighbors[nextDirection];
         }
+        public HexCell GetHexCellNeighbor(HexCellDirections directions)
+        {
+            return HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(directions));
+        }
         public HexEdgeType GetEdgeType(HexCellDirections direction)
         {
             return HexMetric.GetEdgeType
@@ -176,57 +193,13 @@ namespace GameLab.GridSystem
         {
             this.chunk = chunk;
         }
-        public float StreamBedY
-        {
-            get
-            {
-                return
-                    (elevation + HexMetric.streamBedElevationOffset) *
-                    HexMetric.elevationStep;
-            }
-        }
-        public bool HasIncomingRiver
-        {
-            get
-            {
-                return hasIncomingRiver;
-            }
-        }
-        public bool HasOutgoingRiver
-        {
-            get
-            {
-                return hasOutgoingRiver;
-            }
-        }
-        public HexCellDirections IncomingRiver
-        {
-            get
-            {
-                return incomingRiver;
-            }
-        }
-        public HexCellDirections OutgoingRiver
-        {
-            get
-            {
-                return outgoingRiver;
-            }
-        }
-        public bool HasRiver
-        {
-            get
-            {
-                return hasIncomingRiver || hasOutgoingRiver;
-            }
-        }
-        public bool HasRiverBeginOrEnd
-        {
-            get
-            {
-                return hasIncomingRiver != hasOutgoingRiver;
-            }
-        }
+
+        public bool HasIncomingRiver => hasIncomingRiver;
+        public bool HasOutgoingRiver => hasOutgoingRiver;
+        public HexCellDirections IncomingRiver => incomingRiver;
+        public HexCellDirections OutgoingRiver => outgoingRiver;
+        public bool HasRiver => hasIncomingRiver || hasOutgoingRiver;
+        public bool HasRiverBeginOrEnd => hasIncomingRiver != hasOutgoingRiver;
         public bool HasRiverThroughEdge(HexCellDirections direction)
         {
             return
@@ -242,7 +215,7 @@ namespace GameLab.GridSystem
             hasOutgoingRiver = false;
             RefreshSelfOnly();
 
-            HexCell neighbor = HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(outgoingRiver));
+            HexCell neighbor = GetHexCellNeighbor(outgoingRiver);
             neighbor.hasIncomingRiver = false;
             neighbor.RefreshSelfOnly();
         }
@@ -270,11 +243,9 @@ namespace GameLab.GridSystem
         }
         public void SetOutgoingRiver(HexCellDirections direction)
         {
-            if (hasOutgoingRiver && outgoingRiver == direction)
-            {
-                return;
-            }
-            HexCell neighbor = HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(direction));
+            if (hasOutgoingRiver && outgoingRiver == direction) return;
+            HexCell neighbor = GetHexCellNeighbor(direction);
+            HexCellDirections neighborFacingDirection = direction.GetOppositeDirection();
             if (!neighbor || elevation < neighbor.elevation)
             {
                 return;
@@ -284,12 +255,13 @@ namespace GameLab.GridSystem
             {
                 RemoveIncomingRiver();
             }
-            hasOutgoingRiver = true;
+
             outgoingRiver = direction;
+            hasOutgoingRiver = true;
             RefreshSelfOnly();
             neighbor.RemoveIncomingRiver();
+            neighbor.incomingRiver = neighborFacingDirection;
             neighbor.hasIncomingRiver = true;
-            neighbor.incomingRiver = HexMetric.GetOppositeDirection(direction);
             neighbor.RefreshSelfOnly();
         }
     }

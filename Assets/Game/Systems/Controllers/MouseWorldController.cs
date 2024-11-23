@@ -35,6 +35,13 @@ public class MouseWorldController : MonoBehaviour
         RaycastHit hit = GetRaycastHit();
         return hit.point;
     }
+    public static bool GetMousePosition(out RaycastHit hitInfo)
+    {
+        hitInfo = GetRaycastHit();
+        if(hitInfo.collider != null)
+            return true;
+        return false;
+    }
     public static RaycastHit GetRaycastHit(LayerMask layerMask)
     {
         Ray ray = GetMouseRay();

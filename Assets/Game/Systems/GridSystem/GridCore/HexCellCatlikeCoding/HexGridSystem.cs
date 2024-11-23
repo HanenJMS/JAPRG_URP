@@ -46,7 +46,6 @@ namespace GameLab.GridSystem
         }
         public GridPosition GetGridPosition(Vector3 worldPosition)
         {
-            Debug.Log($"raw WorldPosition : {worldPosition.ToString()}");
 
             int z = Mathf.RoundToInt(worldPosition.z / (cellSize / 2 * 1.5f));
 

@@ -50,17 +50,18 @@ namespace GameLab.GridSystem
         public static float horizontalTerraceStepSize = 1f / terraceSteps;
         public static float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
         public static Texture2D noiseSource;
-        public const float cellPerturbStrength = 4f;
+        public const float cellPerturbStrength = 0f;
         public const float elevationPerturbStrength = 1.5f;
         public const float noiseScale = 0.0033f;
         public const int chunkSizeX = 5, chunkSizeZ = 5;
-        public const float streamBedElevationOffset = -1f;
+        public const float streamBedElevationOffset = -1.25f;
         public const float innerRadiusConstant = 0.866025404f;
         public const float outerToInner = 0.866025404f;
         public const float innerToOuter = 1f / outerToInner;
-        static float outerRadius = LevelHexGridSystem.Instance.GetGridCellSize() / 2;
+        //gridsize 10 * 0.5
+        static float outerRadius= 10/2;
         static float innerRadiusCalculated = outerRadius * innerRadiusConstant;
-
+        public const float riverSurfaceElevationOffset = -0.5f;
 
         static Vector3[] corners =
         {
@@ -139,12 +140,12 @@ namespace GameLab.GridSystem
         }
         public static HexCellDirections GetOppositeDirection(this HexCellDirections direction)
         {
-            HexCellDirections dir = direction + 3;
-            if (dir > HexCellDirections.NW)
+            var dir = (int)direction + 3;
+            if (dir > (int)HexCellDirections.NW)
             {
-                dir = (HexCellDirections)(dir - HexCellDirections.NW);
+                dir = dir - 6;
             }
-            return dir;
+            return (HexCellDirections)dir;
         }
         public static Vector3 TerraceLerp(Vector3 a, Vector3 b, int step)
         {
