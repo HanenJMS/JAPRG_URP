@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Entities.UniversalDelegates;
 using UnityEditor.TerrainTools;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -25,7 +26,14 @@ namespace GameLab.GridSystem
         /// Set corners and neighbor cells
         /// </summary>
         /// 
-
+        [SerializeField] bool[] roads;
+        public HexCellDirections RiverBeginOrEndDirection
+        {
+            get
+            {
+                return hasIncomingRiver ? incomingRiver : outgoingRiver;
+            }
+        }
         public float RiverSurfaceY
         {
             get
@@ -74,6 +82,14 @@ namespace GameLab.GridSystem
             {
                 RemoveIncomingRiver();
             }
+            for (int i = 0; i < roads.Length; i++)
+            {
+                if (roads[i] && GetElevationDifference((HexCellDirections)i) > 1)
+                {
+                    SetRoad(i, false);
+                }
+            }
+
             Refresh();
 
         }
@@ -258,11 +274,61 @@ namespace GameLab.GridSystem
 
             outgoingRiver = direction;
             hasOutgoingRiver = true;
-            RefreshSelfOnly();
+            //RefreshSelfOnly();
             neighbor.RemoveIncomingRiver();
             neighbor.incomingRiver = neighborFacingDirection;
             neighbor.hasIncomingRiver = true;
+            //neighbor.RefreshSelfOnly();
+
+            SetRoad((int)direction, false);
+        }
+
+        //Road methods
+        public bool HasRoadThroughEdge(HexCellDirections direction)
+        {
+            return roads[(int)direction];
+        }
+        public bool HasRoads
+        {
+            get
+            {
+                for (int i = 0; i < roads.Length; i++)
+                {
+                    if (roads[i])
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        void SetRoad(int index, bool state)
+        {
+            roads[index] = state;
+            var neighbor = GetHexCellNeighbor((HexCellDirections)index);
+            neighbor.roads[(int)((HexCellDirections)index).GetOppositeDirection()] = state;
             neighbor.RefreshSelfOnly();
+            RefreshSelfOnly();
+        }
+        public void AddRoad(HexCellDirections direction)
+        {
+            if (!roads[(int)direction] && !HasRiverThroughEdge(direction) && GetElevationDifference(direction) <= 1)
+            {
+                SetRoad((int)direction, true);
+            }
+        }
+
+        public void RemoveRoads()
+        {
+            for(int i = 0; i <= (int)HexCellDirections.NW; i++)
+            {
+                SetRoad(i, false);
+            }
+        }
+        public int GetElevationDifference(HexCellDirections direction)
+        {
+            int difference = elevation - GetHexCellNeighbor(direction).elevation;
+            return difference >= 0 ? difference : -difference;
         }
     }
 }

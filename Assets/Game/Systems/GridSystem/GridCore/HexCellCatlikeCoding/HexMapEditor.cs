@@ -17,6 +17,7 @@ namespace GameLab.GridSystem
         HexCell previousCell;
         bool applyElevation = true;
         private void Awake()
+
         {
             HexMetric.noiseSource = noiseSource;
         }
@@ -101,14 +102,19 @@ namespace GameLab.GridSystem
             {
                 cell.RemoveRiver();
             }
-            else if (isDrag && riverMode == OptionalToggle.Yes)
+            if (roadMode == OptionalToggle.No)
             {
-                //HexCell otherCell = HexGridVisualSystem.Instance.GetHexCell(cell.GetHexCellNeighborGridPosition(dragDirection.GetOppositeDirection()));
-                //if (otherCell)
-                //{
-                //    otherCell.SetOutgoingRiver(dragDirection);
-                //}
-                previousCell.SetOutgoingRiver(dragDirection);
+                cell.RemoveRoads();
+            }
+            else if (isDrag)
+            {
+                if (riverMode == OptionalToggle.Yes)
+                    previousCell.SetOutgoingRiver(dragDirection);
+
+                if (roadMode == OptionalToggle.Yes)
+                {
+                    previousCell.AddRoad(dragDirection);
+                }
             }
 
             
@@ -121,11 +127,15 @@ namespace GameLab.GridSystem
             Ignore, Yes, No
         }
 
-        OptionalToggle riverMode;
+        OptionalToggle riverMode, roadMode;
 
         public void SetRiverMode(int mode)
         {
             riverMode = (OptionalToggle)mode;
+        }
+        public void SetRoadMode(int mode)
+        {
+            roadMode = (OptionalToggle)mode;
         }
     }
 
