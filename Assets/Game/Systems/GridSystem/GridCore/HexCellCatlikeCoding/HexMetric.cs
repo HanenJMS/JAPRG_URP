@@ -50,7 +50,7 @@ namespace GameLab.GridSystem
         public static float horizontalTerraceStepSize = 1f / terraceSteps;
         public static float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
         public static Texture2D noiseSource;
-        public const float cellPerturbStrength = 0f;
+        public const float cellPerturbStrength = 4f;
         public const float elevationPerturbStrength = 1.5f;
         public const float noiseScale = 0.0033f;
         public const int chunkSizeX = 5, chunkSizeZ = 5;
@@ -61,8 +61,9 @@ namespace GameLab.GridSystem
         //gridsize 10 * 0.5
         static float outerRadius= 10/2;
         static float innerRadiusCalculated = outerRadius * innerRadiusConstant;
-        public const float riverSurfaceElevationOffset = -0.5f;
-
+        public const float waterElevationOffset = -0.5f;
+        public const float waterFactor = 0.6f;
+        public const float waterBlendFactor = 1f - waterFactor;
         static Vector3[] corners =
         {
                     //0 North
@@ -98,7 +99,15 @@ namespace GameLab.GridSystem
         {
             return corners[(int)direction + 1] * solidFactor;
         }
+        public static Vector3 GetFirstWaterCorner(HexCellDirections direction)
+        {
+            return corners[(int)direction] * waterFactor;
+        }
 
+        public static Vector3 GetSecondWaterCorner(HexCellDirections direction)
+        {
+            return corners[(int)direction + 1] * waterFactor;
+        }
 
         public static Vector3 Perturb(Vector3 position)
         {
@@ -203,7 +212,11 @@ namespace GameLab.GridSystem
                 (0.5f * solidFactor);
         }
 
-
+        public static Vector3 GetWaterBridge(HexCellDirections direction)
+        {
+            return (corners[(int)direction] + corners[(int)direction + 1]) *
+                waterBlendFactor;
+        }
 
     }
 }

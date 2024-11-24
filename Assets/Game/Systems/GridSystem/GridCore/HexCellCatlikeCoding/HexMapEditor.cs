@@ -13,9 +13,12 @@ namespace GameLab.GridSystem
         int activeElevation;
         [SerializeField] Texture2D noiseSource;
         bool isDrag;
+        int activeWaterLevel;
         HexCellDirections dragDirection;
         HexCell previousCell;
         bool applyElevation = true;
+        bool applyWaterLevel = true;
+        bool applyColorToggle = false;
         private void Awake()
 
         {
@@ -26,15 +29,7 @@ namespace GameLab.GridSystem
             SelectColor(0);
         }
 
-        public void SelectColor(int index)
-        {
-            if (index < colors.Count())
-                activeColor = colors[index];
-        }
-        public void SetElevation(float elevation)
-        {
-            activeElevation = ((int)elevation);
-        }
+
         private void LateUpdate()
         {
             if 
@@ -86,10 +81,7 @@ namespace GameLab.GridSystem
             }
             isDrag = false;
         }
-        public void SetApplyElevation(bool toggle)
-        {
-            applyElevation = toggle;
-        }
+
         private void EditCell(HexCell cell)
         {
             if (applyElevation)
@@ -97,7 +89,14 @@ namespace GameLab.GridSystem
                 cell.SetElevation(activeElevation);
                 HexGridVisualSystem.Instance.SetHexCellElevation(cell.GetGridPosition());
             }
-            cell.SetColor(activeColor);
+            if(applyColorToggle)
+            {
+                cell.SetColor(activeColor);
+            }
+            if (applyWaterLevel)
+            {
+                cell.WaterLevel = activeWaterLevel;
+            }
             if (riverMode == OptionalToggle.No)
             {
                 cell.RemoveRiver();
@@ -129,6 +128,7 @@ namespace GameLab.GridSystem
 
         OptionalToggle riverMode, roadMode;
 
+        //toggles
         public void SetRiverMode(int mode)
         {
             riverMode = (OptionalToggle)mode;
@@ -137,6 +137,34 @@ namespace GameLab.GridSystem
         {
             roadMode = (OptionalToggle)mode;
         }
+        public void SetApplyElevation(bool toggle)
+        {
+            applyElevation = toggle;
+        }
+        public void SetApplyColor(bool toggle)
+        {
+            applyColorToggle = toggle;
+        }
+        public void SetApplyWaterLevel(bool toggle)
+        {
+            applyWaterLevel = toggle;
+        }
+
+        //sliders and triggers
+        public void SelectColor(int index)
+        {
+            if (index < colors.Count())
+                activeColor = colors[index];
+        }
+        public void SetElevation(float elevation)
+        {
+            activeElevation = ((int)elevation);
+        }
+        public void SetWaterLevel(float level)
+        {
+            activeWaterLevel = (int)level;
+        }
+
     }
 
 }

@@ -21,6 +21,8 @@ namespace GameLab.GridSystem
         int chunkIndex = int.MinValue;
         HexGridChunk chunk;
         bool hasIncomingRiver, hasOutgoingRiver;
+        int waterLevel;
+
         HexCellDirections incomingRiver, outgoingRiver;
         /// <summary>
         /// Set corners and neighbor cells
@@ -39,7 +41,38 @@ namespace GameLab.GridSystem
             get
             {
                 return
-                    transform.position.y + HexMetric.riverSurfaceElevationOffset;
+                    transform.position.y + HexMetric.waterElevationOffset;
+            }
+        }
+        public float WaterSurfaceY
+        {
+            get
+            {
+                return
+                    HexMetric.waterElevationOffset + WaterLevel;
+            }
+        }
+        public int WaterLevel
+        {
+            get
+            {
+                return waterLevel;
+            }
+            set
+            {
+                if (waterLevel == value)
+                {
+                    return;
+                }
+                waterLevel = value;
+                Refresh();
+            }
+        }
+        public bool IsUnderwater
+        {
+            get
+            {
+                return waterLevel > elevation;
             }
         }
         public float StreamBedY => transform.position.y + HexMetric.streamBedElevationOffset;
