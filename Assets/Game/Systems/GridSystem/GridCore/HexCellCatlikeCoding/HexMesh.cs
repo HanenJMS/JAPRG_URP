@@ -16,16 +16,6 @@ namespace GameLab.GridSystem
         [NonSerialized] List<int> triangles;
         public bool useCollider, useColors, useUVCoordinates, useUV2Coordinates;
         [NonSerialized] List<Vector2> uvs, uv2s;
-        public bool getUV2(out List<Vector2> uv2s)
-        {
-            if(this.uv2s != null)
-            {
-                uv2s = this.uv2s;
-                return true;
-            }
-            uv2s = new();
-            return false;
-        }
         private void Awake()
         {
 

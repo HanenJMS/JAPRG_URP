@@ -7,7 +7,7 @@ namespace GameLab.GridSystem
     public class HexGridChunk : MonoBehaviour
     {
         HexCell[] hexCells;
-        [SerializeField] HexMesh terrain, rivers, roads, water, waterShore;
+        [SerializeField] HexMesh terrain, rivers, roads, water, waterShore, estuaries;
         
         private void Awake()
         {
@@ -41,12 +41,14 @@ namespace GameLab.GridSystem
             roads.Clear();
             water.Clear();
             waterShore.Clear();
+            estuaries.Clear();
             Triangulate(hexCells);
             terrain.Apply();
             rivers.Apply();
             roads.Apply();
             water.Apply();
             waterShore.Apply();
+            estuaries.Apply();
         }
         public void Triangulate(HexCell[] cells)
         {
@@ -814,6 +816,24 @@ namespace GameLab.GridSystem
             waterShore.AddTriangleUV(
                 new Vector2(0f, 1f), new Vector2(0f, 0f), new Vector2(0f, 0f)
             );
+
+            estuaries.AddTriangle(e1.v3, e2.v2, e2.v4);
+            estuaries.AddTriangleUV(
+                new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(1f, 1f)
+            );
+            estuaries.AddQuad(e2.v1, e1.v2, e2.v2, e1.v3);
+            estuaries.AddQuad(e1.v3, e1.v4, e2.v4, e2.v5);
+            estuaries.AddQuadUV(
+            new Vector2(0f, 1f), new Vector2(0f, 0f),
+            new Vector2(1f, 1f), new Vector2(0f, 0f));
+            estuaries.AddQuadUV(new Vector2(0f, 0f), new Vector2(0f, 0f),new Vector2(1f, 1f), new Vector2(0f, 1f));
+
+
+            estuaries.AddTriangleUV2(new Vector2(0.5f, 1.1f), new Vector2(1f, 0.8f),new Vector2(0f, 0.8f));
+            estuaries.AddQuadUV2(new Vector2(1.5f, 1f), new Vector2(0.7f, 1.15f), new Vector2(1f, 0.8f), new Vector2(0.5f, 1.1f));
+            estuaries.AddQuadUV2(new Vector2(0.5f, 1.1f), new Vector2(0.3f, 1.15f),new Vector2(0f, 0.8f), new Vector2(0.5f, 1f));
+           
+
         }
 
         //hex water triangulation
