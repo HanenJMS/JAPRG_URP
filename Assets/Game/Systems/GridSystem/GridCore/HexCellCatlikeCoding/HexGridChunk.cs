@@ -133,14 +133,32 @@ namespace GameLab.GridSystem
             if (cell.HasRiverThroughEdge(direction))
             {
                 e2.v3.y = directionalNeighbor.StreamBedY;
-                if (!cell.IsUnderwater && !directionalNeighbor.IsUnderwater)
+                if (!cell.IsUnderwater)
                 {
-                    TriangulateRiverQuad
-                            (
-                                e1.v2, e1.v4, e2.v2, e2.v4,
-                                cell.RiverSurfaceY, directionalNeighbor.RiverSurfaceY, 0.8f,
-                                cell.HasIncomingRiver && cell.IncomingRiver == direction
-                            ); 
+                    if (!directionalNeighbor.IsUnderwater)
+                    {
+                        TriangulateRiverQuad(
+                            e1.v2, e1.v4, e2.v2, e2.v4,
+                            cell.RiverSurfaceY, directionalNeighbor.RiverSurfaceY, 0.8f,
+                            cell.HasIncomingRiver && cell.IncomingRiver == direction
+                        );
+                    }
+                    else if (cell.GetElevation() > directionalNeighbor.WaterLevel)
+                    {
+                        TriangulateWaterfallInWater(
+                            e1.v2, e1.v4, e2.v2, e2.v4,
+                            cell.RiverSurfaceY, directionalNeighbor.RiverSurfaceY,
+                            directionalNeighbor.WaterSurfaceY
+                        );
+                    }
+                }
+                else if (!directionalNeighbor.IsUnderwater && directionalNeighbor.GetElevation() > cell.WaterLevel) 
+                {
+                    TriangulateWaterfallInWater(
+                        e2.v4, e2.v2, e1.v4, e1.v2,
+                        directionalNeighbor.RiverSurfaceY, cell.RiverSurfaceY,
+                        cell.WaterSurfaceY
+                    );
                 }
             }
             if (HexMetric.GetEdgeType(cell.GetEdgeType(direction)) == HexEdgeType.Slope)
@@ -769,6 +787,22 @@ namespace GameLab.GridSystem
                     cell.HasRoadThroughEdge(direction.GetNextDirection()) ? 0.5f : 0.25f;
             }
             return interpolators;
+        }
+
+        //hex river and water triangulation
+        void TriangulateWaterfallInWater(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4,float y1, float y2, float waterY)
+        {
+            v1.y = v2.y = y1;
+            v3.y = v4.y = y2;
+            v1 = HexMetric.Perturb(v1);
+            v2 = HexMetric.Perturb(v2);
+            v3 = HexMetric.Perturb(v3);
+            v4 = HexMetric.Perturb(v4);
+            float t = (waterY - y2) / (y1 - y2);
+            v3 = Vector3.Lerp(v3, v1, t);
+            v4 = Vector3.Lerp(v4, v2, t);
+            rivers.AddQuadUnperturbed(v1, v2, v3, v4);
+            rivers.AddQuadUV(0f, 1f, 0.8f, 1f);
         }
 
         //hex water triangulation
