@@ -1,6 +1,4 @@
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace GameLab.GridSystem
 {
@@ -50,7 +48,7 @@ namespace GameLab.GridSystem
         public static float horizontalTerraceStepSize = 1f / terraceSteps;
         public static float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
         public static Texture2D noiseSource;
-        public const float cellPerturbStrength = 0f;
+        public const float cellPerturbStrength = 4f;
         public const float elevationPerturbStrength = 1.5f;
         public const float noiseScale = 0.0033f;
         public const int chunkSizeX = 5, chunkSizeZ = 5;
@@ -59,7 +57,7 @@ namespace GameLab.GridSystem
         public const float outerToInner = 0.866025404f;
         public const float innerToOuter = 1f / outerToInner;
         //gridsize 10 * 0.5. this is the radius as defined half of a single cell size.
-        static float outerRadius= 10/2;
+        static float outerRadius = 10 / 2;
         static float innerRadiusCalculated = outerRadius * innerRadiusConstant;
         public const float waterElevationOffset = -0.5f;
         public const float waterFactor = 0.6f;

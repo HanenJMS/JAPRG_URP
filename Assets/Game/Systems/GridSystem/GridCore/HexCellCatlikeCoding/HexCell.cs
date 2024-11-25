@@ -65,6 +65,7 @@ namespace GameLab.GridSystem
                     return;
                 }
                 waterLevel = value;
+                ValidateRivers();
                 Refresh();
             }
         }
@@ -101,20 +102,7 @@ namespace GameLab.GridSystem
                 (HexMetric.SampleNoise(position).y * 2f - 1f) *
                 HexMetric.elevationPerturbStrength;
             transform.localPosition = position;
-            if (
-                hasOutgoingRiver &&
-                elevation < HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(outgoingRiver)).GetElevation()
-)
-            {
-                RemoveOutgoingRiver();
-            }
-            if (
-                hasIncomingRiver &&
-                elevation > HexGridVisualSystem.Instance.GetHexCell(GetHexCellNeighborGridPosition(incomingRiver)).GetElevation()
-            )
-            {
-                RemoveIncomingRiver();
-            }
+            ValidateRivers();
             for (int i = 0; i < roads.Length; i++)
             {
                 if (roads[i] && GetElevationDifference((HexCellDirections)i) > 1)
@@ -295,7 +283,7 @@ namespace GameLab.GridSystem
             if (hasOutgoingRiver && outgoingRiver == direction) return;
             HexCell neighbor = GetHexCellNeighbor(direction);
             HexCellDirections neighborFacingDirection = direction.GetOppositeDirection();
-            if (!neighbor || elevation < neighbor.elevation)
+            if (!IsValidRiverDestination(neighbor))
             {
                 return;
             }
@@ -362,6 +350,29 @@ namespace GameLab.GridSystem
         {
             int difference = elevation - GetHexCellNeighbor(direction).elevation;
             return difference >= 0 ? difference : -difference;
+        }
+        bool IsValidRiverDestination(HexCell neighbor)
+        {
+            return neighbor && (
+                elevation >= neighbor.elevation || waterLevel == neighbor.elevation
+            );
+        }
+        void ValidateRivers()
+        {
+            if (
+                hasOutgoingRiver &&
+                !IsValidRiverDestination(GetHexCellNeighbor(outgoingRiver))
+            )
+            {
+                RemoveOutgoingRiver();
+            }
+            if (
+                hasIncomingRiver &&
+                !GetHexCellNeighbor(incomingRiver).IsValidRiverDestination(this)
+            )
+            {
+                RemoveIncomingRiver();
+            }
         }
     }
 }
