@@ -2,13 +2,14 @@ using Cinemachine;
 using GameLab.UnitSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEngine.UI.ScrollRect;
 
 namespace GameLab.Controller
 {
     public class CameraController : MonoBehaviour
     {
         [SerializeField] CinemachineVirtualCamera cinemachineCamera;
-        float moveSpeed = 10f;
+        float moveSpeed = 3f;
         float rotationSpeed = 100f;
         float zoomAmount = 1f;
         const float MIN_FOLLOW_Y = 5f;
@@ -53,20 +54,59 @@ namespace GameLab.Controller
         {
             transform.position = target.transform.position;
         }
+
+        Vector3 moveVector;
+        Vector3 newPosition;
+        Vector3 dragStartPosition, dragCurrentPosition;
         private void HandleCameraMovement()
         {
             Vector3 moveDirection = new(0, 0, 0);
             moveDirection.x = Input.GetAxis("Horizontal");
             moveDirection.z = Input.GetAxis("Vertical");
+            moveVector += transform.forward * moveDirection.z + transform.right * moveDirection.x;
 
-            moveSpeed = 5f;
-            Vector3 moveVector = transform.forward * moveDirection.z + transform.right * moveDirection.x;
-            transform.position += moveVector * moveSpeed * Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, moveVector, moveSpeed * Time.deltaTime);
+            
         }
 
+        private void HandleMovementKeyControl(Vector3 moveDirection)
+        {
+            
+            
+        }
+
+        private void HandleMovementMouseControl()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                float entry;
+                if (plane.Raycast(ray, out entry))
+                {
+                    dragStartPosition = ray.GetPoint(entry);
+                }
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                float entry;
+                if (plane.Raycast(ray, out entry))
+                {
+                    dragCurrentPosition = ray.GetPoint(entry);
+
+                    moveVector = transform.position + dragStartPosition - dragCurrentPosition;
+                }
+            }
+        }
+        Vector3 rotationVector;
         private void HandleCameraRotation()
         {
-            Vector3 rotationVector = new Vector3(0, 0, 0);
+            rotationVector = new Vector3(0, 0, 0);
             if (Input.GetKey(KeyCode.Q))
             {
                 rotationVector.y = -1f;
@@ -75,7 +115,32 @@ namespace GameLab.Controller
             {
                 rotationVector.y = +1f;
             }
-            transform.eulerAngles += rotationVector * Time.unscaledDeltaTime * rotationSpeed;
+            transform.eulerAngles += rotationVector * rotationSpeed * Time.deltaTime;
+            
+
+            //HandleCameraMouseRotation();
+
+
+        }
+
+        Vector3 rotateStartPosition, rotateCurrentPosition;
+        Quaternion newRotation;
+        public void HandleCameraMouseRotation()
+        {
+            if (Input.GetMouseButtonDown(2))
+            {
+                rotateStartPosition = Input.mousePosition;
+            }
+            if (Input.GetMouseButton(2))
+            {
+                rotateCurrentPosition = Input.mousePosition;
+
+                Vector3 difference = rotateStartPosition - rotateCurrentPosition;
+                rotateStartPosition = rotateCurrentPosition;
+
+                newRotation *= Quaternion.Euler(Vector3.up * (-difference.x / 5f));
+            }
+            transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
         }
         private void HandleCameraZoom()
         {
