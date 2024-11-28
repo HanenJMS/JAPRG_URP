@@ -11,7 +11,7 @@ namespace GameLab.GridSystem
         [SerializeField]
         private Color activeColor;
         int activeElevation;
-        [SerializeField] Texture2D noiseSource;
+        
         bool isDrag;
         int activeWaterLevel;
         HexCellDirections dragDirection;
@@ -19,11 +19,10 @@ namespace GameLab.GridSystem
         bool applyElevation = true;
         bool applyWaterLevel = true;
         bool applyColorToggle = false;
-        private void Awake()
 
-        {
-            HexMetric.noiseSource = noiseSource;
-        }
+        int activeUrbanLevel;
+        bool applyUrbanLevel;
+
         void Start()
         {
             SelectColor(0);
@@ -50,7 +49,7 @@ namespace GameLab.GridSystem
             if (MouseWorldController.GetMousePosition(out RaycastHit hit))
             {
                 HexCell currentCell = HexGridVisualSystem.Instance.GetHexCell(LevelHexGridSystem.Instance.GetGridPosition(hit.point));
-                if (previousCell != null && previousCell != currentCell)
+                if (previousCell != null && previousCell != currentCell && currentCell != null)
                 {
                     ValidateDrag(currentCell);
                     Debug.Log($"{currentCell.GetGridPosition().ToString()}");
@@ -96,6 +95,10 @@ namespace GameLab.GridSystem
             if (applyWaterLevel)
             {
                 cell.WaterLevel = activeWaterLevel;
+            }
+            if (applyUrbanLevel)
+            {
+                cell.UrbanLevel = activeUrbanLevel;
             }
             if (riverMode == OptionalToggle.No)
             {
@@ -163,6 +166,16 @@ namespace GameLab.GridSystem
         public void SetWaterLevel(float level)
         {
             activeWaterLevel = (int)level;
+        }
+
+	    public void SetApplyUrbanLevel(bool toggle)
+        {
+            applyUrbanLevel = toggle;
+        }
+
+        public void SetUrbanLevel(float level)
+        {
+            activeUrbanLevel = (int)level;
         }
 
     }

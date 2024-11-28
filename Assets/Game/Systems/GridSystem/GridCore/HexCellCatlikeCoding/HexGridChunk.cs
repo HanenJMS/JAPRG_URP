@@ -8,7 +8,7 @@ namespace GameLab.GridSystem
     {
         HexCell[] hexCells;
         [SerializeField] HexMesh terrain, rivers, roads, water, waterShore, estuaries;
-        
+        public HexGridFeatureManager features;
         private void Awake()
         {
             hexCells = new HexCell[HexMetric.chunkSizeX * HexMetric.chunkSizeZ];
@@ -42,6 +42,7 @@ namespace GameLab.GridSystem
             water.Clear();
             waterShore.Clear();
             estuaries.Clear();
+            features.Clear();
             Triangulate(hexCells);
             terrain.Apply();
             rivers.Apply();
@@ -49,6 +50,7 @@ namespace GameLab.GridSystem
             water.Apply();
             waterShore.Apply();
             estuaries.Apply();
+            features.Apply();
         }
         public void Triangulate(HexCell[] cells)
         {
@@ -64,6 +66,12 @@ namespace GameLab.GridSystem
             for (HexCellDirections d = HexCellDirections.NE; d <= HexCellDirections.NW; d++)
             {
                 Triangulate(d, cell);
+            }
+
+            //TODO cell.Position either localPosition or transform.position?
+            if (!cell.IsUnderwater && !cell.HasRiver && !cell.HasRoads)
+            {
+                features.AddFeature(cell, cell.transform.position);
             }
         }
         void Triangulate(HexCellDirections direction, HexCell cell)
@@ -98,6 +106,10 @@ namespace GameLab.GridSystem
             else
             {
                 TriangulateWithoutRiver(direction, cell, center, e);
+                if (!cell.IsUnderwater && !cell.HasRoadThroughEdge(direction))
+                {
+                    features.AddFeature(cell, (center + e.v1 + e.v5) * (1f / 3f));
+                }
             }
             if (direction <= HexCellDirections.SE)
             {
@@ -600,6 +612,11 @@ namespace GameLab.GridSystem
 
             TriangulateEdgeStrip(m, cell.GetCellColor(), e, cell.GetCellColor());
             TriangulateEdgeFan(center, m, cell.GetCellColor());
+
+            if (!cell.IsUnderwater && !cell.HasRoadThroughEdge(direction))
+            {
+                features.AddFeature(cell, (center + e.v1 + e.v5) * (1f / 3f));
+            }
         }
         void TriangulateWithRiverBeginOrEnd(HexCellDirections direction,HexCell cell,Vector3 center,EdgeVertices e)
         {

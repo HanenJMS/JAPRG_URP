@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using Unity.Entities.UniversalDelegates;
-using UnityEditor.TerrainTools;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace GameLab.GridSystem
 {
@@ -10,54 +7,30 @@ namespace GameLab.GridSystem
 
     public class HexCell : MonoBehaviour
     {
+        //cell boundaries
         float outerRadius;
         float innerRadiusConstant = 0.866025404f;
+        int elevation;
         GridPosition gridPosition;
+
         Dictionary<HexCellDirections, GridPosition> hexCellNeighbors;
         public Color color;
         float solidFactor = 0.75f;
-        int elevation;
-        //float elevationStep = 5f;
         int chunkIndex = int.MinValue;
         HexGridChunk chunk;
+
+
         bool hasIncomingRiver, hasOutgoingRiver;
         int waterLevel;
-
-        HexCellDirections incomingRiver, outgoingRiver;
-        /// <summary>
-        /// Set corners and neighbor cells
-        /// </summary>
-        /// 
         [SerializeField] bool[] roads;
-        public HexCellDirections RiverBeginOrEndDirection
-        {
-            get
-            {
-                return hasIncomingRiver ? incomingRiver : outgoingRiver;
-            }
-        }
-        public float RiverSurfaceY
-        {
-            get
-            {
-                return
-                    transform.position.y + HexMetric.waterElevationOffset;
-            }
-        }
-        public float WaterSurfaceY
-        {
-            get
-            {
-                return
-                    HexMetric.waterElevationOffset + WaterLevel;
-            }
-        }
+        HexCellDirections incomingRiver, outgoingRiver;
+
+        public HexCellDirections RiverBeginOrEndDirection => hasIncomingRiver ? incomingRiver : outgoingRiver;
+        public float RiverSurfaceY => transform.position.y + HexMetric.waterElevationOffset;
+        public float WaterSurfaceY => HexMetric.waterElevationOffset + WaterLevel;
         public int WaterLevel
         {
-            get
-            {
-                return waterLevel;
-            }
+            get => waterLevel;
             set
             {
                 if (waterLevel == value)
@@ -69,19 +42,12 @@ namespace GameLab.GridSystem
                 Refresh();
             }
         }
-        public bool IsUnderwater
-        {
-            get
-            {
-                return waterLevel > elevation;
-            }
-        }
+        public bool IsUnderwater => waterLevel > elevation;
         public float StreamBedY => transform.position.y + HexMetric.streamBedElevationOffset;
         public void InitlializeCell()
         {
             InitializeNeighbors();
         }
-
         public void SetGridPosition(GridPosition gp)
         {
             gridPosition = new(gp.x, gp.z);
@@ -122,7 +88,6 @@ namespace GameLab.GridSystem
                 RefreshChunks();
             }
         }
-
         private void RefreshChunks()
         {
             List<HexGridChunk> chunks = new();
@@ -138,7 +103,6 @@ namespace GameLab.GridSystem
                 }
             }
         }
-
         public void SetColor(Color color)
         {
             this.color = color;
@@ -148,7 +112,6 @@ namespace GameLab.GridSystem
         {
             return color;
         }
-
         public void InitializeNeighbors()
         {
             hexCellNeighbors = new();
@@ -230,7 +193,6 @@ namespace GameLab.GridSystem
         {
             this.chunk = chunk;
         }
-
         public bool HasIncomingRiver => hasIncomingRiver;
         public bool HasOutgoingRiver => hasOutgoingRiver;
         public HexCellDirections IncomingRiver => incomingRiver;
@@ -303,8 +265,6 @@ namespace GameLab.GridSystem
 
             SetRoad((int)direction, false);
         }
-
-        //Road methods
         public bool HasRoadThroughEdge(HexCellDirections direction)
         {
             return roads[(int)direction];
@@ -338,10 +298,9 @@ namespace GameLab.GridSystem
                 SetRoad((int)direction, true);
             }
         }
-
         public void RemoveRoads()
         {
-            for(int i = 0; i <= (int)HexCellDirections.NW; i++)
+            for (int i = 0; i <= (int)HexCellDirections.NW; i++)
             {
                 SetRoad(i, false);
             }
@@ -374,6 +333,20 @@ namespace GameLab.GridSystem
                 RemoveIncomingRiver();
             }
         }
+        public int UrbanLevel
+        {
+            get => urbanLevel;
+            set
+            {
+                if (urbanLevel != value)
+                {
+                    urbanLevel = value;
+                    RefreshSelfOnly();
+                }
+            }
+        }
+        int urbanLevel;
+
     }
 }
 

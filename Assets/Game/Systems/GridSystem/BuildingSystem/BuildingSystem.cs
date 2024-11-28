@@ -17,6 +17,7 @@ namespace GameLab.BuildingSystem
             if (Input.GetMouseButtonDown(1))
             {
                 GridPosition gp = LevelGridSystem.Instance.GetGridPosition(MouseWorldController.GetMousePosition());
+                if (gp == null) return;
                 var building = Instantiate(buildingTable.GetBuildingList()[0], LevelGridSystem.Instance.GetWorldPosition(gp), Quaternion.identity);
                 building.transform.localScale *= LevelGridSystem.Instance.GetGridCellSize() * 0.75f;
                 LevelGridSystem.Instance.GetGridObject(gp).AddObjectToGrid(building);

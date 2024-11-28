@@ -18,6 +18,8 @@ namespace GameLab.GridSystem
         HexCell[] hexCells;
         int cellCountX, cellCountZ;
         int chunkCountX = 4, chunkCountZ = 3;
+        [SerializeField] Texture2D noiseSource;
+        [SerializeField] int seed;
         private void Awake()
         {
             if (Instance != null)
@@ -26,7 +28,16 @@ namespace GameLab.GridSystem
             }
             Instance = this;
             gridPositionHexCellDictionary = new();
-           
+            HexMetric.noiseSource = noiseSource;
+            HexMetric.InitializeHashGrid(seed);
+        }
+        void OnEnable()
+        {
+            if (!HexMetric.noiseSource)
+            {
+                HexMetric.noiseSource = noiseSource;
+                HexMetric.InitializeHashGrid(seed);
+            }
         }
         void AddCellToChunk(int x, int z, HexCell cell)
         {
