@@ -20,8 +20,9 @@ namespace GameLab.GridSystem
         bool applyWaterLevel = true;
         bool applyColorToggle = false;
 
-        int activeUrbanLevel;
-        bool applyUrbanLevel;
+        int activeUrbanLevel, activeFarmLevel, activePlantLevel;
+
+        bool applyUrbanLevel, applyFarmLevel, applyPlantLevel;
 
         void Start()
         {
@@ -100,6 +101,14 @@ namespace GameLab.GridSystem
             {
                 cell.UrbanLevel = activeUrbanLevel;
             }
+            if (applyFarmLevel)
+            {
+                cell.FarmLevel = activeFarmLevel;
+            }
+            if (applyPlantLevel)
+            {
+                cell.PlantLevel = activePlantLevel;
+            }
             if (riverMode == OptionalToggle.No)
             {
                 cell.RemoveRiver();
@@ -177,7 +186,25 @@ namespace GameLab.GridSystem
         {
             activeUrbanLevel = (int)level;
         }
+        public void SetApplyFarmLevel(bool toggle)
+        {
+            applyFarmLevel = toggle;
+        }
 
+        public void SetFarmLevel(float level)
+        {
+            activeFarmLevel = (int)level;
+        }
+
+        public void SetApplyPlantLevel(bool toggle)
+        {
+            applyPlantLevel = toggle;
+        }
+
+        public void SetPlantLevel(float level)
+        {
+            activePlantLevel = (int)level;
+        }
     }
 
 }

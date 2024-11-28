@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5421808922646331416}
   - component: {fileID: 3491566168995993366}
   m_Layer: 0
-  m_Name: Urban High 2
+  m_Name: Urban High 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5, y: 3, z: 2}
+  m_LocalScale: {x: 2, y: 5, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8e402b9e197d33241a17366c106738ba, type: 2}
+  - {fileID: 2100000, guid: 1898e7bc099ca4ac7b3cde78088ff4ea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

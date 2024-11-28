@@ -345,7 +345,38 @@ namespace GameLab.GridSystem
                 }
             }
         }
-        int urbanLevel;
+        public int FarmLevel
+        {
+            get
+            {
+                return farmLevel;
+            }
+            set
+            {
+                if (farmLevel != value)
+                {
+                    farmLevel = value;
+                    RefreshSelfOnly();
+                }
+            }
+        }
+
+        public int PlantLevel
+        {
+            get
+            {
+                return plantLevel;
+            }
+            set
+            {
+                if (plantLevel != value)
+                {
+                    plantLevel = value;
+                    RefreshSelfOnly();
+                }
+            }
+        }
+        int urbanLevel, farmLevel, plantLevel;
 
     }
 }
