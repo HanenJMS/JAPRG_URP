@@ -377,7 +377,23 @@ namespace GameLab.GridSystem
             }
         }
         int urbanLevel, farmLevel, plantLevel;
+        public bool Walled
+        {
+            get
+            {
+                return walled;
+            }
+            set
+            {
+                if (walled != value)
+                {
+                    walled = value;
+                    Refresh();
+                }
+            }
+        }
 
+        bool walled;
     }
 }
 

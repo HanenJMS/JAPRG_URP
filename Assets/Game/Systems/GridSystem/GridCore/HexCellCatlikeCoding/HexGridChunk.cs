@@ -144,7 +144,9 @@ namespace GameLab.GridSystem
                 e1.v1 + directionalBridge,
                 e1.v5 + directionalBridge
             );
-            if (cell.HasRiverThroughEdge(direction))
+            bool hasRiver = cell.HasRiverThroughEdge(direction);
+            bool hasRoad = cell.HasRoadThroughEdge(direction);
+            if (hasRiver)
             {
                 e2.v3.y = directionalNeighbor.StreamBedY;
                 if (!cell.IsUnderwater)
@@ -178,13 +180,13 @@ namespace GameLab.GridSystem
             if (HexMetric.GetEdgeType(cell.GetEdgeType(direction)) == HexEdgeType.Slope)
             {
                 //TriangulateEdgeTerraces(direction, cell, e1.v1, e1.v4, directionalNeighbor, e2.v1, e2.v4);
-                TriangulateEdgeTerraces(e1, cell, e2, directionalNeighbor, cell.HasRoadThroughEdge(direction));
+                TriangulateEdgeTerraces(e1, cell, e2, directionalNeighbor, hasRoad);
             }
             else
             {
-                TriangulateEdgeStrip(e1, cell.GetCellColor(), e2, directionalNeighbor.GetCellColor(), cell.HasRoadThroughEdge(direction));
+                TriangulateEdgeStrip(e1, cell.GetCellColor(), e2, directionalNeighbor.GetCellColor(), hasRoad);
             }
-
+            features.AddWall(e1, cell, e2, directionalNeighbor, hasRiver, hasRoad);
 
             HexCell nextDirectionalNeighbor = HexGridVisualSystem.Instance.GetHexCell(cell.GetNextDirectionHexNeighbor(direction));
             if (direction <= HexCellDirections.E && nextDirectionalNeighbor != null)
@@ -325,6 +327,7 @@ namespace GameLab.GridSystem
             }
             terrain.AddTriangle(bottom, left, right);
             terrain.AddTriangleColor(bottomCell.GetCellColor(), leftCell.GetCellColor(), rightCell.GetCellColor());
+            features.AddWall(bottom, bottomCell, left, leftCell, right, rightCell);
         }
 
         //hex terrain triangulation
@@ -367,6 +370,7 @@ namespace GameLab.GridSystem
                 terrain.AddTriangle(bottom, left, right);
                 terrain.AddTriangleColor(bottomCell.GetCellColor(), leftCell.GetCellColor(), rightCell.GetCellColor());
             }
+
         }
         void TriangulateCornerTerraces(Vector3 begin, HexCell beginCell,Vector3 left, HexCell leftCell,Vector3 right, HexCell rightCell)
         {
@@ -394,6 +398,7 @@ namespace GameLab.GridSystem
 
             terrain.AddQuad(v3, v4, left, right);
             terrain.AddQuadColor(c3, c4, leftCell.GetCellColor(), rightCell.GetCellColor());
+            features.AddWall(begin, beginCell, left, leftCell, right, rightCell);
         }
         void TriangulateCornerSlopeCliffTerraces(Vector3 start, HexCell startCell, Vector3 left, HexCell leftCell, Vector3 right, HexCell rightCell)
         {
@@ -958,6 +963,7 @@ namespace GameLab.GridSystem
                 waterShore.AddTriangleUV(new Vector2(0f, 0f),new Vector2(0f, 1f),new Vector2(0f, nextNeighbor.IsUnderwater ? 0f : 1f));
             }
         }
+        //features
 
         public void Refresh()
         {

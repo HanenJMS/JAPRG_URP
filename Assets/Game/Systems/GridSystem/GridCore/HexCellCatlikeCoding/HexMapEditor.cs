@@ -117,6 +117,10 @@ namespace GameLab.GridSystem
             {
                 cell.RemoveRoads();
             }
+            if (walledMode != OptionalToggle.Ignore)
+            {
+                cell.Walled = walledMode == OptionalToggle.Yes;
+            }
             else if (isDrag)
             {
                 if (riverMode == OptionalToggle.Yes)
@@ -138,7 +142,7 @@ namespace GameLab.GridSystem
             Ignore, Yes, No
         }
 
-        OptionalToggle riverMode, roadMode;
+        OptionalToggle riverMode, roadMode, walledMode;
 
         //toggles
         public void SetRiverMode(int mode)
@@ -148,6 +152,10 @@ namespace GameLab.GridSystem
         public void SetRoadMode(int mode)
         {
             roadMode = (OptionalToggle)mode;
+        }
+        public void SetWalledMode(int mode)
+        {
+            walledMode = (OptionalToggle)mode;
         }
         public void SetApplyElevation(bool toggle)
         {
