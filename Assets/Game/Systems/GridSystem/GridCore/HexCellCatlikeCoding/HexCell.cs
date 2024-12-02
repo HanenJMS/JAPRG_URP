@@ -14,7 +14,7 @@ namespace GameLab.GridSystem
         GridPosition gridPosition;
 
         Dictionary<HexCellDirections, GridPosition> hexCellNeighbors;
-        public Color color;
+        int terrainTypeIndex;
         float solidFactor = 0.75f;
         int chunkIndex = int.MinValue;
         HexGridChunk chunk;
@@ -24,6 +24,8 @@ namespace GameLab.GridSystem
         int waterLevel;
         [SerializeField] bool[] roads;
         HexCellDirections incomingRiver, outgoingRiver;
+
+        int specialIndex;
 
         public HexCellDirections RiverBeginOrEndDirection => hasIncomingRiver ? incomingRiver : outgoingRiver;
         public float RiverSurfaceY => transform.position.y + HexMetric.waterElevationOffset;
@@ -103,14 +105,10 @@ namespace GameLab.GridSystem
                 }
             }
         }
-        public void SetColor(Color color)
-        {
-            this.color = color;
-            Refresh();
-        }
+
         public Color GetCellColor()
         {
-            return color;
+            return HexMetric.colors[terrainTypeIndex];
         }
         public void InitializeNeighbors()
         {
@@ -256,10 +254,12 @@ namespace GameLab.GridSystem
             }
 
             outgoingRiver = direction;
+            specialIndex = 0;
             hasOutgoingRiver = true;
             //RefreshSelfOnly();
             neighbor.RemoveIncomingRiver();
             neighbor.incomingRiver = neighborFacingDirection;
+            neighbor.specialIndex = 0;
             neighbor.hasIncomingRiver = true;
             //neighbor.RefreshSelfOnly();
 
@@ -293,7 +293,7 @@ namespace GameLab.GridSystem
         }
         public void AddRoad(HexCellDirections direction)
         {
-            if (!roads[(int)direction] && !HasRiverThroughEdge(direction) && GetElevationDifference(direction) <= 1)
+            if (!roads[(int)direction] && !HasRiverThroughEdge(direction) && !IsSpecial && !GetHexCellNeighbor(direction).IsSpecial && GetElevationDifference(direction) <= 1)
             {
                 SetRoad((int)direction, true);
             }
@@ -394,6 +394,48 @@ namespace GameLab.GridSystem
         }
 
         bool walled;
+
+        public int SpecialIndex
+        {
+            get
+            {
+                return specialIndex;
+            }
+            set
+            {
+                if (specialIndex != value)
+                {
+                    if (specialIndex != value && !HasRiver)
+                    {
+                        specialIndex = value;
+                        RemoveRoads();
+                        RefreshSelfOnly();
+                    }
+                }
+            }
+        }
+        public bool IsSpecial
+        {
+            get
+            {
+                return specialIndex > 0;
+            }
+        }
+        public int TerrainTypeIndex
+        {
+            get
+            {
+                return terrainTypeIndex;
+            }
+            set
+            {
+                if (terrainTypeIndex != value)
+                {
+                    terrainTypeIndex = value;
+                    Refresh();
+                }
+            }
+        }
     }
 }
 

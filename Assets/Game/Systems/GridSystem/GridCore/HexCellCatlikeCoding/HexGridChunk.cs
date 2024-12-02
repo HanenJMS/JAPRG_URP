@@ -27,7 +27,6 @@ namespace GameLab.GridSystem
             {
                 item.SetElevation(0);
                 item.InitlializeCell();
-                item.SetColor(Color.white);
             }
         }
 
@@ -69,9 +68,16 @@ namespace GameLab.GridSystem
             }
 
             //TODO cell.Position either localPosition or transform.position?
-            if (!cell.IsUnderwater && !cell.HasRiver && !cell.HasRoads)
+            if (!cell.IsUnderwater)
             {
-                features.AddFeature(cell, cell.transform.position);
+                if (!cell.HasRiver && !cell.HasRoads)
+                {
+                    features.AddFeature(cell, cell.transform.position);
+                }
+                if (cell.IsSpecial)
+                {
+                    features.AddSpecialFeature(cell, cell.transform.position);
+                }
             }
         }
         void Triangulate(HexCellDirections direction, HexCell cell)
@@ -110,6 +116,7 @@ namespace GameLab.GridSystem
                 {
                     features.AddFeature(cell, (center + e.v1 + e.v5) * (1f / 3f));
                 }
+
             }
             if (direction <= HexCellDirections.SE)
             {
@@ -712,6 +719,10 @@ namespace GameLab.GridSystem
                     corner = HexMetric.GetFirstSolidCorner(direction);
                 }
                 roadCenter += corner * 0.5f;
+                if (cell.IncomingRiver == direction.GetNextDirection() && (cell.HasRoadThroughEdge(direction.Next2()) || cell.HasRoadThroughEdge(direction.GetOppositeDirection())))
+                {
+                    features.AddBridge(roadCenter, center - corner * 0.5f);
+                }
                 center += corner * 0.25f;
             }
             else if (cell.IncomingRiver == cell.OutgoingRiver.GetPreviousDirection())
@@ -752,7 +763,15 @@ namespace GameLab.GridSystem
                 {
                     return;
                 }
-                roadCenter += HexMetric.GetSolidEdgeMiddle(middle) * 0.25f;
+                Vector3 offset = HexMetric.GetSolidEdgeMiddle(middle); 
+                roadCenter += offset * 0.25f;
+                if (direction == middle && cell.HasRoadThroughEdge(direction.GetOppositeDirection()))
+                {
+                    features.AddBridge(
+                        roadCenter,
+                        center - offset * (HexMetric.innerToOuter * 0.7f)
+                    );
+                }
             }
             Vector3 mL = Vector3.Lerp(roadCenter, e.v1, interpolators.x);
             Vector3 mR = Vector3.Lerp(roadCenter, e.v5, interpolators.y);

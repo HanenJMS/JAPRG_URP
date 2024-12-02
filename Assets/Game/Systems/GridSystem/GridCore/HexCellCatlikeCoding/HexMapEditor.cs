@@ -7,9 +7,6 @@ namespace GameLab.GridSystem
 {
     public class HexMapEditor : MonoBehaviour
     {
-        [SerializeField] Color[] colors;
-        [SerializeField]
-        private Color activeColor;
         int activeElevation;
         
         bool isDrag;
@@ -20,15 +17,11 @@ namespace GameLab.GridSystem
         bool applyWaterLevel = true;
         bool applyColorToggle = false;
 
-        int activeUrbanLevel, activeFarmLevel, activePlantLevel;
+        int activeUrbanLevel, activeFarmLevel, activePlantLevel, activeSpecialIndex;
 
-        bool applyUrbanLevel, applyFarmLevel, applyPlantLevel;
+        bool applyUrbanLevel, applyFarmLevel, applyPlantLevel, applySpecialIndex;
 
-        void Start()
-        {
-            SelectColor(0);
-        }
-
+        int activeTerrainTypeIndex;
 
         private void LateUpdate()
         {
@@ -91,11 +84,14 @@ namespace GameLab.GridSystem
             }
             if(applyColorToggle)
             {
-                cell.SetColor(activeColor);
             }
             if (applyWaterLevel)
             {
                 cell.WaterLevel = activeWaterLevel;
+            }
+            if (applySpecialIndex)
+            {
+                cell.SpecialIndex = activeSpecialIndex;
             }
             if (applyUrbanLevel)
             {
@@ -171,11 +167,6 @@ namespace GameLab.GridSystem
         }
 
         //sliders and triggers
-        public void SelectColor(int index)
-        {
-            if (index < colors.Count())
-                activeColor = colors[index];
-        }
         public void SetElevation(float elevation)
         {
             activeElevation = ((int)elevation);
@@ -212,6 +203,20 @@ namespace GameLab.GridSystem
         public void SetPlantLevel(float level)
         {
             activePlantLevel = (int)level;
+        }
+
+        public void SetApplySpecialIndex(bool toggle)
+        {
+            applySpecialIndex = toggle;
+        }
+
+        public void SetSpecialIndex(float index)
+        {
+            activeSpecialIndex = (int)index;
+        }
+        public void SetTerrainTypeIndex(int index)
+        {
+            activeTerrainTypeIndex = index;
         }
     }
 

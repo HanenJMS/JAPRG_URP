@@ -14,6 +14,7 @@ namespace GameLab.GridSystem
         float innerRadiusConstant = 0.866025404f;
         public Color defaultColor = Color.white;
         public Color touchedColor = Color.magenta;
+        public Color[] colors;
         HexGridChunk[] chunks;
         HexCell[] hexCells;
         int cellCountX, cellCountZ;
@@ -30,6 +31,7 @@ namespace GameLab.GridSystem
             gridPositionHexCellDictionary = new();
             HexMetric.noiseSource = noiseSource;
             HexMetric.InitializeHashGrid(seed);
+            HexMetric.colors = colors;
         }
         void OnEnable()
         {
@@ -37,6 +39,7 @@ namespace GameLab.GridSystem
             {
                 HexMetric.noiseSource = noiseSource;
                 HexMetric.InitializeHashGrid(seed);
+                HexMetric.colors = colors;
             }
         }
         void AddCellToChunk(int x, int z, HexCell cell)

@@ -9,7 +9,10 @@ namespace GameLab.GridSystem
     {
         public HexFeatureCollection[] urbanCollections, farmCollections, plantCollections;
         Transform container;
+        public Transform wallTower, bridge;
         public HexMesh walls;
+
+        public Transform[] special;
         public void Clear()
         {
             if (container)
@@ -28,6 +31,11 @@ namespace GameLab.GridSystem
 
         public void AddFeature(HexCell cell, Vector3 position)
         {
+            if (cell.IsSpecial)
+            {
+                return;
+            }
+
             HexHash hash = HexMetric.SampleHashGrid(position);
             Transform prefab = PickPrefab(urbanCollections, cell.UrbanLevel, hash.a, hash.d);
             Transform otherPrefab = PickPrefab(farmCollections, cell.FarmLevel, hash.b, hash.d);
@@ -142,7 +150,7 @@ namespace GameLab.GridSystem
                 AddWallSegment(c3, cell3, c1, cell1, c2, cell2);
             }
         }
-        void AddWallSegment(Vector3 nearLeft, Vector3 farLeft, Vector3 nearRight, Vector3 farRight)
+        void AddWallSegment(Vector3 nearLeft, Vector3 farLeft, Vector3 nearRight, Vector3 farRight, bool addTower = false)
         {
             nearLeft = HexMetric.Perturb(nearLeft);
             farLeft = HexMetric.Perturb(farLeft);
@@ -171,6 +179,16 @@ namespace GameLab.GridSystem
             v4.y = rightTop;
             walls.AddQuadUnperturbed(v2, v1, v4, v3);
             walls.AddQuadUnperturbed(t1, t2, v3, v4);
+
+            if(addTower)
+            {
+                Transform towerInstance = Instantiate(wallTower);
+                towerInstance.transform.localPosition = (left + right) * 0.5f;
+                Vector3 rightDirection = right - left;
+                rightDirection.y = 0f;
+                towerInstance.transform.right = rightDirection;
+                towerInstance.SetParent(container, false);
+            }
         }
         void AddWallSegment(Vector3 pivot, HexCell pivotCell, Vector3 left, HexCell leftCell, Vector3 right, HexCell rightCell)
         {
@@ -188,7 +206,15 @@ namespace GameLab.GridSystem
             {
                 if (hasRighWall)
                 {
-                    AddWallSegment(pivot, left, pivot, right);
+                    bool hasTower = false;
+                    if (leftCell.GetElevation() == rightCell.GetElevation())
+                    {
+                        HexHash hash = HexMetric.SampleHashGrid(
+                            (pivot + left + right) * (1f / 3f)
+                        );
+                        hasTower = hash.e < HexMetric.wallTowerThreshold;
+                    }
+                    AddWallSegment(pivot, left, pivot, right, hasTower);
                 }
                 else if (leftCell.GetElevation() < rightCell.GetElevation())
                 {
@@ -247,6 +273,25 @@ namespace GameLab.GridSystem
             walls.AddQuadUnperturbed(v1, point, v3, pointTop);
             walls.AddQuadUnperturbed(point, v2, pointTop, v4);
             walls.AddTriangleUnperturbed(pointTop, v3, v4);
+        }
+        public void AddBridge(Vector3 roadCenter1, Vector3 roadCenter2)
+        {
+            roadCenter1 = HexMetric.Perturb(roadCenter1);
+            roadCenter2 = HexMetric.Perturb(roadCenter2);
+            Transform instance = Instantiate(bridge);
+            instance.localPosition = (roadCenter1 + roadCenter2) * 0.5f;
+            instance.forward = roadCenter2 - roadCenter1;
+            float length = Vector3.Distance(roadCenter1, roadCenter2);
+            instance.localScale = new Vector3( 1f, 1f, length * (1/HexMetric.bridgeDesignLength));
+            instance.SetParent(container, false);
+        }
+        public void AddSpecialFeature(HexCell cell, Vector3 position)
+        {
+            Transform instance = Instantiate(special[cell.SpecialIndex - 1]);
+            instance.localPosition = HexMetric.Perturb(position);
+            HexHash hash = HexMetric.SampleHashGrid(position);
+            instance.localRotation = Quaternion.Euler(0f, 360f * hash.e, 0f);
+            instance.SetParent(container, false);
         }
     }
 }
