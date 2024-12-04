@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace GameLab.GridSystem
 {
@@ -49,6 +51,10 @@ namespace GameLab.GridSystem
         public void InitlializeCell()
         {
             InitializeNeighbors();
+            if (terrainTypeIndex < 0)
+            {
+                terrainTypeIndex = 0;
+            }
         }
         public void SetGridPosition(GridPosition gp)
         {
@@ -64,12 +70,7 @@ namespace GameLab.GridSystem
                 return;
 
             this.elevation = elevation;
-            Vector3 position = transform.localPosition;
-            position.y = elevation * HexMetric.elevationStep;
-            position.y +=
-                (HexMetric.SampleNoise(position).y * 2f - 1f) *
-                HexMetric.elevationPerturbStrength;
-            transform.localPosition = position;
+            RefreshPosition();
             ValidateRivers();
             for (int i = 0; i < roads.Length; i++)
             {
@@ -81,6 +82,15 @@ namespace GameLab.GridSystem
 
             Refresh();
 
+        }
+        void RefreshPosition()
+        {
+            Vector3 position = transform.localPosition;
+            position.y = elevation * HexMetric.elevationStep;
+            position.y +=
+                (HexMetric.SampleNoise(position).y * 2f - 1f) *
+                HexMetric.elevationPerturbStrength;
+            transform.localPosition = position;
         }
         void Refresh()
         {
@@ -434,6 +444,86 @@ namespace GameLab.GridSystem
                     terrainTypeIndex = value;
                     Refresh();
                 }
+            }
+        }
+
+        public void Save(BinaryWriter writer)
+        {
+            writer.Write((byte)terrainTypeIndex);
+            writer.Write((byte)elevation);
+            writer.Write((byte)waterLevel);
+            writer.Write((byte)urbanLevel);
+            writer.Write((byte)farmLevel);
+            writer.Write((byte)plantLevel);
+            writer.Write((byte)specialIndex);
+            writer.Write(walled);
+
+            if (hasIncomingRiver)
+            {
+                writer.Write((byte)(incomingRiver + 128));
+            }
+            else
+            {
+                writer.Write((byte)0);
+            }
+
+            if (hasOutgoingRiver)
+            {
+                writer.Write((byte)(outgoingRiver + 128));
+            }
+            else
+            {
+                writer.Write((byte)0);
+            }
+
+
+            int roadFlags = 0;
+            for (int i = 0; i < roads.Length; i++)
+            {
+                if (roads[i])
+                {
+                    roadFlags |= 1 << i;
+                }
+            }
+            writer.Write((byte)roadFlags);
+        }
+
+        public void Load(BinaryReader reader)
+        {
+            terrainTypeIndex = reader.ReadByte();
+            elevation = reader.ReadByte();
+            RefreshPosition();
+            waterLevel = reader.ReadByte();
+            urbanLevel = reader.ReadByte();
+            farmLevel = reader.ReadByte();
+            plantLevel = reader.ReadByte();
+            specialIndex = reader.ReadByte();
+            walled = reader.ReadBoolean();
+
+            byte riverData = reader.ReadByte();
+            if (riverData >= 128)
+            {
+                hasIncomingRiver = true;
+                incomingRiver = (HexCellDirections)(riverData - 128);
+            }
+            else
+            {
+                hasIncomingRiver = false;
+            }
+            riverData = reader.ReadByte();
+            if (riverData >= 128)
+            {
+                hasOutgoingRiver = true;
+                outgoingRiver = (HexCellDirections)(riverData - 128);
+            }
+            else
+            {
+                hasOutgoingRiver = false;
+            }
+            int roadFlags = reader.ReadByte();
+            for (int i = 0; i < roads.Length; i++)
+            {
+                roads[i] = (roadFlags & (1 << i)) != 0;
             }
         }
     }

@@ -1,14 +1,12 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
-
+using System.IO;
 namespace GameLab.GridSystem
 {
     public class HexMapEditor : MonoBehaviour
     {
         int activeElevation;
-        
+
         bool isDrag;
         int activeWaterLevel;
         HexCellDirections dragDirection;
@@ -25,8 +23,8 @@ namespace GameLab.GridSystem
 
         private void LateUpdate()
         {
-            if 
-            ( 
+            if
+            (
                 Input.GetMouseButton(0) &&
                 !EventSystem.current.IsPointerOverGameObject()
             )
@@ -62,13 +60,13 @@ namespace GameLab.GridSystem
         }
         void ValidateDrag(HexCell currentCell)
         {
-            for (dragDirection = HexCellDirections.NE; dragDirection <= HexCellDirections.NW; dragDirection++) 
+            for (dragDirection = HexCellDirections.NE; dragDirection <= HexCellDirections.NW; dragDirection++)
             {
                 if (previousCell.GetHexCellNeighbor(dragDirection) == currentCell)
                 {
                     isDrag = true;
                     Debug.Log("direction: " + dragDirection.ToString());
-                    Debug.Log("opp direction: "+ dragDirection.GetOppositeDirection().ToString());
+                    Debug.Log("opp direction: " + dragDirection.GetOppositeDirection().ToString());
                     return;
                 }
             }
@@ -77,12 +75,16 @@ namespace GameLab.GridSystem
 
         private void EditCell(HexCell cell)
         {
+            if (activeTerrainTypeIndex >= 0)
+            {
+                cell.TerrainTypeIndex = activeTerrainTypeIndex;
+            }
             if (applyElevation)
             {
                 cell.SetElevation(activeElevation);
                 HexGridVisualSystem.Instance.SetHexCellElevation(cell.GetGridPosition());
             }
-            if(applyColorToggle)
+            if (applyColorToggle)
             {
             }
             if (applyWaterLevel)
@@ -128,7 +130,7 @@ namespace GameLab.GridSystem
                 }
             }
 
-            
+
             HexGridVisualSystem.Instance.Refresh(cell.GetCellChunkIndex());
 
 
@@ -176,7 +178,7 @@ namespace GameLab.GridSystem
             activeWaterLevel = (int)level;
         }
 
-	    public void SetApplyUrbanLevel(bool toggle)
+        public void SetApplyUrbanLevel(bool toggle)
         {
             applyUrbanLevel = toggle;
         }
@@ -217,6 +219,34 @@ namespace GameLab.GridSystem
         public void SetTerrainTypeIndex(int index)
         {
             activeTerrainTypeIndex = index;
+        }
+        public void Save()
+        {
+            string path = Path.Combine(Application.persistentDataPath, "test.map");
+            using (BinaryWriter writer = new BinaryWriter(
+                File.Open(path, FileMode.Create)))
+            {
+                writer.Write(0);
+                HexGridVisualSystem.Instance.Save(writer);
+            }
+            Debug.Log(Application.persistentDataPath);
+        }
+
+        public void Load()
+        {
+            string path = Path.Combine(Application.persistentDataPath, "test.map");
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
+            {
+                int header = reader.ReadInt32();
+                if (header == 0)
+                {
+                    HexGridVisualSystem.Instance.Load(reader);
+                }
+                else
+                {
+                    Debug.LogWarning("Unknown map format " + header);
+                }
+            }
         }
     }
 

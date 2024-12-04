@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 namespace GameLab.GridSystem
 {
@@ -29,9 +30,10 @@ namespace GameLab.GridSystem
             }
             Instance = this;
             gridPositionHexCellDictionary = new();
+            HexMetric.colors = colors;
             HexMetric.noiseSource = noiseSource;
             HexMetric.InitializeHashGrid(seed);
-            HexMetric.colors = colors;
+            //HexMetric.colors = colors;
         }
         void OnEnable()
         {
@@ -63,6 +65,7 @@ namespace GameLab.GridSystem
                 Transform hexCellObject = Instantiate(hexCellPrefab, LevelHexGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity);
                 var hexCell = hexCellObject.GetComponent<HexCell>();
                 hexCell.SetGridPosition(gridPosition);
+                
                 gridPositionHexCellDictionary.Add(gridPosition, hexCell);
 
             }
@@ -70,6 +73,7 @@ namespace GameLab.GridSystem
             List<HexCell> cells = new List<HexCell>();
             foreach (var item in gridPositionHexCellDictionary)
             {
+                
                 cells.Add(item.Value);
                 AddCellToChunk(item.Key.x, item.Key.z, item.Value);
             }
@@ -78,6 +82,10 @@ namespace GameLab.GridSystem
             foreach (var item in chunks)
             {
                 item.InitializeCells();
+            }
+            foreach (var item in chunks)
+            {
+                item.Refresh();   
             }
 
 
@@ -122,6 +130,33 @@ namespace GameLab.GridSystem
                 return gridPositionHexCellDictionary[gp];
             }
             return null;
+        }
+
+        public void Save(BinaryWriter writer)
+        {
+            for (int i = 0; i < hexCells.Length; i++)
+            {
+                hexCells[i].Save(writer);
+            }
+
+        }
+
+        public void Load(BinaryReader reader)
+        {
+            for (int i = 0; i < hexCells.Length; i++)
+            {
+                hexCells[i].Load(reader);
+            }
+            RefreshChunks();
+        }
+
+        public void RefreshChunks()
+        {
+            if (chunks == null) return;
+            foreach (var item in chunks)
+            {
+                item.Refresh();
+            }
         }
     }
 }
