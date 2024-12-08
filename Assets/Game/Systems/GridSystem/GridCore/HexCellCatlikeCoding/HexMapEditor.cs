@@ -40,7 +40,14 @@ namespace GameLab.GridSystem
         {
             if (MouseWorldController.GetMousePosition(out RaycastHit hit))
             {
-                HexCell currentCell = HexGridVisualSystem.Instance.GetHexCell(LevelHexGridSystem.Instance.GetGridPosition(hit.point));
+                var gridPosition = LevelHexGridSystem.Instance.GetGridPosition(hit.point);
+
+                if (!LevelHexGridSystem.Instance.GridPositionIsValid(gridPosition)) return;
+
+                HexCell currentCell;
+                currentCell = HexGridVisualSystem.Instance.GetHexCell(gridPosition);
+
+
                 if (previousCell != null && previousCell != currentCell && currentCell != null)
                 {
                     ValidateDrag(currentCell);
@@ -220,34 +227,11 @@ namespace GameLab.GridSystem
         {
             activeTerrainTypeIndex = index;
         }
-        public void Save()
+        public void CreateNewMap()
         {
-            string path = Path.Combine(Application.persistentDataPath, "test.map");
-            using (BinaryWriter writer = new BinaryWriter(
-                File.Open(path, FileMode.Create)))
-            {
-                writer.Write(0);
-                HexGridVisualSystem.Instance.Save(writer);
-            }
-            Debug.Log(Application.persistentDataPath);
+            HexGridVisualSystem.Instance.CreateMap(50, 50);
         }
 
-        public void Load()
-        {
-            string path = Path.Combine(Application.persistentDataPath, "test.map");
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
-            {
-                int header = reader.ReadInt32();
-                if (header == 0)
-                {
-                    HexGridVisualSystem.Instance.Load(reader);
-                }
-                else
-                {
-                    Debug.LogWarning("Unknown map format " + header);
-                }
-            }
-        }
     }
 
 }

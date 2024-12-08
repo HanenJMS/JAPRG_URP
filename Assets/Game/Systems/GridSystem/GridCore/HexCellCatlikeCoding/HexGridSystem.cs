@@ -17,6 +17,8 @@ namespace GameLab.GridSystem
 
         Dictionary<GridPosition, TGridObject> grid;
         List<GridPosition> allGridPositions;
+        List<GridDebugObject> debugObjects;
+        GameObject parent;
         public HexGridSystem(int width, int height, float cellSize, Func<HexGridSystem<TGridObject>, GridPosition, TGridObject> CreateGridObject)
         {
             this.width = width;
@@ -58,6 +60,7 @@ namespace GameLab.GridSystem
             var closestGp = gp;
             foreach (var item in LevelHexGridSystem.Instance.GetGridObject(gp).GetGridHexCellNeighbors())
             {
+                
                 if (Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(item.Value), worldPosition) < Vector3.Distance(LevelHexGridSystem.Instance.GetWorldPosition(closestGp), worldPosition))
                 {
                     closestGp = item.Value;
@@ -91,12 +94,14 @@ namespace GameLab.GridSystem
         }
         public void CreateDebugObject(Transform debugPrefab)
         {
-            GameObject parent = new("Grid");
+            debugObjects = new();
+            parent = new("Grid");
             foreach (KeyValuePair<GridPosition, TGridObject> gridPosition in grid)
             {
                 Transform debugobject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition.Key), Quaternion.identity, parent.transform);
                 GridDebugObject gridDebugObject = debugobject.GetComponent<GridDebugObject>();
                 gridDebugObject.SetGridObject(gridPosition.Value);
+                debugObjects.Add(gridDebugObject);
             }
         }
         public TGridObject GetGridObject(GridPosition gridPosition)
@@ -114,6 +119,15 @@ namespace GameLab.GridSystem
         public float GetGridCellSize()
         {
             return cellSize;
+        }
+        public List<GridDebugObject> GetDebugObjects()
+        {
+            return debugObjects;
+        }
+        public GameObject GetCurrentWorld()
+        {
+            return parent;
+                
         }
     }
 

@@ -23,9 +23,17 @@ namespace GameLab.GridSystem
             }
             Instance = this;
         }
+        public void DestroyGrid()
+        {
+            
+            if(gridSystem != null)
+            {
+               var world = gridSystem.GetCurrentWorld();
+                if (world != null) Destroy(world);
+            }    
+        }
         public void CreateGrid(int width = 5, int height = 5)
         {
-
             this.width = width;
             this.height = height;
             gridSystem = new HexGridSystem<HexGridObject>(width, height, cellsize, (HexGridSystem<HexGridObject> g, GridPosition gridPosition) => new(g, gridPosition));

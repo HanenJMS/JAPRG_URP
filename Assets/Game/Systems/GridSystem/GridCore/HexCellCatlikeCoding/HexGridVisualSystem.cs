@@ -10,6 +10,7 @@ namespace GameLab.GridSystem
         [SerializeField] Transform hexCellPrefab;
         [SerializeField] Transform gridPositionChunkPrefab;
         Dictionary<GridPosition, HexCell> gridPositionHexCellDictionary;
+        List<HexCell> cells;
         //for HexGrid references
         float outerRadius;
         float innerRadiusConstant = 0.866025404f;
@@ -29,11 +30,9 @@ namespace GameLab.GridSystem
                 Destroy(this);
             }
             Instance = this;
-            gridPositionHexCellDictionary = new();
             HexMetric.colors = colors;
             HexMetric.noiseSource = noiseSource;
             HexMetric.InitializeHashGrid(seed);
-            //HexMetric.colors = colors;
         }
         void OnEnable()
         {
@@ -54,41 +53,67 @@ namespace GameLab.GridSystem
             int localZ = z - chunkZ * HexMetric.chunkSizeZ;
             chunk.AddCell(localX + localZ * HexMetric.chunkSizeX, cell);
             cell.SetCellChunkIndex(chunkX + chunkZ * chunkCountX);
+
             cell.SetCellChunk(chunk);
+        }
+        public void DestroyMap()
+        {
+            LevelHexGridSystem.Instance.DestroyGrid();
+            if (chunks != null)
+            {
+                foreach (var item in chunks)
+                {
+                    Destroy(item.gameObject);
+                }
+            }
+            if (gridPositionHexCellDictionary != null)
+                gridPositionHexCellDictionary.Clear();
+            if (cells != null)
+                cells.Clear();
+        }
+        public bool CreateMap(int x, int z)
+        {
+            if (x <= 0 || x % HexMetric.chunkSizeX != 0 || z <= 0 || z % HexMetric.chunkSizeZ != 0)
+            {
+                Debug.LogError("Unsupported map size.");
+                return false;
+            }
+            DestroyMap();
+            cellCountX = x;
+            cellCountZ = z;
+            chunkCountX = cellCountX / HexMetric.chunkSizeX;
+            chunkCountZ = cellCountZ / HexMetric.chunkSizeZ;
+            LevelHexGridSystem.Instance.CreateGrid(cellCountX, cellCountZ);
+            CreateChunks();
+            CreateCells();
+            RefreshChunks();
+            return true;
         }
         private void Start()
         {
-            LevelHexGridSystem.Instance.CreateGrid(chunkCountX * HexMetric.chunkSizeX, chunkCountZ * HexMetric.chunkSizeZ);
-            CreateChunks();
+            CreateMap(25, 25);
+        }
+        private void CreateCells()
+        {
+            gridPositionHexCellDictionary = new();
+            cells = new List<HexCell>();
             foreach (GridPosition gridPosition in LevelHexGridSystem.Instance.GetAllGridPositions())
             {
                 Transform hexCellObject = Instantiate(hexCellPrefab, LevelHexGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity);
                 var hexCell = hexCellObject.GetComponent<HexCell>();
                 hexCell.SetGridPosition(gridPosition);
-                
                 gridPositionHexCellDictionary.Add(gridPosition, hexCell);
-
-            }
-
-            List<HexCell> cells = new List<HexCell>();
-            foreach (var item in gridPositionHexCellDictionary)
-            {
-                
-                cells.Add(item.Value);
-                AddCellToChunk(item.Key.x, item.Key.z, item.Value);
+                cells.Add(hexCell);
             }
             hexCells = cells.ToArray();
-
+            foreach (var item in gridPositionHexCellDictionary)
+            {
+                AddCellToChunk(item.Key.x, item.Key.z, item.Value);
+            }
             foreach (var item in chunks)
             {
                 item.InitializeCells();
             }
-            foreach (var item in chunks)
-            {
-                item.Refresh();   
-            }
-
-
         }
         void CreateChunks()
         {
@@ -121,8 +146,6 @@ namespace GameLab.GridSystem
             gridPositionHexCellDictionary[gp].transform.position = pos;
 
         }
-
-
         public HexCell GetHexCell(GridPosition gp)
         {
             if (gridPositionHexCellDictionary.ContainsKey(gp))
@@ -134,6 +157,8 @@ namespace GameLab.GridSystem
 
         public void Save(BinaryWriter writer)
         {
+            writer.Write(cellCountX);
+            writer.Write(cellCountZ);
             for (int i = 0; i < hexCells.Length; i++)
             {
                 hexCells[i].Save(writer);
@@ -141,8 +166,22 @@ namespace GameLab.GridSystem
 
         }
 
-        public void Load(BinaryReader reader)
+        public void Load(BinaryReader reader, int header)
         {
+            int x = 20, z = 15;
+            if (header >= 1)
+            {
+                x = reader.ReadInt32();
+                z = reader.ReadInt32();
+            }
+            if (x != cellCountX || z != cellCountZ)
+            {
+                if (!CreateMap(x, z))
+                {
+                    return;
+                }
+            }
+            CreateMap(reader.ReadInt32(), reader.ReadInt32());
             for (int i = 0; i < hexCells.Length; i++)
             {
                 hexCells[i].Load(reader);
